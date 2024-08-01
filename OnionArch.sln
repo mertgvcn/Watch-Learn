@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{34C82064-6D98-4209-BDF5-9FE639D66AEE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastucture", "Infrastucture", "{C49EE265-0718-4B0B-A90C-A6B7F55B3E11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{6393B41E-5748-479C-9CF4-51E6FB83A3AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnionArch.Application", "Core\OnionArch.Application\OnionArch.Application.csproj", "{F82AE146-4D2C-43A1-B235-8CC5EB76E596}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnionArch.Domain", "Core\OnionArch.Domain\OnionArch.Domain.csproj", "{77328A80-DF4E-411B-9354-D3E305B31C34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnionArch.Infrastructure", "Infrastructure\OnionArch.Infrastructure\OnionArch.Infrastructure.csproj", "{342B35F5-CF38-4FFB-BBA4-A8E56269E9A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnionArch.Persistence", "Infrastructure\OnionArch.Persistence\OnionArch.Persistence.csproj", "{373F8AB4-E804-4E80-850D-4D9FDF3C5A39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnionArch.Api", "Presentation\OnionArch.Api\OnionArch.Api.csproj", "{5CBA0D2F-25B3-4075-B1C4-C1C5C9E36CDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F82AE146-4D2C-43A1-B235-8CC5EB76E596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F82AE146-4D2C-43A1-B235-8CC5EB76E596}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F82AE146-4D2C-43A1-B235-8CC5EB76E596}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F82AE146-4D2C-43A1-B235-8CC5EB76E596}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77328A80-DF4E-411B-9354-D3E305B31C34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77328A80-DF4E-411B-9354-D3E305B31C34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77328A80-DF4E-411B-9354-D3E305B31C34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77328A80-DF4E-411B-9354-D3E305B31C34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{342B35F5-CF38-4FFB-BBA4-A8E56269E9A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{342B35F5-CF38-4FFB-BBA4-A8E56269E9A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{342B35F5-CF38-4FFB-BBA4-A8E56269E9A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{342B35F5-CF38-4FFB-BBA4-A8E56269E9A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{373F8AB4-E804-4E80-850D-4D9FDF3C5A39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{373F8AB4-E804-4E80-850D-4D9FDF3C5A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{373F8AB4-E804-4E80-850D-4D9FDF3C5A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{373F8AB4-E804-4E80-850D-4D9FDF3C5A39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CBA0D2F-25B3-4075-B1C4-C1C5C9E36CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CBA0D2F-25B3-4075-B1C4-C1C5C9E36CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CBA0D2F-25B3-4075-B1C4-C1C5C9E36CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CBA0D2F-25B3-4075-B1C4-C1C5C9E36CDE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F82AE146-4D2C-43A1-B235-8CC5EB76E596} = {34C82064-6D98-4209-BDF5-9FE639D66AEE}
+		{77328A80-DF4E-411B-9354-D3E305B31C34} = {34C82064-6D98-4209-BDF5-9FE639D66AEE}
+		{342B35F5-CF38-4FFB-BBA4-A8E56269E9A5} = {C49EE265-0718-4B0B-A90C-A6B7F55B3E11}
+		{373F8AB4-E804-4E80-850D-4D9FDF3C5A39} = {C49EE265-0718-4B0B-A90C-A6B7F55B3E11}
+		{5CBA0D2F-25B3-4075-B1C4-C1C5C9E36CDE} = {6393B41E-5748-479C-9CF4-51E6FB83A3AE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {46A7B395-8AEE-4425-848C-DF25D6DE3238}
+	EndGlobalSection
+EndGlobal

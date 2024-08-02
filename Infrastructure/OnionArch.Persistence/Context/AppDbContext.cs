@@ -2,7 +2,6 @@
 using OnionArch.Domain.Common;
 using OnionArch.Domain.Entities;
 using System.Reflection;
-using System.Text.Json;
 
 namespace OnionArch.Persistence.Context;
 public class AppDbContext : DbContext
@@ -27,9 +26,17 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Student>().HasMany(a => a.Courses).WithMany(a => a.Students).UsingEntity(a => a.ToTable("Enrollments"));
 
         modelBuilder.Entity<StudentLessonProgress>()
+        .HasKey(x => new { x.StudentId, x.LessonId });
+
+        modelBuilder.Entity<StudentLessonProgress>()
               .HasOne(s => s.Student)
               .WithMany(x => x.StudentLessonProgresses)
               .HasForeignKey(s => s.StudentId);
+
+        modelBuilder.Entity<StudentLessonProgress>()
+            .HasOne(l => l.Lesson)
+            .WithMany(x => x.StudentLessonProgresses)
+            .HasForeignKey(l => l.LessonId);
     }
     public override int SaveChanges()
     {
@@ -42,13 +49,7 @@ public class AppDbContext : DbContext
         {
             if (entity is IAuditable)
             {
-                AuditLog.Add(new AuditLog()
-                {
-                    Object = entity.Entity.ToString()!,
-                    Mutation = entity.State.ToString(),
-                    OldObjectValue = JsonSerializer.Serialize(entity), //objeyi jsona çevir
-                    Name = "Username is coming"
-                });
+
             }
         }
 

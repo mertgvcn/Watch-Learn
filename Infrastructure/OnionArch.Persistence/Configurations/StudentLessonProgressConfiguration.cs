@@ -7,6 +7,7 @@ public class StudentLessonProgressConfiguration : IEntityTypeConfiguration<Stude
 {
     public void Configure(EntityTypeBuilder<StudentLessonProgress> builder)
     {
-        builder.Property(x => x.EditedBy).HasMaxLength(64);
+        builder.Property(x => x.EditedBy)
+            .HasMaxLength(64);
     }
 }

@@ -37,6 +37,40 @@ namespace OnionArch.Persistence.Migrations
                     b.ToTable("Enrollments", (string)null);
                 });
 
+            modelBuilder.Entity("OnionArch.Domain.Entities.AuditLog", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Mutation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Object")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("OldObjectValue")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuditLog");
+                });
+
             modelBuilder.Entity("OnionArch.Domain.Entities.Course", b =>
                 {
                     b.Property<long>("Id")
@@ -155,13 +189,16 @@ namespace OnionArch.Persistence.Migrations
 
             modelBuilder.Entity("OnionArch.Domain.Entities.StudentLessonProgress", b =>
                 {
-                    b.Property<long>("StudentId")
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<long>("LessonId")
-                        .HasColumnType("bigint");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime?>("DateCompleted")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("DateModified")
@@ -177,9 +214,17 @@ namespace OnionArch.Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.HasKey("StudentId", "LessonId");
+                    b.Property<long>("LessonId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("StudentId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("LessonId");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("StudentLessonProgresses");
                 });
@@ -201,19 +246,17 @@ namespace OnionArch.Persistence.Migrations
 
             modelBuilder.Entity("OnionArch.Domain.Entities.Lesson", b =>
                 {
-                    b.HasOne("OnionArch.Domain.Entities.Course", "Course")
+                    b.HasOne("OnionArch.Domain.Entities.Course", null)
                         .WithMany("Lessons")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("OnionArch.Domain.Entities.StudentLessonProgress", b =>
                 {
                     b.HasOne("OnionArch.Domain.Entities.Lesson", "Lesson")
-                        .WithMany("StudentLessonProgresses")
+                        .WithMany()
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -232,11 +275,6 @@ namespace OnionArch.Persistence.Migrations
             modelBuilder.Entity("OnionArch.Domain.Entities.Course", b =>
                 {
                     b.Navigation("Lessons");
-                });
-
-            modelBuilder.Entity("OnionArch.Domain.Entities.Lesson", b =>
-                {
-                    b.Navigation("StudentLessonProgresses");
                 });
 
             modelBuilder.Entity("OnionArch.Domain.Entities.Student", b =>

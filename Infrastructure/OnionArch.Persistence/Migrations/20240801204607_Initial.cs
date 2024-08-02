@@ -7,11 +7,28 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace OnionArch.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitalCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AuditLog",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Object = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Mutation = table.Column<string>(type: "text", nullable: false),
+                    OldObjectValue = table.Column<string>(type: "text", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuditLog", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Courses",
                 columns: table => new
@@ -104,17 +121,20 @@ namespace OnionArch.Persistence.Migrations
                 name: "StudentLessonProgresses",
                 columns: table => new
                 {
-                    StudentId = table.Column<long>(type: "bigint", nullable: false),
-                    LessonId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     EditedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     DateModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    StudentId = table.Column<long>(type: "bigint", nullable: false),
+                    LessonId = table.Column<long>(type: "bigint", nullable: false),
                     IsCompleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DateCompleted = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    DateCompleted = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StudentLessonProgresses", x => new { x.StudentId, x.LessonId });
+                    table.PrimaryKey("PK_StudentLessonProgresses", x => x.Id);
                     table.ForeignKey(
                         name: "FK_StudentLessonProgresses_Lessons_LessonId",
                         column: x => x.LessonId,
@@ -143,11 +163,19 @@ namespace OnionArch.Persistence.Migrations
                 name: "IX_StudentLessonProgresses_LessonId",
                 table: "StudentLessonProgresses",
                 column: "LessonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentLessonProgresses_StudentId",
+                table: "StudentLessonProgresses",
+                column: "StudentId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AuditLog");
+
             migrationBuilder.DropTable(
                 name: "Enrollments");
 

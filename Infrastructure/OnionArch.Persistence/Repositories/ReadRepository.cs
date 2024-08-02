@@ -6,6 +6,8 @@ using OnionArch.Domain.Common;
 using OnionArch.Persistence.Context;
 using System.Linq.Expressions;
 
+namespace OnionArch.Persistence.Repositories;
+
 public class ReadRepository<T>(AppDbContext context) : IReadRepository<T> where T : class, IBaseEntity, new()
 {
     private DbSet<T> Table { get => context.Set<T>(); }

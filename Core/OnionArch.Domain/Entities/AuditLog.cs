@@ -1,7 +1,7 @@
 ﻿using OnionArch.Domain.Common;
 
 namespace OnionArch.Domain.Entities;
-public sealed class AuditLog : BaseEntity
+public sealed class AuditLog : BaseEntity, IDeletableEntity
 {
     public string Name { get; set; } = default!;
     public string Object { get; set; } = default!;

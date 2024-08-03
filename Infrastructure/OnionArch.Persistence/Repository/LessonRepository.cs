@@ -3,7 +3,6 @@ using OnionArch.Domain.Entities;
 using OnionArch.Persistence.Context;
 
 namespace OnionArch.Persistence.Repository;
-
-public sealed class CourseRepository(AppDbContext context) : BaseRepository<Course>(context), ICourseRepository
+public sealed class LessonRepository(AppDbContext context) : BaseRepository<Lesson>(context), ILessonRepository
 {
 }

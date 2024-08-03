@@ -22,23 +22,36 @@ public abstract class BaseRepository<T>(AppDbContext context) : IBaseRepository<
         await DeleteAsync(await GetByIdAsync(id, cancellationToken));
     }
 
-    public async Task DeleteAsync(T Entity, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
     {
-        context.Remove(Entity);
+        if (entity is ISoftDeletableEntity)
+        {
+            var softDeletableEntity = (ISoftDeletableEntity)entity;
+            softDeletableEntity.IsDeleted = true;
+        }
+        else if (entity is IDeletableEntity)
+            context.Remove(entity);
+        else
+            throw new Exception("This entity cannot be deleted.");
+
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdateAsync(T Entity, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
-        context.Attach(Entity);
+        if (entity is IEditableEntity)
+            context.Update(entity);
+        else
+            throw new Exception("This entity cannot be modified.");
+
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<T> AddAsync(T Entity, CancellationToken cancellationToken = default)
+    public async Task<T> AddAsync(T entity, CancellationToken cancellationToken = default)
     {
-        var Entry = await context.AddAsync(Entity);
-        await context.SaveChangesAsync();
+        var entry = await context.AddAsync(entity);
+        await context.SaveChangesAsync(cancellationToken);
 
-        return Entry.Entity;
+        return entry.Entity;
     }
 }

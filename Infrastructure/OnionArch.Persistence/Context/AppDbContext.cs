@@ -33,16 +33,13 @@ public class AppDbContext : DbContext
               .HasOne(s => s.Student)
               .WithMany(x => x.StudentLessonProgresses)
               .HasForeignKey(s => s.StudentId);
-
-        modelBuilder.Entity<StudentLessonProgress>()
-            .HasOne(l => l.Lesson)
-            .WithMany(x => x.StudentLessonProgresses)
-            .HasForeignKey(l => l.LessonId);
     }
+
     public override int SaveChanges()
     {
         throw new Exception("Savechanges is not allowed to be used. Use SaveChangesAsyncInstead");
     }
+
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var ChangedObjects = ChangeTracker.Entries().Where(a => a.State == EntityState.Modified || a.State == EntityState.Added || a.State == EntityState.Deleted).ToList();
@@ -50,7 +47,7 @@ public class AppDbContext : DbContext
         {
             if (entity is IAuditable)
             {
-
+                //burda db ye loglanabilir
             }
         }
 

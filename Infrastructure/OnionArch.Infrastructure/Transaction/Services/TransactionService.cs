@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
-using OnionArch.Infrastructure.Database.Interfaces;
+using OnionArch.Application.Interfaces.Services;
 using OnionArch.Persistence.Context;
 
-namespace OnionArch.Infrastructure.Database;
+namespace OnionArch.Infrastructure.Transaction.Services;
 public sealed class TransactionService(AppDbContext context) : ITransactionService
 {
     public async Task<IDbContextTransaction> CreateTransactionAsync(CancellationToken cancellationToken)

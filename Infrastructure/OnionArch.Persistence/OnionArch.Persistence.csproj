@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\OnionArch.Domain\OnionArch.Domain.csproj" />
+    <ProjectReference Include="..\..\Core\OnionArch.Application\OnionArch.Application.csproj" />
   </ItemGroup>
 
 </Project>

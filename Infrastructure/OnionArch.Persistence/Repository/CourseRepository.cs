@@ -1,6 +1,6 @@
-﻿using OnionArch.Domain.Entities;
+﻿using OnionArch.Application.Interfaces.Repositories;
+using OnionArch.Domain.Entities;
 using OnionArch.Persistence.Context;
-using OnionArch.Persistence.Repository.Base;
 
 namespace OnionArch.Persistence.Repository;
 public interface ICourseRepository : IBaseRepository<Course> { }

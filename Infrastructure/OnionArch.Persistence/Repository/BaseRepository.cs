@@ -1,7 +1,9 @@
-﻿using OnionArch.Domain.Common;
+﻿using OnionArch.Application.Interfaces.Repositories;
+using OnionArch.Domain.Common;
 using OnionArch.Persistence.Context;
 
-namespace OnionArch.Persistence.Repository.Base;
+namespace OnionArch.Persistence.Repository;
+
 public abstract class BaseRepository<T>(AppDbContext context) : IBaseRepository<T> where T : BaseEntity
 {
 

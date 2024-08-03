@@ -10,4 +10,9 @@
     <ProjectReference Include="..\OnionArch.Persistence\OnionArch.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Token\Models\" />
+    <Folder Include="Token\Services\" />
+  </ItemGroup>
+
 </Project>

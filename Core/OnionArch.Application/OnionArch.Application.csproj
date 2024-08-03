@@ -6,4 +6,23 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Features\Authentication\Models\" />
+    <Folder Include="Features\Authentication\Validations\" />
+    <Folder Include="Features\Authentication\Services\" />
+    <Folder Include="Features\Course\Models\" />
+    <Folder Include="Features\Course\Services\" />
+    <Folder Include="Mapper\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OnionArch.Domain\OnionArch.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

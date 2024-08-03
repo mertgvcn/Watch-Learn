@@ -10,5 +10,4 @@ public class Lesson : BaseEntity, IEditableEntity, ISoftDeletableEntity
     public required string Description { get; set; }
     public required long CourseId { get; set; }
     public Course Course { get; set; } = default!;
-    public ICollection<StudentLessonProgress> StudentLessonProgresses { get; set; } = default!;
 }

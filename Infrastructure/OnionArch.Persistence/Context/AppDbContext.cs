@@ -13,6 +13,7 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<Student> Students { get; set; }
+    public DbSet<Teacher> Teachers { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<Lesson> Lessons { get; set; }
     public DbSet<StudentLessonProgress> StudentLessonProgresses { get; set; }

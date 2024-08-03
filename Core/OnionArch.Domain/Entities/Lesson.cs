@@ -9,5 +9,4 @@ public class Lesson : BaseEntity, IEditableEntity, ISoftDeletableEntity
     public required string Title { get; set; }
     public required string Description { get; set; }
     public required long CourseId { get; set; }
-    public Course Course { get; set; } = default!;
 }

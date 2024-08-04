@@ -7,17 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Features\Authentication\Models\" />
-    <Folder Include="Features\Authentication\Validations\" />
-    <Folder Include="Features\Authentication\Services\" />
-    <Folder Include="Features\Course\Models\" />
-    <Folder Include="Features\Course\Services\" />
-    <Folder Include="Mapper\" />
+    <Folder Include="Features\Auth\Models\" />
+    <Folder Include="Features\Auth\Validations\" />
+    <Folder Include="Features\Auth\Services\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
   </ItemGroup>
 

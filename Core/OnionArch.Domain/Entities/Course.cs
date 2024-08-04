@@ -6,9 +6,9 @@ public class Course : BaseEntity, IEditableEntity, ISoftDeletableEntity, IAudita
     public string? EditedBy { get; set; }
     public DateTime? DateModified { get; set; }
     public bool IsDeleted { get; set; } = false;
-    public required string Title { get; set; }
-    public required string Description { get; set; }
-    public required long TeacherId { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public long TeacherId { get; set; }
     public Teacher Teacher { get; set; }
     public ICollection<Lesson> Lessons { get; set; } = default!;
     public ICollection<Student> Students { get; set; } = default!;

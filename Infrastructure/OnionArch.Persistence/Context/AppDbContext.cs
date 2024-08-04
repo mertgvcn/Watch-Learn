@@ -26,13 +26,6 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Student>().HasMany(a => a.Courses).WithMany(a => a.Students).UsingEntity(a => a.ToTable("Enrollments"));
 
-        modelBuilder.Entity<StudentLessonProgress>()
-        .HasKey(x => new { x.StudentId, x.LessonId });
-
-        modelBuilder.Entity<StudentLessonProgress>()
-              .HasOne(s => s.Student)
-              .WithMany(x => x.StudentLessonProgresses)
-              .HasForeignKey(s => s.StudentId);
     }
 
     public override int SaveChanges()
@@ -47,7 +40,7 @@ public class AppDbContext : DbContext
         {
             if (entity is IAuditable)
             {
-                //burda db ye loglanabilir
+                //burda db ye logla
             }
         }
 

@@ -2,6 +2,7 @@
 using OnionArch.Domain.Common;
 using OnionArch.Domain.Entities;
 using System.Reflection;
+using System.Text.Json;
 
 namespace OnionArch.Persistence.Context;
 public class AppDbContext : DbContext
@@ -33,14 +34,21 @@ public class AppDbContext : DbContext
         throw new Exception("Savechanges is not allowed to be used. Use SaveChangesAsyncInstead");
     }
 
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
     {
         var ChangedObjects = ChangeTracker.Entries().Where(a => a.State == EntityState.Modified || a.State == EntityState.Added || a.State == EntityState.Deleted).ToList();
         foreach (var entity in ChangedObjects)
         {
             if (entity is IAuditable)
             {
-                //burda db ye logla
+                Add(new AuditLog()
+                {
+                    DateCreated = DateTime.UtcNow,
+                    Mutation = entity.State.ToString(),
+                    Name = "AddUserName",
+                    Object = entity.ToString(),
+                    OldObjectValue = JsonSerializer.Serialize(entity)
+                });
             }
         }
 

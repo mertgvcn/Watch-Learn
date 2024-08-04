@@ -14,41 +14,34 @@ public sealed class DataSeeder
 
     public async Task Seed()
     {
-        _context.AddRange(studentFaker.Generate(4));
+        _context.AddRange(CourseFaker.Generate(15));
+        await _context.SaveChangesAsync(new());
 
-        await _context.SaveChangesAsync();
     }
 
-    public readonly static Faker<Student> studentFaker = new Faker<Student>()
-        .RuleFor(item => item.DateCreated, faker => faker.Date.Past())
-        .RuleFor(item => item.EditedBy, faker => faker.Person.FullName)
-        .RuleFor(item => item.FirstName, faker => faker.Person.FirstName)
-        .RuleFor(item => item.LastName, faker => faker.Person.LastName)
-        .RuleFor(item => item.Email, faker => faker.Internet.Email())
-        .RuleFor(item => item.PhoneNumber, faker => faker.Person.Phone)
-        .RuleFor(item => item.Password, faker => "123")
-        .RuleFor(item => item.Courses, faker => new List<Course>
+    public readonly static Faker<Course> CourseFaker = new Faker<Course>()
+        .RuleFor(a => a.DateCreated, faker => faker.Date.Past())
+        .RuleFor(a => a.Title, faker => faker.Lorem.Sentence(5))
+        .RuleFor(a => a.Description, faker => faker.Lorem.Paragraph(1))
+        .RuleFor(a => a.Teacher, faker => new()
+        {
+            DateCreated = faker.Date.Past(),
+            FirstName = faker.Person.FirstName,
+            LastName = faker.Person.LastName,
+            Email = faker.Internet.Email(),
+            PhoneNumber = "123",
+            Password = "123"
+        })
+        .RuleFor(a => a.Students, faker => new List<Student>()
         {
             new()
             {
                 DateCreated = faker.Date.Past(),
-                EditedBy = faker.Person.FullName,
-                Title = faker.Lorem.Sentence(1),
-                Description = faker.Lorem.Sentence(3)
+                FirstName = faker.Person.FirstName,
+                LastName = faker.Person.LastName,
+                Email = faker.Internet.Email(),
+                PhoneNumber = "123",
+                Password = "123"
             },
-            new()
-            {
-                DateCreated = faker.Date.Past(),
-                EditedBy = faker.Person.FullName,
-                Title = faker.Lorem.Sentence(1),
-                Description = faker.Lorem.Sentence(3)
-            },
-            new()
-            {
-                DateCreated = faker.Date.Past(),
-                EditedBy = faker.Person.FullName,
-                Title = faker.Lorem.Sentence(1),
-                Description = faker.Lorem.Sentence(3)
-            }
-        }).UseSeed(20);
+        }).UseSeed(1453);
 }

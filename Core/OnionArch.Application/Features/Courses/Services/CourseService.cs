@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using OnionArch.Application.Exceptions;
 using OnionArch.Application.Features.Courses.Models;
 using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;
@@ -18,28 +19,32 @@ public sealed class CourseService : ICourseService
         _mapper = mapper;
     }
 
-    public async Task<List<CourseViewModel>> GetAllCoursesAsync()
+    public async Task<List<CourseViewModel>> GetAllCoursesAsync(CancellationToken cancellationToken)
     {
+
         var courses = await _courseRepository.GetAll()
-            .Include(x => x.Students)
-            .Include(x => x.Teacher)
             .ProjectTo<CourseViewModel>(_mapper.ConfigurationProvider)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return courses;
     }
 
-    public async Task<CourseViewModel> GetCourseByIdAsync(long id)
+    public async Task<CourseViewModel> GetCourseByIdAsync(long id, CancellationToken cancellationToken)
     {
         var course = await _courseRepository.GetAll()
             .Where(x => x.Id == id)
             .ProjectTo<CourseViewModel>(_mapper.ConfigurationProvider)
-            .SingleAsync();
+            .SingleOrDefaultAsync(cancellationToken);
+
+        if (course == null)
+        {
+            throw new CourseNotFoundException($"Course with Id {id} returned null.");
+        }
 
         return course;
     }
 
-    public async Task AddCourseAsync(AddCourseRequest request)
+    public async Task AddCourseAsync(AddCourseRequest request, CancellationToken cancellationToken)
     {
         var newCourse = new Course()
         {
@@ -51,21 +56,18 @@ public sealed class CourseService : ICourseService
         await _courseRepository.AddAsync(newCourse);
     }
 
-    public async Task UpdateCourseAsync(UpdateCourseRequest request)
+    public async Task UpdateCourseAsync(UpdateCourseRequest request, CancellationToken cancellationToken)
     {
         var existingCourse = await _courseRepository.GetByIdAsync(request.Id);
         if (existingCourse is null)
             throw new Exception("Course is not exist");
 
-        existingCourse.Title = request.Title;
-        existingCourse.Description = request.Description;
-        existingCourse.TeacherId = request.TeacherId;
-
+        _mapper.Map(request, existingCourse);
         await _courseRepository.UpdateAsync(existingCourse);
     }
 
-    public async Task DeleteCourseAsync(long id)
+    public async Task DeleteCourseAsync(long id, CancellationToken cancellationToken)
     {
-        await _courseRepository.DeleteAsync(id);
+        await _courseRepository.DeleteAsync(id, cancellationToken);
     }
 }

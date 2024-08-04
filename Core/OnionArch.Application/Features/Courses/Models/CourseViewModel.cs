@@ -1,10 +1,8 @@
-﻿using OnionArch.Application.DTOs;
-
-namespace OnionArch.Application.Features.Courses.Models;
+﻿namespace OnionArch.Application.Features.Courses.Models;
 public record CourseViewModel
 {
-    public long Id { get; set; }
+    public required long Id { get; init; }
     public string Title { get; set; }
     public string Description { get; set; }
-    public TeacherDTO Teacher { get; set; }
+    public TeacherCourseViewModel Teacher { get; set; }
 }

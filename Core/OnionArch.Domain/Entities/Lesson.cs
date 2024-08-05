@@ -8,6 +8,6 @@ public class Lesson : BaseEntity, IEditableEntity, ISoftDeletableEntity
     public bool IsDeleted { get; set; }
     public required string Title { get; set; }
     public required string Description { get; set; }
-    public required long CourseId { get; set; }
+    public long CourseId { get; set; }
     public ICollection<StudentLessonProgress> StudentLessonProgresses { get; set; } = default!;
 }

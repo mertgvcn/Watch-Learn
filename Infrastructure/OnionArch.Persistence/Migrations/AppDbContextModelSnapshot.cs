@@ -172,7 +172,12 @@ namespace OnionArch.Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Students");
                 });
@@ -240,7 +245,12 @@ namespace OnionArch.Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Teachers");
                 });
@@ -294,17 +304,7 @@ namespace OnionArch.Persistence.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("integer");
 
-                    b.Property<long?>("StudentId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("TeacherId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("StudentId");
-
-                    b.HasIndex("TeacherId");
 
                     b.ToTable("Users");
                 });
@@ -378,6 +378,17 @@ namespace OnionArch.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("OnionArch.Domain.Entities.Student", b =>
+                {
+                    b.HasOne("OnionArch.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("OnionArch.Domain.Entities.StudentLessonProgress", b =>
                 {
                     b.HasOne("OnionArch.Domain.Entities.Lesson", null)
@@ -393,19 +404,15 @@ namespace OnionArch.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OnionArch.Domain.Entities.User", b =>
+            modelBuilder.Entity("OnionArch.Domain.Entities.Teacher", b =>
                 {
-                    b.HasOne("OnionArch.Domain.Entities.Student", "Student")
+                    b.HasOne("OnionArch.Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("OnionArch.Domain.Entities.Teacher", "Teacher")
-                        .WithMany()
-                        .HasForeignKey("TeacherId");
-
-                    b.Navigation("Student");
-
-                    b.Navigation("Teacher");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OnionArch.Domain.Entities.Course", b =>

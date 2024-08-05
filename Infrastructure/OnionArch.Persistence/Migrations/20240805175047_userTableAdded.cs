@@ -60,39 +60,19 @@ namespace OnionArch.Persistence.Migrations
                 name: "Role",
                 table: "Students");
 
-            migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    EditedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
-                    DateModified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    Role = table.Column<int>(type: "integer", nullable: false),
-                    FirstName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    LastName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    Email = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
-                    Password = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    StudentId = table.Column<long>(type: "bigint", nullable: true),
-                    TeacherId = table.Column<long>(type: "bigint", nullable: true),
-                    DateCreated = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_User_Students_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Students",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_User_Teachers_TeacherId",
-                        column: x => x.TeacherId,
-                        principalTable: "Teachers",
-                        principalColumn: "Id");
-                });
+            migrationBuilder.AddColumn<long>(
+                name: "UserId",
+                table: "Teachers",
+                type: "bigint",
+                nullable: false,
+                defaultValue: 0L);
+
+            migrationBuilder.AddColumn<long>(
+                name: "UserId",
+                table: "Students",
+                type: "bigint",
+                nullable: false,
+                defaultValue: 0L);
 
             migrationBuilder.CreateTable(
                 name: "UserRefreshToken",
@@ -112,25 +92,87 @@ namespace OnionArch.Persistence.Migrations
                     table.PrimaryKey("PK_UserRefreshToken", x => x.Id);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_User_StudentId",
-                table: "User",
-                column: "StudentId");
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EditedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    DateModified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    Role = table.Column<int>(type: "integer", nullable: false),
+                    FirstName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    LastName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    Email = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
+                    Password = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_TeacherId",
-                table: "User",
-                column: "TeacherId");
+                name: "IX_Teachers_UserId",
+                table: "Teachers",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_UserId",
+                table: "Students",
+                column: "UserId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Students_Users_UserId",
+                table: "Students",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Teachers_Users_UserId",
+                table: "Teachers",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "User");
+            migrationBuilder.DropForeignKey(
+                name: "FK_Students_Users_UserId",
+                table: "Students");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Teachers_Users_UserId",
+                table: "Teachers");
 
             migrationBuilder.DropTable(
                 name: "UserRefreshToken");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Teachers_UserId",
+                table: "Teachers");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Students_UserId",
+                table: "Students");
+
+            migrationBuilder.DropColumn(
+                name: "UserId",
+                table: "Teachers");
+
+            migrationBuilder.DropColumn(
+                name: "UserId",
+                table: "Students");
 
             migrationBuilder.AddColumn<string>(
                 name: "Email",

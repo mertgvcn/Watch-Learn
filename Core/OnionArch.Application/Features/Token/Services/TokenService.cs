@@ -11,10 +11,12 @@ namespace OnionArch.Infrastructure.Token;
 public sealed class TokenService : ITokenService
 {
     private readonly IConfiguration _configuration;
+    private readonly ICryptionService _cryptionService;
 
-    public TokenService(IConfiguration configuration)
+    public TokenService(IConfiguration configuration, ICryptionService cryptionService)
     {
         _configuration = configuration;
+        _cryptionService = cryptionService;
     }
 
     public Task<GenerateTokenResponse> GenerateTokenAsync(GenerateTokenRequest request, CancellationToken cancellationToken)
@@ -48,9 +50,11 @@ public sealed class TokenService : ITokenService
 
     private List<Claim> PrepareClaims(GenerateTokenRequest request, DateTime expireDate)
     {
+        var encryptedUserId = _cryptionService.Encrypt(request.UserId.ToString());
+
         var claims = new List<Claim>()
         {
-            new Claim(ClaimTypes.NameIdentifier, request.UserId.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, encryptedUserId),
             new Claim(ClaimTypes.Role, request.Role.ToString()),
             new Claim("expireDate", expireDate.ToString()),
         };

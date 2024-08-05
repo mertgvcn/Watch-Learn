@@ -93,4 +93,9 @@ public sealed class AuthenticationService : IAuthenticationService
             }, cancellationToken);
         }
     }
+
+    private async Task<GenerateTokenResponse> CreateTokenByRefreshToken(string refreshToken)
+    {
+
+    }
 }

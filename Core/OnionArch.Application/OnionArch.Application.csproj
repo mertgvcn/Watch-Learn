@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Auth\Validations\" />
-    <Folder Include="Features\Auth\Services\" />
   </ItemGroup>
 
   <ItemGroup>

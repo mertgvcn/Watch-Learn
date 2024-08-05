@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using OnionArch.Domain.Entities;
+using OnionArch.Domain.Enumerators;
 using OnionArch.Persistence.Context;
 
 namespace OnionArch.Persistence.DataSeeder;
@@ -26,6 +27,7 @@ public sealed class DataSeeder
         .RuleFor(a => a.Teacher, faker => new()
         {
             DateCreated = faker.Date.Past(),
+            Role = Roles.Teacher,
             FirstName = faker.Person.FirstName,
             LastName = faker.Person.LastName,
             Email = faker.Internet.Email(),
@@ -37,6 +39,7 @@ public sealed class DataSeeder
             new()
             {
                 DateCreated = faker.Date.Past(),
+                Role = Roles.Student,
                 FirstName = faker.Person.FirstName,
                 LastName = faker.Person.LastName,
                 Email = faker.Internet.Email(),

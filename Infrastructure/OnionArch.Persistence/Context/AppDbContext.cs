@@ -31,7 +31,7 @@ public class AppDbContext : DbContext
 
     public override int SaveChanges()
     {
-        throw new Exception("Savechanges is not allowed to be used. Use SaveChangesAsyncInstead");
+        throw new InvalidOperationException("Use SaveChangesAsync");
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
@@ -45,7 +45,7 @@ public class AppDbContext : DbContext
                 {
                     DateCreated = DateTime.UtcNow,
                     Mutation = entity.State.ToString(),
-                    Name = "AddUserName",
+                    Name = "Add User Name",
                     Object = entity.ToString(),
                     OldObjectValue = JsonSerializer.Serialize(entity)
                 });

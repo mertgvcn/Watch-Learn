@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnionArch.Application.Features.Teachers.Models;
 using OnionArch.Application.Interfaces.Services;
 
 namespace OnionArch.Api.Controllers;
 [Route("api/[controller]/[Action]")]
 [ApiController]
+[Authorize]
 public class TeacherController : ControllerBase
 {
     private readonly ITeacherService _teacherService;

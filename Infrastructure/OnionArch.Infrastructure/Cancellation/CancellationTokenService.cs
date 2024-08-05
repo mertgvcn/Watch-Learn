@@ -1,6 +1,6 @@
 ﻿using OnionArch.Application.Interfaces.Services;
 
-namespace OnionArch.Infrastructure.Cancellation.Services;
+namespace OnionArch.Infrastructure.Cancellation;
 public class CancellationTokenService : IDisposable, ICancellationTokenService
 {
     private readonly CancellationTokenSource _cancellationTokenSource;

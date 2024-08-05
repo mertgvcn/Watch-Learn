@@ -10,7 +10,6 @@ public class CourseController : ControllerBase
 {
     private readonly ICourseService _courseService;
     private readonly CancellationToken _cancellationToken;
-
     public CourseController(ICourseService courseService, ICancellationTokenService cancellationTokenService)
     {
         _courseService = courseService;
@@ -46,5 +45,4 @@ public class CourseController : ControllerBase
     {
         await _courseService.DeleteCourseAsync(id, _cancellationToken);
     }
-
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OnionArch.Application.Interfaces.Services;
-using OnionArch.Infrastructure.Cancellation;
+using OnionArch.Infrastructure.Cancellation.Services;
 
 namespace OnionArch.Infrastructure;
 public static class Registration

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using OnionArch.Application.Exceptions;
+using OnionArch.Application.Exceptions.Features.Courses;
 using OnionArch.Application.Features.Courses.Models;
 using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;
@@ -37,9 +37,7 @@ public sealed class CourseService : ICourseService
             .SingleOrDefaultAsync(cancellationToken);
 
         if (course == null)
-        {
             throw new CourseNotFoundException($"Course with Id {id} returned null.");
-        }
 
         return course;
     }
@@ -54,8 +52,9 @@ public sealed class CourseService : ICourseService
     public async Task UpdateCourseAsync(UpdateCourseRequest request, CancellationToken cancellationToken)
     {
         var existingCourse = await _courseRepository.GetByIdAsync(request.Id);
-        if (existingCourse is null)
-            throw new Exception("Course is not exist");
+
+        if (existingCourse == null)
+            throw new CourseNotFoundException($"Course with Id {request.Id} returned null.");
 
         _mapper.Map(request, existingCourse);
         await _courseRepository.UpdateAsync(existingCourse, cancellationToken);

@@ -10,6 +10,7 @@ public class StudentController : ControllerBase
 {
     private readonly IStudentService _studentService;
     private readonly CancellationToken _cancellationToken;
+
     public StudentController(IStudentService studentService, ICancellationTokenService cancellationTokenService)
     {
         _studentService = studentService;
@@ -45,5 +46,4 @@ public class StudentController : ControllerBase
     {
         await _studentService.DeleteStudentAsync(id, _cancellationToken);
     }
-
 }

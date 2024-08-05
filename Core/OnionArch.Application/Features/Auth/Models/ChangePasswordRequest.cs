@@ -1,4 +1,4 @@
-﻿namespace OnionArch.Application.Features.Students.Models;
+﻿namespace OnionArch.Application.Features.Auth.Models;
 public record ChangePasswordRequest
 {
     public string EncryptedPassword { get; set; }

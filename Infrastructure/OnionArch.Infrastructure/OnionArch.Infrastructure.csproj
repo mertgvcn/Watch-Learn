@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="EmailSender\" />
     <Folder Include="Token\Models\" />
     <Folder Include="Token\Services\" />
   </ItemGroup>

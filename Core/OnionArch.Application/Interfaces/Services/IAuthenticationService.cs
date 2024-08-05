@@ -3,5 +3,5 @@
 namespace OnionArch.Application.Interfaces.Services;
 public interface IAuthenticationService
 {
-    Task<UserLoginResponse> LoginUserAsync(UserLoginRequest request);
+    Task<UserLoginResponse> LoginUserAsync(UserLoginRequest request, CancellationToken cancellationToken);
 }

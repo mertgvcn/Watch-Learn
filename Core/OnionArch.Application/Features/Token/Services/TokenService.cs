@@ -17,12 +17,12 @@ public sealed class TokenService : ITokenService
         _configuration = configuration;
     }
 
-    public Task<GenerateTokenResponse> GenerateTokenAsync(GenerateTokenRequest request)
+    public Task<GenerateTokenResponse> GenerateTokenAsync(GenerateTokenRequest request, CancellationToken cancellationToken)
     {
         var accessTokenExpireDate = DateTime.UtcNow.AddHours(6);
         var refreshTokenExpireDate = DateTime.UtcNow.AddHours(24);
 
-        var claims = PrepareClaims(request.UserId, accessTokenExpireDate);
+        var claims = PrepareClaims(request, accessTokenExpireDate);
         var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JWT:Secret"]));
         var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
@@ -46,12 +46,13 @@ public sealed class TokenService : ITokenService
         });
     }
 
-    private List<Claim> PrepareClaims(string userID, DateTime expireDate)
+    private List<Claim> PrepareClaims(GenerateTokenRequest request, DateTime expireDate)
     {
         var claims = new List<Claim>()
         {
-            new Claim(ClaimTypes.NameIdentifier, userID),
-            new Claim("expireDate", expireDate.ToString())
+            new Claim(ClaimTypes.NameIdentifier, request.UserId.ToString()),
+            new Claim(ClaimTypes.Role, request.Role.ToString()),
+            new Claim("expireDate", expireDate.ToString()),
         };
 
         return claims;

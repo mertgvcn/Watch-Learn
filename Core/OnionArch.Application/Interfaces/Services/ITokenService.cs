@@ -3,5 +3,5 @@
 namespace OnionArch.Application.Interfaces.Services;
 public interface ITokenService
 {
-    Task<GenerateTokenResponse> GenerateTokenAsync(GenerateTokenRequest request);
+    Task<GenerateTokenResponse> GenerateTokenAsync(GenerateTokenRequest request, CancellationToken cancellationToken);
 }

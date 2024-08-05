@@ -13,22 +13,27 @@ public sealed class AuthenticationService : IAuthenticationService
     private readonly ITokenService _tokenService;
     private readonly ICryptionService _cryptionService;
     private readonly IUserRefreshTokenRepository _userRefreshTokenRepository;
+    private readonly ITransactionService _transactionService;
 
     public AuthenticationService(
         IUserRepository userRepository,
         ITokenService tokenService,
         ICryptionService cryptionService,
-        IUserRefreshTokenRepository userRefreshTokenRepository
+        IUserRefreshTokenRepository userRefreshTokenRepository,
+        ITransactionService transactionService
         )
     {
         _userRepository = userRepository;
         _tokenService = tokenService;
         _cryptionService = cryptionService;
         _userRefreshTokenRepository = userRefreshTokenRepository;
+        _transactionService = transactionService;
     }
 
-    public async Task<UserLoginResponse> LoginUserAsync(UserLoginRequest request)
+    public async Task<UserLoginResponse> LoginUserAsync(UserLoginRequest request, CancellationToken cancellationToken)
     {
+        using var transaction = await _transactionService.CreateTransactionAsync(cancellationToken);
+
         UserLoginResponse response = new UserLoginResponse()
         {
             IsAuthenticated = false,
@@ -36,53 +41,56 @@ public sealed class AuthenticationService : IAuthenticationService
             AccessTokenExpireDate = DateTime.Now
         };
 
-        var user = await GetUser(request.Email);
-        var plainPassword = await _cryptionService.Decrypt(request.EncryptedPassword);
+        var user = await GetUser(request.Email, cancellationToken);
+        //var plainPassword = await _cryptionService.Decrypt(request.EncryptedPassword);
 
-        if (BCrypt.Net.BCrypt.Verify(plainPassword, user.Password)) //hatalı şifre girişi exception ile loglanır mı?
+        //if (BCrypt.Net.BCrypt.Verify(request.EncryptedPassword, user.Password)) //hatalı şifre girişi exception ile loglanır mı?, request.EncrpytedPassword => plainPassword olacak
+        if (request.EncryptedPassword == user.Password)
         {
             var generatedToken = await _tokenService.GenerateTokenAsync(new GenerateTokenRequest
             {
-                UserId = user.Id.ToString(),
-            });
+                UserId = user.Id,
+                Role = user.Role
+            }, cancellationToken);
 
-            await CheckRefreshToken(user.Id, generatedToken.RefreshToken, generatedToken.RefreshTokenExpireDate);
+            await CheckRefreshToken(user.Id, generatedToken, cancellationToken);
 
             response.IsAuthenticated = true;
             response.AccessToken = generatedToken.AccessToken;
             response.AccessToken = generatedToken.AccessToken;
         }
 
+        await transaction.CommitAsync(cancellationToken);
         return response;
     }
 
-    private async Task<User> GetUser(string email)
+    private async Task<User> GetUser(string email, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetAll().SingleOrDefaultAsync(x => x.Email == email);
+        var user = await _userRepository.GetAll().SingleOrDefaultAsync(x => x.Email == email, cancellationToken);
         if (user != null)
             return user;
 
         throw new UserNotFoundException("User not found.");
     }
 
-    private async Task CheckRefreshToken(long userId, string refreshToken, DateTime refreshTokenExpireDate)
+    private async Task CheckRefreshToken(long userId, GenerateTokenResponse token, CancellationToken cancellationToken)
     {
-        var userRefreshToken = await _userRefreshTokenRepository.GetAll().SingleOrDefaultAsync(x => x.UserId == userId);
+        var userRefreshToken = await _userRefreshTokenRepository.GetAll().SingleOrDefaultAsync(x => x.UserId == userId, cancellationToken);
 
         if (userRefreshToken != null)
         {
-            userRefreshToken.Token = refreshToken;
-            userRefreshToken.ExpireDate = refreshTokenExpireDate;
-            await _userRefreshTokenRepository.UpdateAsync(userRefreshToken);
+            userRefreshToken.Token = token.RefreshToken;
+            userRefreshToken.ExpireDate = token.RefreshTokenExpireDate;
+            await _userRefreshTokenRepository.UpdateAsync(userRefreshToken, cancellationToken);
         }
         else
         {
             await _userRefreshTokenRepository.AddAsync(new UserRefreshToken()
             {
-                Token = refreshToken,
-                ExpireDate = refreshTokenExpireDate,
+                Token = token.RefreshToken,
+                ExpireDate = token.RefreshTokenExpireDate,
                 UserId = userId
-            });
+            }, cancellationToken);
         }
     }
 }

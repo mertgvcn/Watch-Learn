@@ -2,7 +2,7 @@
 using OnionArch.Domain.Enumerators;
 
 namespace OnionArch.Domain.Entities;
-public abstract class User : BaseEntity, IEditableEntity, ISoftDeletableEntity
+public class User : BaseEntity, IEditableEntity, ISoftDeletableEntity
 {
     public string? EditedBy { get; set; }
     public DateTime? DateModified { get; set; }
@@ -13,4 +13,6 @@ public abstract class User : BaseEntity, IEditableEntity, ISoftDeletableEntity
     public required string Email { get; set; }
     public required string PhoneNumber { get; set; }
     public required string Password { get; set; }
+    public Student? Student { get; set; }
+    public Teacher? Teacher { get; set; }
 }

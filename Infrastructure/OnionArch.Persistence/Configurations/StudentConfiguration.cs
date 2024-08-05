@@ -8,10 +8,5 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
     public void Configure(EntityTypeBuilder<Student> builder)
     {
         builder.Property(x => x.EditedBy).HasMaxLength(64);
-        builder.Property(x => x.FirstName).HasMaxLength(64);
-        builder.Property(x => x.LastName).HasMaxLength(64);
-        builder.Property(x => x.Email).HasMaxLength(64);
-        builder.Property(x => x.PhoneNumber).HasMaxLength(16);
-        builder.Property(x => x.Password).HasMaxLength(256);
     }
 }

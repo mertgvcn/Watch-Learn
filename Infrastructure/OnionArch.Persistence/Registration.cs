@@ -21,6 +21,8 @@ public static class Registration
         services.AddScoped<ICourseRepository, CourseRepository>();
         services.AddScoped<ILessonRepository, LessonRepository>();
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUserRefreshTokenRepository, UserRefreshTokenRepository>();
     }
     public async static Task<IHost> FillDatabase(this IHost app)
     {

@@ -8,5 +8,7 @@ public class CourseProfile : Profile
     public CourseProfile()
     {
         CreateMap<Course, CourseViewModel>();
+        CreateMap<AddCourseRequest, Course>();
+        CreateMap<UpdateCourseRequest, Course>();
     }
 }

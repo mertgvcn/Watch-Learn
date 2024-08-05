@@ -46,14 +46,9 @@ public sealed class CourseService : ICourseService
 
     public async Task AddCourseAsync(AddCourseRequest request, CancellationToken cancellationToken)
     {
-        var newCourse = new Course()
-        {
-            Title = request.Title,
-            Description = request.Description,
-            TeacherId = request.TeacherId
-        };
+        var newCourse = _mapper.Map<Course>(request);
 
-        await _courseRepository.AddAsync(newCourse);
+        await _courseRepository.AddAsync(newCourse, cancellationToken);
     }
 
     public async Task UpdateCourseAsync(UpdateCourseRequest request, CancellationToken cancellationToken)
@@ -63,7 +58,7 @@ public sealed class CourseService : ICourseService
             throw new Exception("Course is not exist");
 
         _mapper.Map(request, existingCourse);
-        await _courseRepository.UpdateAsync(existingCourse);
+        await _courseRepository.UpdateAsync(existingCourse, cancellationToken);
     }
 
     public async Task DeleteCourseAsync(long id, CancellationToken cancellationToken)

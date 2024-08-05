@@ -20,9 +20,9 @@ public sealed class StudentService : IStudentService
 
     public async Task<List<StudentViewModel>> GetAllStudentsAsync(CancellationToken cancellationToken)
     {
-        var students = await _studentRepository.GetAll() //courses ve progress gerektiğinde çekilmesi daha doğru demi?
+        var students = await _studentRepository.GetAll()
             .ProjectTo<StudentViewModel>(_mapper.ConfigurationProvider)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return students;
     }
@@ -39,7 +39,9 @@ public sealed class StudentService : IStudentService
 
     public async Task AddStudentAsync(AddStudentRequest request, CancellationToken cancellationToken)
     {
-        await _studentRepository.AddAsync(_mapper.Map<Student>(request), cancellationToken);
+        var newStudent = _mapper.Map<Student>(request);
+
+        await _studentRepository.AddAsync(newStudent, cancellationToken);
     }
 
     public async Task UpdateStudentAsync(UpdateStudentRequest request, CancellationToken cancellationToken)

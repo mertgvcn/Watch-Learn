@@ -9,6 +9,8 @@
   <ItemGroup>
     <Folder Include="Features\Auth\Validations\" />
     <Folder Include="Features\Auth\Services\" />
+    <Folder Include="Features\Lessons\Models\" />
+    <Folder Include="Features\Lessons\Services\" />
   </ItemGroup>
 
   <ItemGroup>

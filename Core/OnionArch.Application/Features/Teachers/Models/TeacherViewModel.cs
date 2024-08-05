@@ -1,9 +1,12 @@
-﻿namespace OnionArch.Application.Features.Teachers.Models;
+﻿using OnionArch.Application.DTOs;
+
+namespace OnionArch.Application.Features.Teachers.Models;
 public record TeacherViewModel
 {
     public required long Id { get; init; }
-    public string FirstName { get; set; } = default!;
-    public string LastName { get; set; } = default!;
-    public string Email { get; set; } = default!;
-    public string PhoneNumber { get; set; } = default!;
+    public required string FirstName { get; set; }
+    public required string LastName { get; set; }
+    public required string Email { get; set; }
+    public required string PhoneNumber { get; set; }
+    public ICollection<CourseDTO> Courses { get; set; } = default!;
 }

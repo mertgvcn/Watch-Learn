@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OnionArch.Application.DTOs;
 using OnionArch.Application.Features.Courses.Models;
 using OnionArch.Domain.Entities;
 
@@ -10,5 +11,6 @@ public class CourseProfile : Profile
         CreateMap<Course, CourseViewModel>();
         CreateMap<AddCourseRequest, Course>();
         CreateMap<UpdateCourseRequest, Course>();
+        CreateMap<Course, CourseDTO>();
     }
 }

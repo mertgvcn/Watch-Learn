@@ -7,6 +7,6 @@ public static class Registration
 {
     public static void AddInfrastructure(this IServiceCollection services)
     {
-        services.AddSingleton<ICancellationTokenService, CancellationTokenService>();
+        services.AddScoped<ICancellationTokenService, CancellationTokenService>();
     }
 }

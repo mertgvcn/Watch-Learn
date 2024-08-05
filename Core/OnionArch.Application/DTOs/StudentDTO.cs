@@ -1,5 +1,5 @@
 ﻿namespace OnionArch.Application.DTOs;
-public record TeacherDTO
+public record StudentDTO
 {
     public required long Id { get; init; }
     public required string FirstName { get; set; }

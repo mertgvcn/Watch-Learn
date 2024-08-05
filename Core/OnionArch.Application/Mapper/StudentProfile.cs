@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OnionArch.Application.DTOs;
 using OnionArch.Application.Features.Students.Models;
 using OnionArch.Domain.Entities;
 
@@ -10,5 +11,6 @@ public class StudentProfile : Profile
         CreateMap<Student, StudentViewModel>();
         CreateMap<AddStudentRequest, Student>();
         CreateMap<UpdateStudentRequest, Student>();
+        CreateMap<Student, StudentDTO>();
     }
 }

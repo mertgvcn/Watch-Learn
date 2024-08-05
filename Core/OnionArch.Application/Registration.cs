@@ -4,6 +4,7 @@ using OnionArch.Application.Features.Courses.Services;
 using OnionArch.Application.Features.Lessons.Services;
 using OnionArch.Application.Features.Students.Services;
 using OnionArch.Application.Features.Teachers.Services;
+using OnionArch.Application.Features.Users.Services;
 using OnionArch.Application.Interfaces.Services;
 using OnionArch.Infrastructure.Token;
 using System.Reflection;
@@ -14,6 +15,7 @@ public static class Registration
     public static void AddApplication(this IServiceCollection services)
     {
         services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IUserService, UserService>();
         services.AddScoped<IStudentService, StudentService>();
         services.AddScoped<ITeacherService, TeacherService>();
         services.AddScoped<ICourseService, CourseService>();

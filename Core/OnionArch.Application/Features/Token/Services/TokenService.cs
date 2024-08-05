@@ -19,12 +19,12 @@ public sealed class TokenService : ITokenService
         _cryptionService = cryptionService;
     }
 
-    public Task<GenerateTokenResponse> GenerateTokenAsync(GenerateTokenRequest request, CancellationToken cancellationToken)
+    public async Task<GenerateTokenResponse> GenerateTokenAsync(GenerateTokenRequest request, CancellationToken cancellationToken)
     {
         var accessTokenExpireDate = DateTime.UtcNow.AddHours(6);
         var refreshTokenExpireDate = DateTime.UtcNow.AddHours(24);
 
-        var claims = PrepareClaims(request, accessTokenExpireDate);
+        var claims = await PrepareClaims(request, accessTokenExpireDate);
         var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JWT:Secret"]));
         var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
@@ -39,7 +39,7 @@ public sealed class TokenService : ITokenService
 
         var accessToken = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-        return Task.FromResult(new GenerateTokenResponse
+        return await Task.FromResult(new GenerateTokenResponse
         {
             AccessToken = accessToken,
             AccessTokenExpireDate = accessTokenExpireDate,
@@ -48,9 +48,24 @@ public sealed class TokenService : ITokenService
         });
     }
 
-    private List<Claim> PrepareClaims(GenerateTokenRequest request, DateTime expireDate)
+    public ClaimsPrincipal? GetPrincipalFromExpiredAccessToken(string? accessToken)
     {
-        var encryptedUserId = _cryptionService.Encrypt(request.UserId.ToString());
+        var secret = _configuration["JWT:Secret"] ?? throw new InvalidOperationException("Secret not configured");
+
+        var validation = new TokenValidationParameters
+        {
+            ValidIssuer = _configuration["JWT:ValidIssuer"],
+            ValidAudience = _configuration["JWT:ValidAudience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+            ValidateLifetime = false
+        };
+
+        return new JwtSecurityTokenHandler().ValidateToken(accessToken, validation, out _);
+    }
+
+    private async Task<List<Claim>> PrepareClaims(GenerateTokenRequest request, DateTime expireDate)
+    {
+        var encryptedUserId = await _cryptionService.Encrypt(request.UserId.ToString());
 
         var claims = new List<Claim>()
         {

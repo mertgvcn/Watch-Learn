@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OnionArch.Application.Features.Auth.Models;
 using OnionArch.Application.Interfaces.Services;
+using OnionArch.Infrastructure.Token.Models;
 
 namespace OnionArch.Api.Controllers;
 
@@ -25,5 +26,22 @@ public class AuthenticationController : ControllerBase
         var result = await _authenticationService.LoginUserAsync(request, _cancellationToken);
 
         return result;
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<ActionResult<GenerateTokenResponse>> CreateAccessTokenByRefreshToken([FromBody] CreateAccessTokenByRefreshTokenRequest request)
+    {
+        var result = await _authenticationService.CreateAccessTokenByRefreshTokenAsync(request, _cancellationToken);
+
+        return result;
+    }
+
+    [HttpDelete]
+    [Authorize]
+    public async Task<ActionResult> RevokeRefreshToken()
+    {
+        await _authenticationService.RevokeRefreshTokenAsync(_cancellationToken);
+        return Ok();
     }
 }

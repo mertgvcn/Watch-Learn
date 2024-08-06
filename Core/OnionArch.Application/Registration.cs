@@ -6,7 +6,6 @@ using OnionArch.Application.Features.Students.Services;
 using OnionArch.Application.Features.Teachers.Services;
 using OnionArch.Application.Features.Users.Services;
 using OnionArch.Application.Interfaces.Services;
-using OnionArch.Infrastructure.Token;
 using System.Reflection;
 
 namespace OnionArch.Application;
@@ -20,7 +19,6 @@ public static class Registration
         services.AddScoped<ITeacherService, TeacherService>();
         services.AddScoped<ICourseService, CourseService>();
         services.AddScoped<ILessonService, LessonService>();
-        services.AddScoped<ITokenService, TokenService>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
     }

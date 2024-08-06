@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using OnionArch.Application.InfrastructureModels.Models;
 using OnionArch.Application.Interfaces.Services;
-using OnionArch.Infrastructure.Token.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace OnionArch.Infrastructure.Token;
+namespace OnionArch.Application.Features.Token;
 public sealed class TokenService : ITokenService
 {
     private readonly IConfiguration _configuration;

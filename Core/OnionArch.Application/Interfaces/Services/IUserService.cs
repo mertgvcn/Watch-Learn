@@ -7,7 +7,7 @@ public interface IUserService
     Task<List<UserViewModel>> GetAllUsersAsync(CancellationToken cancellationToken);
     Task<UserViewModel> GetUserByIdAsync(long id, CancellationToken cancellationToken);
     Task<User> GetUserByEmailAsync(string email, CancellationToken cancellationToken);
-    Task AddUserAsync(AddUserRequest request, CancellationToken cancellationToken);
+    Task<User> AddUserAsync(User request, CancellationToken cancellationToken);
     Task UpdateUserAsync(UpdateUserRequest request, CancellationToken cancellationToken);
     Task DeleteUserAsync(long id, CancellationToken cancellationToken);
 }

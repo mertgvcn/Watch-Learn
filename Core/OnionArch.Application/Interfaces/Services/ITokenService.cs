@@ -1,4 +1,4 @@
-﻿using OnionArch.Infrastructure.Token.Models;
+﻿using OnionArch.Application.InfrastructureModels.Models;
 using System.Security.Claims;
 
 namespace OnionArch.Application.Interfaces.Services;

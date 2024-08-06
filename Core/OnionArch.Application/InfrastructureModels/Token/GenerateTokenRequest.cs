@@ -1,6 +1,6 @@
 ﻿using OnionArch.Domain.Enumerators;
 
-namespace OnionArch.Infrastructure.Token.Models;
+namespace OnionArch.Application.InfrastructureModels.Models;
 public record GenerateTokenRequest
 {
     public required long UserId { get; set; }

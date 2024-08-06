@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using OnionArch.Application.Exceptions.Features.Courses;
+using OnionArch.Application.Exceptions.Courses;
 using OnionArch.Application.Features.Courses.Models;
 using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;

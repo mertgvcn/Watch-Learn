@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Exceptions\Features\Auth\" />
     <Folder Include="Features\Auth\Validations\" />
   </ItemGroup>
 

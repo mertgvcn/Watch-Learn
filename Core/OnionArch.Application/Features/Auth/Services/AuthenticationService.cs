@@ -1,9 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using OnionArch.Application.Exceptions.Auth;
+using OnionArch.Application.Exceptions.Users;
 using OnionArch.Application.Features.Auth.Models;
+using OnionArch.Application.InfrastructureModels.Models;
 using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;
 using OnionArch.Domain.Entities;
-using OnionArch.Infrastructure.Token.Models;
+using OnionArch.Domain.Enumerators;
 using System.Security.Claims;
 
 namespace OnionArch.Application.Features.Auth.Services;
@@ -15,6 +19,8 @@ public sealed class AuthenticationService : IAuthenticationService
     private readonly IUserRefreshTokenRepository _userRefreshTokenRepository;
     private readonly ITransactionService _transactionService;
     private readonly IHttpContextService _httpContextService;
+    private readonly IEmailSenderService _emailSenderService;
+    private readonly IMapper _mapper;
 
     public AuthenticationService(
         IUserService userService,
@@ -22,7 +28,9 @@ public sealed class AuthenticationService : IAuthenticationService
         ICryptionService cryptionService,
         IUserRefreshTokenRepository userRefreshTokenRepository,
         ITransactionService transactionService,
-        IHttpContextService httpContextService
+        IHttpContextService httpContextService,
+        IEmailSenderService emailSenderService,
+        IMapper mapper
         )
     {
         _userService = userService;
@@ -31,6 +39,8 @@ public sealed class AuthenticationService : IAuthenticationService
         _userRefreshTokenRepository = userRefreshTokenRepository;
         _transactionService = transactionService;
         _httpContextService = httpContextService;
+        _emailSenderService = emailSenderService;
+        _mapper = mapper;
     }
 
     public async Task<UserLoginResponse> LoginUserAsync(UserLoginRequest request, CancellationToken cancellationToken)
@@ -46,10 +56,12 @@ public sealed class AuthenticationService : IAuthenticationService
         };
 
         var user = await _userService.GetUserByEmailAsync(request.Email, cancellationToken);
+        if (user == null)
+            throw new UserNotFoundException($"User with email {request.Email} returned null");
+
         //var plainPassword = await _cryptionService.Decrypt(request.EncryptedPassword);
 
-        //if (BCrypt.Net.BCrypt.Verify(request.EncryptedPassword, user.Password)) //hatalı şifre girişi exception ile loglanır mı?, request.EncrpytedPassword => plainPassword olacak
-        if (request.EncryptedPassword == user.Password)
+        if (BCrypt.Net.BCrypt.Verify(request.EncryptedPassword, user.Password)) //hatalı şifre girişi exception ile loglanır mı?, request.EncrpytedPassword => plainPassword olacak
         {
             var generatedToken = await _tokenService.GenerateTokenAsync(new GenerateTokenRequest
             {
@@ -67,6 +79,22 @@ public sealed class AuthenticationService : IAuthenticationService
 
         await transaction.CommitAsync(cancellationToken);
         return response;
+    }
+
+    public async Task RegisterUserAsync(UserRegisterRequest request, CancellationToken cancellationToken)
+    {
+        var existingUser = await _userService.GetUserByEmailAsync(request.Email, cancellationToken);
+        if (existingUser != null)
+            throw new UserAlreadyExistsException("This user is already exists");
+
+        //string plainPassword = await _cryptionService.Decrypt(request.EncryptedPassword);
+        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.EncryptedPassword); //request.EncrpytedPassword => plainPassword
+
+        var newUser = _mapper.Map<User>(request);
+        newUser.Role = Roles.Student;
+        newUser.Password = hashedPassword;
+
+        await _userService.AddUserAsync(newUser, cancellationToken);
     }
 
     public async Task<GenerateTokenResponse> CreateAccessTokenByRefreshTokenAsync(CreateAccessTokenByRefreshTokenRequest request, CancellationToken cancellationToken)

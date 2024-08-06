@@ -1,4 +1,4 @@
-﻿namespace OnionArch.Infrastructure.Token.Models;
+﻿namespace OnionArch.Application.InfrastructureModels.Models;
 public record GenerateTokenResponse
 {
     public required string AccessToken { get; set; }

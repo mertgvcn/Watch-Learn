@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using OnionArch.Application.Exceptions.Features.Users;
+using OnionArch.Application.Exceptions.Users;
 using OnionArch.Application.Features.Users.Models;
 using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;
@@ -47,17 +47,14 @@ public sealed class UserService : IUserService
             .Where(x => x.Email == email)
             .SingleOrDefaultAsync(cancellationToken);
 
-        if (user == null)
-            throw new UserNotFoundException($"User with email {email} returned null");
-
         return user;
     }
 
-    public async Task AddUserAsync(AddUserRequest request, CancellationToken cancellationToken)
+    public async Task<User> AddUserAsync(User request, CancellationToken cancellationToken)
     {
         var newUser = _mapper.Map<User>(request);
 
-        await _userRepository.AddAsync(newUser, cancellationToken);
+        return await _userRepository.AddAsync(newUser, cancellationToken);
     }
 
     public async Task UpdateUserAsync(UpdateUserRequest request, CancellationToken cancellationToken)

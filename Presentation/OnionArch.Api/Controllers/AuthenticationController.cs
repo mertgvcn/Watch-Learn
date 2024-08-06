@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnionArch.Application.Features.Auth.Models;
+using OnionArch.Application.InfrastructureModels.Models;
 using OnionArch.Application.Interfaces.Services;
-using OnionArch.Infrastructure.Token.Models;
 
 namespace OnionArch.Api.Controllers;
 
@@ -26,6 +26,15 @@ public class AuthenticationController : ControllerBase
         var result = await _authenticationService.LoginUserAsync(request, _cancellationToken);
 
         return result;
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<ActionResult> Register([FromBody] UserRegisterRequest request)
+    {
+        await _authenticationService.RegisterUserAsync(request, _cancellationToken);
+
+        return Ok();
     }
 
     [HttpPost]

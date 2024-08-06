@@ -28,7 +28,6 @@ public class AppDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         modelBuilder.Entity<Student>().HasMany(a => a.Courses).WithMany(a => a.Students).UsingEntity(a => a.ToTable("Enrollments"));
-
     }
 
     public override int SaveChanges()

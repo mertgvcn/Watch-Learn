@@ -6,13 +6,18 @@ import { Provider } from 'react-redux';
 import { store } from './redux/app/store';
 //toaster
 import { Toaster } from 'react-hot-toast';
+import { ThemeProvider } from '@emotion/react';
+//mui theme
+import { theme } from './Theme';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 root.render(
-  <Provider store={store}>
-    <Toaster />
-    <App />
-  </Provider>
+    <ThemeProvider theme={theme}>
+        <Provider store={store}>
+            <Toaster />
+            <App />
+        </Provider>
+    </ThemeProvider>
 );

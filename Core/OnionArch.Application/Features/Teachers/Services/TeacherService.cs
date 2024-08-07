@@ -59,8 +59,4 @@ public sealed class TeacherService : ITeacherService
         await _teacherRepository.UpdateAsync(existingTeacher, cancellationToken);
     }
 
-    public async Task DeleteTeacherAsync(long id, CancellationToken cancellationToken)
-    {
-        await _teacherRepository.DeleteAsync(id, cancellationToken);
-    }
 }

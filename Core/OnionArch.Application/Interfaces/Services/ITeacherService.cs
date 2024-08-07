@@ -7,5 +7,4 @@ public interface ITeacherService
     Task<TeacherViewModel> GetTeacherByIdAsync(long id, CancellationToken cancellationToken);
     Task AddTeacherAsync(AddTeacherRequest request, CancellationToken cancellationToken);
     Task UpdateTeacherAsync(UpdateTeacherRequest request, CancellationToken cancellationToken);
-    Task DeleteTeacherAsync(long id, CancellationToken cancellationToken);
 }

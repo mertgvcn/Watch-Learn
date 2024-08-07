@@ -7,5 +7,4 @@ public interface ICourseService
     Task<CourseViewModel> GetCourseByIdAsync(long id, CancellationToken cancellationToken);
     Task AddCourseAsync(AddCourseRequest request, CancellationToken cancellationToken);
     Task UpdateCourseAsync(UpdateCourseRequest request, CancellationToken cancellationToken);
-    Task DeleteCourseAsync(long id, CancellationToken cancellationToken);
 }

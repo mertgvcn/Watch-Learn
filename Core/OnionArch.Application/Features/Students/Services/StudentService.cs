@@ -59,8 +59,4 @@ public sealed class StudentService : IStudentService
         await _studentRepository.UpdateAsync(existingStudent, cancellationToken);
     }
 
-    public async Task DeleteStudentAsync(long id, CancellationToken cancellationToken)
-    {
-        await _studentRepository.DeleteAsync(id, cancellationToken);
-    }
 }

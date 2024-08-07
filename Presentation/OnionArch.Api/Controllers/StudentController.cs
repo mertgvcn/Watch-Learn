@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnionArch.Application.Features.Students.Models;
+using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;
 
 namespace OnionArch.Api.Controllers;
@@ -11,11 +12,13 @@ namespace OnionArch.Api.Controllers;
 public class StudentController : ControllerBase
 {
     private readonly IStudentService _studentService;
+    private readonly IStudentRepository _studentRepository;
     private readonly CancellationToken _cancellationToken;
 
-    public StudentController(IStudentService studentService, ICancellationTokenService cancellationTokenService)
+    public StudentController(IStudentService studentService, IStudentRepository studentRepository, ICancellationTokenService cancellationTokenService)
     {
         _studentService = studentService;
+        _studentRepository = studentRepository;
         _cancellationToken = cancellationTokenService.cancellationToken;
     }
 
@@ -46,6 +49,6 @@ public class StudentController : ControllerBase
     [HttpDelete]
     public async Task DeleteStudent([FromQuery] long id)
     {
-        await _studentService.DeleteStudentAsync(id, _cancellationToken);
+        await _studentRepository.DeleteAsync(id, _cancellationToken);
     }
 }

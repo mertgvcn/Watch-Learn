@@ -17,7 +17,6 @@ public sealed class LessonService : ILessonService
     {
         _lessonRepository = lessonRepository;
         _mapper = mapper;
-
     }
 
     public async Task<List<LessonViewModel>> GetLessonsByCourseIdAsync(long courseId, CancellationToken cancellationToken)
@@ -61,8 +60,4 @@ public sealed class LessonService : ILessonService
         await _lessonRepository.UpdateAsync(existingLesson, cancellationToken);
     }
 
-    public async Task DeleteLessonAsync(long id, CancellationToken cancellationToken)
-    {
-        await _lessonRepository.DeleteAsync(id, cancellationToken);
-    }
 }

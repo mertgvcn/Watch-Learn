@@ -7,5 +7,4 @@ public interface ILessonService
     Task<LessonViewModel> GetLessonByIdAsync(long id, CancellationToken cancellationToken);
     Task AddLessonAsync(AddLessonRequest request, CancellationToken cancellationToken);
     Task UpdateLessonAsync(UpdateLessonRequest request, CancellationToken cancellationToken);
-    Task DeleteLessonAsync(long id, CancellationToken cancellationToken);
 }

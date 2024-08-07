@@ -60,8 +60,4 @@ public sealed class CourseService : ICourseService
         await _courseRepository.UpdateAsync(existingCourse, cancellationToken);
     }
 
-    public async Task DeleteCourseAsync(long id, CancellationToken cancellationToken)
-    {
-        await _courseRepository.DeleteAsync(id, cancellationToken);
-    }
 }

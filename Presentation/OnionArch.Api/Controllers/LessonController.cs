@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnionArch.Application.Features.Lessons.Models;
+using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;
 
 namespace OnionArch.Api.Controllers;
@@ -11,11 +12,13 @@ namespace OnionArch.Api.Controllers;
 public class LessonController : ControllerBase
 {
     private readonly ILessonService _lessonService;
+    private readonly ILessonRepository _lessonRepository;
     private readonly CancellationToken _cancellationToken;
 
-    public LessonController(ILessonService lessonService, ICancellationTokenService cancellationTokenService)
+    public LessonController(ILessonService lessonService, ILessonRepository lessonRepository, ICancellationTokenService cancellationTokenService)
     {
         _lessonService = lessonService;
+        _lessonRepository = lessonRepository;
         _cancellationToken = cancellationTokenService.cancellationToken;
     }
 
@@ -46,6 +49,6 @@ public class LessonController : ControllerBase
     [HttpDelete]
     public async Task DeleteLesson([FromQuery] long id)
     {
-        await _lessonService.DeleteLessonAsync(id, _cancellationToken);
+        await _lessonRepository.DeleteAsync(id, _cancellationToken);
     }
 }

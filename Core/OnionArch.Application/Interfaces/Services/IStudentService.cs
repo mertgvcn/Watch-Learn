@@ -7,5 +7,4 @@ public interface IStudentService
     Task<StudentViewModel> GetStudentByIdAsync(long id, CancellationToken cancellationToken);
     Task AddStudentAsync(AddStudentRequest request, CancellationToken cancellationToken);
     Task UpdateStudentAsync(UpdateStudentRequest request, CancellationToken cancellationToken);
-    Task DeleteStudentAsync(long id, CancellationToken cancellationToken);
 }

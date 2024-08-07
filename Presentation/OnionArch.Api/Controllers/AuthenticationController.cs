@@ -32,7 +32,7 @@ public class AuthenticationController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult> Register([FromBody] UserRegisterRequest request)
     {
-        await _authenticationService.RegisterUserAsync(request, _cancellationToken);
+        await _authenticationService.RegisterStudentAsync(request, _cancellationToken);
 
         return Ok();
     }
@@ -52,5 +52,14 @@ public class AuthenticationController : ControllerBase
     {
         await _authenticationService.RevokeRefreshTokenAsync(_cancellationToken);
         return Ok();
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<ActionResult<bool>> CheckRefreshToken([FromBody] CheckRefreshTokenRequest request)
+    {
+        var result = await _authenticationService.CheckRefreshToken(request, _cancellationToken);
+
+        return result;
     }
 }

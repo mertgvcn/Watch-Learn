@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using OnionArch.Application.Exceptions.Auth;
-using OnionArch.Application.Exceptions.Users;
 using OnionArch.Application.Features.Auth.Models;
 using OnionArch.Application.InfrastructureModels.Models;
 using OnionArch.Application.Interfaces.Repositories;
@@ -21,6 +20,7 @@ public sealed class AuthenticationService : IAuthenticationService
     private readonly IHttpContextService _httpContextService;
     private readonly IEmailSenderService _emailSenderService;
     private readonly IMapper _mapper;
+    private readonly IUserRepository _userRepository;
 
     public AuthenticationService(
         IUserService userService,
@@ -30,7 +30,8 @@ public sealed class AuthenticationService : IAuthenticationService
         ITransactionService transactionService,
         IHttpContextService httpContextService,
         IEmailSenderService emailSenderService,
-        IMapper mapper
+        IMapper mapper,
+        IUserRepository userRepository
         )
     {
         _userService = userService;
@@ -41,94 +42,70 @@ public sealed class AuthenticationService : IAuthenticationService
         _httpContextService = httpContextService;
         _emailSenderService = emailSenderService;
         _mapper = mapper;
+        _userRepository = userRepository;
     }
 
     public async Task<UserLoginResponse> LoginUserAsync(UserLoginRequest request, CancellationToken cancellationToken)
     {
         using var transaction = await _transactionService.CreateTransactionAsync(cancellationToken);
 
-        UserLoginResponse response = new UserLoginResponse()
-        {
-            IsAuthenticated = false,
-            AccessToken = null,
-            AccessTokenExpireDate = null,
-            RefreshToken = null
-        };
+        var user = await _userRepository.GetUserByEmailAsync(request.Email, cancellationToken);
+        var plainPassword = await _cryptionService.Decrypt(request.EncryptedPassword);
 
-        var user = await _userService.GetUserByEmailAsync(request.Email, cancellationToken);
-        if (user == null)
-            throw new UserNotFoundException($"User with email {request.Email} returned null");
+        if (!BCrypt.Net.BCrypt.Verify(plainPassword, user.Password))
+            throw new UnauthorizedAccessException("User credentials incorrect");
 
-        //var plainPassword = await _cryptionService.Decrypt(request.EncryptedPassword);
+        var generatedToken = await _tokenService.GenerateTokenAsync(user, cancellationToken);
 
-        if (BCrypt.Net.BCrypt.Verify(request.EncryptedPassword, user.Password)) //hatalı şifre girişi exception ile loglanır mı?, request.EncrpytedPassword => plainPassword olacak
-        {
-            var generatedToken = await _tokenService.GenerateTokenAsync(new GenerateTokenRequest
-            {
-                UserId = user.Id,
-                Role = user.Role
-            }, cancellationToken);
-
-            await CheckRefreshToken(user.Id, generatedToken, cancellationToken);
-
-            response.IsAuthenticated = true;
-            response.AccessToken = generatedToken.AccessToken;
-            response.AccessTokenExpireDate = generatedToken.AccessTokenExpireDate;
-            response.RefreshToken = generatedToken.RefreshToken;
-        }
+        await AddRefreshToken(user.Id, generatedToken, cancellationToken);
 
         await transaction.CommitAsync(cancellationToken);
-        return response;
+        return new UserLoginResponse()
+        {
+            AccessToken = generatedToken.AccessToken,
+            AccessTokenExpireDate = generatedToken.AccessTokenExpireDate,
+            RefreshToken = generatedToken.RefreshToken,
+            RefreshTokenExpireDate = generatedToken.RefreshTokenExpireDate
+        };
     }
 
-    public async Task RegisterUserAsync(UserRegisterRequest request, CancellationToken cancellationToken)
+    public async Task RegisterStudentAsync(UserRegisterRequest request, CancellationToken cancellationToken)
     {
-        var existingUser = await _userService.GetUserByEmailAsync(request.Email, cancellationToken);
+        var existingUser = await _userRepository.GetUserByEmailAsync(request.Email, cancellationToken);
         if (existingUser != null)
             throw new UserAlreadyExistsException("This user is already exists");
 
-        //string plainPassword = await _cryptionService.Decrypt(request.EncryptedPassword);
-        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.EncryptedPassword); //request.EncrpytedPassword => plainPassword
+        string plainPassword = await _cryptionService.Decrypt(request.EncryptedPassword);
+        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(plainPassword);
 
         var newUser = _mapper.Map<User>(request);
         newUser.Role = Roles.Student;
         newUser.Password = hashedPassword;
 
-        await _userService.AddUserAsync(newUser, cancellationToken);
+        await _userRepository.AddAsync(newUser, cancellationToken);
     }
 
     public async Task<GenerateTokenResponse> CreateAccessTokenByRefreshTokenAsync(CreateAccessTokenByRefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        var principal = _tokenService.GetPrincipalFromExpiredAccessToken(request.AccessToken);
+        var principal = _tokenService.GetPrincipalFromExpiredAccessToken(request.AccessToken)!;
 
-        if (principal?.FindFirstValue(ClaimTypes.NameIdentifier) is null)
+        if (principal.FindFirstValue(ClaimTypes.NameIdentifier) is null)
             throw new UnauthorizedAccessException();
 
         var userId = long.Parse(await _cryptionService.Decrypt(principal.FindFirstValue(ClaimTypes.NameIdentifier)!));
 
-        using var transaction = await _transactionService.CreateTransactionAsync(cancellationToken);
-
         //bu kısım user service e eklenecek bir method ile tek satırda yapılabilir.
-        var user = await _userService.GetUserByIdAsync(userId, cancellationToken);
+        var user = await _userRepository.GetByIdAsync(userId, cancellationToken);
         var refreshToken = await _userRefreshTokenRepository.GetAll().SingleOrDefaultAsync(x => x.UserId == userId, cancellationToken);
 
-        if (user is null || refreshToken is null || refreshToken.Token != request.RefreshToken || refreshToken.ExpireDate < DateTime.UtcNow)
+        if (refreshToken is null || refreshToken.Token != request.RefreshToken || refreshToken.ExpireDate < DateTime.UtcNow)
             throw new UnauthorizedAccessException();
 
-        var token = await _tokenService.GenerateTokenAsync(new GenerateTokenRequest
-        {
-            UserId = userId,
-            Role = user.Role
-        }, cancellationToken);
+        var token = await _tokenService.GenerateTokenAsync(user, cancellationToken);
+        token.RefreshToken = request.RefreshToken;
+        token.RefreshTokenExpireDate = refreshToken.ExpireDate;
 
-        await transaction.CommitAsync(cancellationToken);
-
-        return new GenerateTokenResponse
-        {
-            AccessToken = token.AccessToken,
-            AccessTokenExpireDate = token.AccessTokenExpireDate,
-            RefreshToken = request.RefreshToken
-        };
+        return token;
     }
 
     public async Task RevokeRefreshTokenAsync(CancellationToken cancellationToken)
@@ -144,7 +121,18 @@ public sealed class AuthenticationService : IAuthenticationService
         await transaction.CommitAsync(cancellationToken);
     }
 
-    private async Task CheckRefreshToken(long userId, GenerateTokenResponse token, CancellationToken cancellationToken)
+    public async Task<bool> CheckRefreshToken(CheckRefreshTokenRequest request, CancellationToken cancellationToken)
+    {
+        var userId = await _httpContextService.GetCurrentUserIdAsync();
+        var refreshToken = await _userRefreshTokenRepository.GetAll().SingleOrDefaultAsync(x => x.UserId == userId, cancellationToken);
+
+        if (refreshToken is null || refreshToken.Token != request.RefreshToken || refreshToken.ExpireDate <= DateTime.UtcNow)
+            return false;
+
+        return true;
+    }
+
+    private async Task AddRefreshToken(long userId, GenerateTokenResponse token, CancellationToken cancellationToken)
     {
         var userRefreshToken = await _userRefreshTokenRepository.GetAll().SingleOrDefaultAsync(x => x.UserId == userId, cancellationToken);
 

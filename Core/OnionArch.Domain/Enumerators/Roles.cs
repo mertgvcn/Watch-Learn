@@ -3,5 +3,6 @@ public enum Roles
 {
     Admin,
     Teacher,
-    Student
+    Student,
+    Guest
 }

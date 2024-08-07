@@ -53,7 +53,9 @@ if (app.Configuration.GetValue<bool>("SeedData"))
 }
 
 //Enable CORS
-app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseCors(options =>
+    options.SetIsOriginAllowed(origin => true).AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+);
 
 app.UseAuthentication();
 app.UseAuthorization();

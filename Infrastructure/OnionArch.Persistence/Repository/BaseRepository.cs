@@ -12,6 +12,11 @@ public abstract class BaseRepository<T>(AppDbContext context) : IBaseRepository<
         return context.Set<T>().AsQueryable();
     }
 
+    public IQueryable<T> GetById(long id)
+    {
+        return GetAll().Where(x => x.Id == id);
+    }
+
     public async Task<T> GetByIdAsync(long id, CancellationToken cancellationToken = default)
     {
         return (await context.Set<T>().FindAsync(id, cancellationToken))!;

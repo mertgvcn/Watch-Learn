@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnionArch.Application.Exceptions.Auth;
 using OnionArch.Application.Features.Auth.Models;
 using OnionArch.Application.InfrastructureModels.Models;
 using OnionArch.Application.Interfaces.Services;
@@ -23,27 +24,71 @@ public class AuthenticationController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<UserLoginResponse>> Login([FromBody] UserLoginRequest request)
     {
-        var result = await _authenticationService.LoginUserAsync(request, _cancellationToken);
-
-        return result;
+        try
+        {
+            return Ok(await _authenticationService.LoginUserAsync(request, _cancellationToken));
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException)
+                return Unauthorized();
+            else
+                throw;
+        }
     }
 
     [HttpPost]
     [AllowAnonymous]
     public async Task<ActionResult> Register([FromBody] UserRegisterRequest request)
     {
-        await _authenticationService.RegisterStudentAsync(request, _cancellationToken);
-
-        return Ok();
+        try
+        {
+            await _authenticationService.RegisterStudentAsync(request, _cancellationToken);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            if (ex is UserAlreadyExistsException)
+                return Conflict();
+            else
+                throw;
+        }
     }
 
     [HttpPost]
     [AllowAnonymous]
     public async Task<ActionResult<GenerateTokenResponse>> CreateAccessTokenByRefreshToken([FromBody] CreateAccessTokenByRefreshTokenRequest request)
     {
-        var result = await _authenticationService.CreateAccessTokenByRefreshTokenAsync(request, _cancellationToken);
+        try
+        {
+            return Ok(await _authenticationService.CreateAccessTokenByRefreshTokenAsync(request, _cancellationToken));
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException)
+                return Unauthorized();
+            else
+                throw;
+        }
+    }
 
-        return result;
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<ActionResult> CheckRefreshToken([FromBody] CheckRefreshTokenRequest request)
+    {
+        try
+        {
+            await _authenticationService.CheckRefreshToken(request, _cancellationToken);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException)
+                return Unauthorized();
+            else
+                throw;
+        }
+
     }
 
     [HttpDelete]
@@ -52,14 +97,5 @@ public class AuthenticationController : ControllerBase
     {
         await _authenticationService.RevokeRefreshTokenAsync(_cancellationToken);
         return Ok();
-    }
-
-    [HttpPost]
-    [AllowAnonymous]
-    public async Task<ActionResult<bool>> CheckRefreshToken([FromBody] CheckRefreshTokenRequest request)
-    {
-        var result = await _authenticationService.CheckRefreshToken(request, _cancellationToken);
-
-        return result;
     }
 }

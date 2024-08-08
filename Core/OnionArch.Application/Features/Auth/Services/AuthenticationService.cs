@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using OnionArch.Application.Exceptions.Auth;
 using OnionArch.Application.Features.Auth.Models;
 using OnionArch.Application.InfrastructureModels.Models;
@@ -7,12 +6,10 @@ using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;
 using OnionArch.Domain.Entities;
 using OnionArch.Domain.Enumerators;
-using System.Security.Claims;
 
 namespace OnionArch.Application.Features.Auth.Services;
 public sealed class AuthenticationService : IAuthenticationService
 {
-    private readonly IUserService _userService;
     private readonly ITokenService _tokenService;
     private readonly ICryptionService _cryptionService;
     private readonly IUserRefreshTokenRepository _userRefreshTokenRepository;
@@ -23,7 +20,6 @@ public sealed class AuthenticationService : IAuthenticationService
     private readonly IUserRepository _userRepository;
 
     public AuthenticationService(
-        IUserService userService,
         ITokenService tokenService,
         ICryptionService cryptionService,
         IUserRefreshTokenRepository userRefreshTokenRepository,
@@ -34,7 +30,6 @@ public sealed class AuthenticationService : IAuthenticationService
         IUserRepository userRepository
         )
     {
-        _userService = userService;
         _tokenService = tokenService;
         _cryptionService = cryptionService;
         _userRefreshTokenRepository = userRefreshTokenRepository;
@@ -57,7 +52,7 @@ public sealed class AuthenticationService : IAuthenticationService
 
         var generatedToken = await _tokenService.GenerateTokenAsync(user, cancellationToken);
 
-        await AddRefreshToken(user.Id, generatedToken, cancellationToken);
+        await HandleRefreshToken(user.Id, generatedToken, cancellationToken);
 
         await transaction.CommitAsync(cancellationToken);
         return new UserLoginResponse()
@@ -87,19 +82,14 @@ public sealed class AuthenticationService : IAuthenticationService
 
     public async Task<GenerateTokenResponse> CreateAccessTokenByRefreshTokenAsync(CreateAccessTokenByRefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        var principal = _tokenService.GetPrincipalFromExpiredAccessToken(request.AccessToken)!;
+        var refreshToken = await _userRefreshTokenRepository.GetByTokenAsync(request.RefreshToken, cancellationToken);
+        var user = await _userRepository.GetByIdAsync(refreshToken.UserId, cancellationToken);
 
-        if (principal.FindFirstValue(ClaimTypes.NameIdentifier) is null)
+        if (refreshToken.ExpireDate <= DateTime.UtcNow)
+        {
+            await _userRefreshTokenRepository.DeleteAsync(refreshToken, cancellationToken);
             throw new UnauthorizedAccessException();
-
-        var userId = long.Parse(await _cryptionService.Decrypt(principal.FindFirstValue(ClaimTypes.NameIdentifier)!));
-
-        //bu kısım user service e eklenecek bir method ile tek satırda yapılabilir.
-        var user = await _userRepository.GetByIdAsync(userId, cancellationToken);
-        var refreshToken = await _userRefreshTokenRepository.GetAll().SingleOrDefaultAsync(x => x.UserId == userId, cancellationToken);
-
-        if (refreshToken is null || refreshToken.Token != request.RefreshToken || refreshToken.ExpireDate < DateTime.UtcNow)
-            throw new UnauthorizedAccessException();
+        }
 
         var token = await _tokenService.GenerateTokenAsync(user, cancellationToken);
         token.RefreshToken = request.RefreshToken;
@@ -114,27 +104,23 @@ public sealed class AuthenticationService : IAuthenticationService
 
         using var transaction = await _transactionService.CreateTransactionAsync(cancellationToken);
 
-        var refreshToken = await _userRefreshTokenRepository.GetAll().SingleOrDefaultAsync(x => x.UserId == userId, cancellationToken);
-        if (refreshToken != null)
-            await _userRefreshTokenRepository.DeleteAsync(refreshToken, cancellationToken);
+        var refreshToken = await _userRefreshTokenRepository.GetByUserIdAsync(userId, cancellationToken);
+        await _userRefreshTokenRepository.DeleteAsync(refreshToken, cancellationToken);
 
         await transaction.CommitAsync(cancellationToken);
     }
 
-    public async Task<bool> CheckRefreshToken(CheckRefreshTokenRequest request, CancellationToken cancellationToken)
+    public async Task CheckRefreshToken(CheckRefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        var userId = await _httpContextService.GetCurrentUserIdAsync();
-        var refreshToken = await _userRefreshTokenRepository.GetAll().SingleOrDefaultAsync(x => x.UserId == userId, cancellationToken);
+        var refreshToken = await _userRefreshTokenRepository.GetByTokenAsync(request.RefreshToken, cancellationToken);
 
-        if (refreshToken is null || refreshToken.Token != request.RefreshToken || refreshToken.ExpireDate <= DateTime.UtcNow)
-            return false;
-
-        return true;
+        if (refreshToken.ExpireDate <= DateTime.UtcNow)
+            throw new UnauthorizedAccessException($"The refresh token of the user with id {refreshToken.UserId} has expired.");
     }
 
-    private async Task AddRefreshToken(long userId, GenerateTokenResponse token, CancellationToken cancellationToken)
+    private async Task HandleRefreshToken(long userId, GenerateTokenResponse token, CancellationToken cancellationToken)
     {
-        var userRefreshToken = await _userRefreshTokenRepository.GetAll().SingleOrDefaultAsync(x => x.UserId == userId, cancellationToken);
+        var userRefreshToken = await _userRefreshTokenRepository.GetByUserIdAsync(userId, cancellationToken);
 
         if (userRefreshToken != null)
         {

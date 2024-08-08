@@ -31,8 +31,7 @@ public sealed class CourseService : ICourseService
 
     public async Task<CourseViewModel> GetCourseByIdAsync(long id, CancellationToken cancellationToken)
     {
-        var course = await _courseRepository.GetAll()
-            .Where(x => x.Id == id)
+        var course = await _courseRepository.GetById(id)
             .ProjectTo<CourseViewModel>(_mapper.ConfigurationProvider)
             .SingleOrDefaultAsync(cancellationToken);
 

@@ -17,22 +17,14 @@ export abstract class BaseAPI {
 
     protected async get(endpoint?: string, params?: any): Promise<AxiosResponse> {
         const response: AxiosResponse = await this.axiosInstance.get(endpoint, params)
-        this.CheckResponseCode(response.status)
-
         return response
     }
 
     protected async post(endpoint: string, params?: any): Promise<AxiosResponse> {
         const response: AxiosResponse = await this.axiosInstance.post(endpoint, params)
-        this.CheckResponseCode(response.status);
-
         return response
     }
 
-    private CheckResponseCode(statusCode: number) {
-        if (!statusCode.toString().startsWith("2"))
-            throw new Error("Call has not succeed")
-    }
 
     private initializeInterceptors() {
         this.axiosInstance.interceptors.request.use(
@@ -63,17 +55,17 @@ export abstract class BaseAPI {
 
                     try {
                         const request: CreateAccessTokenByRefreshTokenRequest = {
-                            accessToken: getCookie("jwt"),
                             refreshToken: getCookie("refresh")
                         }
 
                         const response = await AuthenticationAPI.CreateAccessTokenByRefreshToken(request)
+                        let data = response.data
 
-                        if (response) {
-                            setCookie("jwt", response.accessToken, response.accessTokenExpireDate)
+                        if (response.status === 200) {
+                            setCookie("jwt", data.accessToken, data.accessTokenExpireDate)
 
-                            this.axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${response.accessToken}`;
-                            originalRequest.headers['Authorization'] = `Bearer ${response.accessToken}`;
+                            this.axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
+                            originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
 
                             return this.axiosInstance(originalRequest);
                         }

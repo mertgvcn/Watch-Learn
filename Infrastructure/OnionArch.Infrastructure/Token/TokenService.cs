@@ -48,22 +48,6 @@ public sealed class TokenService : ITokenService
             RefreshTokenExpireDate = refreshTokenExpireDate
         };
     }
-
-    public ClaimsPrincipal? GetPrincipalFromExpiredAccessToken(string? accessToken)
-    {
-        var secret = _configuration["JWT:Secret"] ?? throw new InvalidOperationException("Secret not configured");
-
-        var validation = new TokenValidationParameters
-        {
-            ValidIssuer = _configuration["JWT:ValidIssuer"],
-            ValidAudience = _configuration["JWT:ValidAudience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
-            ValidateLifetime = false
-        };
-
-        return new JwtSecurityTokenHandler().ValidateToken(accessToken, validation, out _);
-    }
-
     private async Task<List<Claim>> PrepareClaims(User user, DateTime accessTokenExpireDate)
     {
         var encryptedUserId = await _cryptionService.Encrypt(user.Id.ToString());
@@ -88,4 +72,22 @@ public sealed class TokenService : ITokenService
 
         return Convert.ToBase64String(numberByte);
     }
+
+    /*
+    public ClaimsPrincipal? GetPrincipalFromExpiredAccessToken(string? accessToken)
+    {
+        var secret = _configuration["JWT:Secret"] ?? throw new InvalidOperationException("Secret not configured");
+
+        var validation = new TokenValidationParameters
+        {
+            ValidIssuer = _configuration["JWT:ValidIssuer"],
+            ValidAudience = _configuration["JWT:ValidAudience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+            ValidateLifetime = false
+        };
+
+        return new JwtSecurityTokenHandler().ValidateToken(accessToken, validation, out _);
+    }
+    */
+
 }

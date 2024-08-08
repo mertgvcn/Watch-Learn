@@ -11,6 +11,7 @@ import AuthenticationAPI from '../../../../utils/APIs/AuthenticationAPI';
 import toast from 'react-hot-toast';
 import { Encrypt } from '../../../../utils/Cryption';
 import { setCookie } from '../../../../utils/Cookie';
+import { AxiosResponse } from 'axios';
 
 type LoginForm = {
     email: string,
@@ -41,26 +42,29 @@ const Login = () => {
             encryptedPassword: await Encrypt(form.password)
         }
 
-        const response = await AuthenticationAPI.Login(userLoginRequest)
-        
-        if (response.isAuthenticated) {
-            setCookie("jwt", response.accessToken, response.accessTokenExpireDate)
-            setCookie("refresh", response.refreshToken, response.refreshTokenExpireDate)
-            toast.success("Login successful")
+        const response: AxiosResponse = await AuthenticationAPI.Login(userLoginRequest)
+        let data = response.data
 
+        if (response.status === 200) {
+            setCookie("jwt", data.accessToken, data.accessTokenExpireDate)
+            setCookie("refresh", data.refreshToken, data.refreshTokenExpireDate)
+
+            toast.success("Login successful")
             setTimeout(() => {
                 window.location.href = "/"
             }, 1000)
         }
+        else if (response.status === 401) {
+            toast.error("Invalid user credentials")
+        }
         else {
-            toast.error("Your credentials are wrong.")
+            toast.error("Internal server error occured")
         }
 
         setTimeout(() => {
             setButtonBlocker(false)
         }, 1000)
     }
-
 
     return (
         <StyledPaper elevation={2}>

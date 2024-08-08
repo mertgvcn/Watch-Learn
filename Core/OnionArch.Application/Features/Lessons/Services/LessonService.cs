@@ -21,8 +21,7 @@ public sealed class LessonService : ILessonService
 
     public async Task<List<LessonViewModel>> GetLessonsByCourseIdAsync(long courseId, CancellationToken cancellationToken)
     {
-        var lessons = await _lessonRepository.GetAll()
-            .Where(x => x.CourseId == courseId)
+        var lessons = await _lessonRepository.GetAllByCourseId(courseId)
             .ProjectTo<LessonViewModel>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
@@ -31,8 +30,7 @@ public sealed class LessonService : ILessonService
 
     public async Task<LessonViewModel> GetLessonByIdAsync(long id, CancellationToken cancellationToken)
     {
-        var lesson = await _lessonRepository.GetAll()
-            .Where(x => x.Id == id)
+        var lesson = await _lessonRepository.GetById(id)
             .ProjectTo<LessonViewModel>(_mapper.ConfigurationProvider)
             .SingleOrDefaultAsync(cancellationToken);
 

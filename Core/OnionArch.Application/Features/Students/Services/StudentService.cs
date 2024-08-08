@@ -30,8 +30,7 @@ public sealed class StudentService : IStudentService
 
     public async Task<StudentViewModel> GetStudentByIdAsync(long id, CancellationToken cancellationToken)
     {
-        var student = await _studentRepository.GetAll()
-            .Where(x => x.Id == id)
+        var student = await _studentRepository.GetById(id)
             .ProjectTo<StudentViewModel>(_mapper.ConfigurationProvider)
             .SingleOrDefaultAsync(cancellationToken);
 

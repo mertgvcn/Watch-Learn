@@ -30,8 +30,7 @@ public sealed class TeacherService : ITeacherService
 
     public async Task<TeacherViewModel> GetTeacherByIdAsync(long id, CancellationToken cancellationToken)
     {
-        var teacher = await _teacherRepository.GetAll()
-            .Where(x => x.Id == id)
+        var teacher = await _teacherRepository.GetById(id)
             .ProjectTo<TeacherViewModel>(_mapper.ConfigurationProvider)
             .SingleOrDefaultAsync(cancellationToken);
 

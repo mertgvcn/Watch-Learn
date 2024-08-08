@@ -8,6 +8,8 @@ public class Course : BaseEntity, IEditableEntity, ISoftDeletableEntity, IAudita
     public bool IsDeleted { get; set; } = false;
     public string Title { get; set; }
     public string Description { get; set; }
+    public decimal Price { get; set; }
+    public TimeSpan TotalLessonDuration { get; set; }
     public long TeacherId { get; set; }
     public Teacher Teacher { get; set; }
     public ICollection<Lesson> Lessons { get; set; } = default!;

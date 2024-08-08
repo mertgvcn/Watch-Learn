@@ -55,6 +55,7 @@ const Navbar = ({ userRole }: NavbarType) => {
                                 component="a"
                                 href="/"
                                 sx={{
+                                    display: {xs: "none", sm: "flex"},
                                     letterSpacing: '.1rem',
                                     color: 'inherit',
                                     textDecoration: 'none',

@@ -25,6 +25,11 @@ export abstract class BaseAPI {
         return response
     }
 
+    protected async delete(endpoint: string, params?: any): Promise<AxiosResponse> {
+        const response: AxiosResponse = await this.axiosInstance.delete(endpoint, params)
+        return response
+    }
+
 
     private initializeInterceptors() {
         this.axiosInstance.interceptors.request.use(

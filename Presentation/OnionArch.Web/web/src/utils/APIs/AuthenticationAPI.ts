@@ -29,6 +29,10 @@ class AuthenticationAPI extends BaseAPI {
     public async CheckRefreshToken(params: CheckRefreshTokenRequest) : Promise<AxiosResponse> {
         return await this.post(this.controllerExtension + '/CheckRefreshToken', params)
     }
+
+    public async RevokeRefreshToken() : Promise<AxiosResponse> {
+        return await this.delete(this.controllerExtension + '/RevokeRefreshToken')
+    }
 }
 
 export default new AuthenticationAPI()

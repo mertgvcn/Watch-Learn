@@ -102,12 +102,10 @@ public sealed class AuthenticationService : IAuthenticationService
     {
         var userId = await _httpContextService.GetCurrentUserIdAsync();
 
-        using var transaction = await _transactionService.CreateTransactionAsync(cancellationToken);
-
         var refreshToken = await _userRefreshTokenRepository.GetByUserIdAsync(userId, cancellationToken);
-        await _userRefreshTokenRepository.DeleteAsync(refreshToken, cancellationToken);
+        if (refreshToken == null) return;
 
-        await transaction.CommitAsync(cancellationToken);
+        await _userRefreshTokenRepository.DeleteAsync(refreshToken, cancellationToken);
     }
 
     public async Task CheckRefreshToken(CheckRefreshTokenRequest request, CancellationToken cancellationToken)

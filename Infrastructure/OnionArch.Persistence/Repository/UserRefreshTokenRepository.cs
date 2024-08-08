@@ -11,8 +11,8 @@ public sealed class UserRefreshTokenRepository(AppDbContext context) : BaseRepos
         return await GetAll().SingleAsync(x => x.Token == token, cancellationToken);
     }
 
-    public async Task<UserRefreshToken> GetByUserIdAsync(long userId, CancellationToken cancellationToken)
+    public async Task<UserRefreshToken?> GetByUserIdAsync(long userId, CancellationToken cancellationToken)
     {
-        return await GetAll().SingleAsync(x => x.UserId == userId, cancellationToken);
+        return await GetAll().SingleOrDefaultAsync(x => x.UserId == userId, cancellationToken);
     }
 }

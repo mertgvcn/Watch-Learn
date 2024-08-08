@@ -13,12 +13,19 @@ import { isAccessTokenExpired } from "../utils/Token";
 
 export const useAuth = () => {
     const [userRole, setUserRole] = useState<Roles>(Roles.Guest);
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        checkSession(setUserRole);
+        checkSessionAsync();
     }, []);
 
-    return { userRole };
+    const checkSessionAsync = async () => {
+        setLoading(true)
+        await checkSession(setUserRole)
+        setLoading(false)
+    }
+
+    return { userRole, loading };
 };
 
 const decodeAndSetUserRole = (accessToken: string, setUserRole: React.Dispatch<React.SetStateAction<Roles>>) : void => {
@@ -45,7 +52,6 @@ const createAccessToken = async (refreshToken: string): Promise<string | null> =
 }
 
 const checkSession = async (setUserRole: React.Dispatch<React.SetStateAction<Roles>>) : Promise<void> => {
-    debugger;
     const refreshToken = getCookie("refresh")
     if (!refreshToken) return;
 

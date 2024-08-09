@@ -6,7 +6,6 @@ namespace OnionArch.Persistence.Repository;
 
 public abstract class BaseRepository<T>(AppDbContext context) : IBaseRepository<T> where T : BaseEntity
 {
-
     public IQueryable<T> GetAll()
     {
         return context.Set<T>().AsQueryable();

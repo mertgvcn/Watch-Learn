@@ -28,7 +28,7 @@ export const useAuth = () => {
     return { userRole, loading };
 };
 
-const decodeAndSetUserRole = (accessToken: string, setUserRole: React.Dispatch<React.SetStateAction<Roles>>) : void => {
+const decodeAndSetUserRole = (accessToken: string, setUserRole: React.Dispatch<React.SetStateAction<Roles>>): void => {
     const decodedToken = jwtDecode<TokenViewModel>(accessToken);
     setUserRole(Roles[decodedToken.role as keyof typeof Roles]);
 }
@@ -42,31 +42,32 @@ const createAccessToken = async (refreshToken: string): Promise<string | null> =
             const data: CreateAccessTokenByRefreshTokenResponse = response.data
             setCookie("jwt", data.accessToken, data.accessTokenExpireDate)
             return data.accessToken;
-        } 
-        
+        }
+
         return null
-    } 
+    }
     catch (error) {
         return null
     }
 }
 
-const checkSession = async (setUserRole: React.Dispatch<React.SetStateAction<Roles>>) : Promise<void> => {
+const checkSession = async (setUserRole: React.Dispatch<React.SetStateAction<Roles>>): Promise<void> => {
     const refreshToken = getCookie("refresh")
     if (!refreshToken) return;
 
+
     const checkRefreshTokenRequest: CheckRefreshTokenRequest = { refreshToken }
     const response = await AuthenticationAPI.CheckRefreshToken(checkRefreshTokenRequest)
-    if (response.status !== 200) return;
+    if(response.status !== 200) return
 
-    let accessToken : string | null = getCookie("jwt")
+    let accessToken: string | null = getCookie("jwt")
     if (accessToken && !isAccessTokenExpired(accessToken)) {
         decodeAndSetUserRole(accessToken, setUserRole)
         return;
     }
 
     //valid refresh token but expired access token, create new access token
-    accessToken  = await createAccessToken(refreshToken)
+    accessToken = await createAccessToken(refreshToken)
     if (accessToken) {
         decodeAndSetUserRole(accessToken, setUserRole)
         return;

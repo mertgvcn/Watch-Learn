@@ -88,7 +88,6 @@ public class AuthenticationController : ControllerBase
             else
                 throw;
         }
-
     }
 
     [HttpDelete]

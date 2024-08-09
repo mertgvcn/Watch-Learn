@@ -6,7 +6,7 @@ using OnionArch.Persistence.Context;
 namespace OnionArch.Persistence.Repository;
 public sealed class UserRefreshTokenRepository(AppDbContext context) : BaseRepository<UserRefreshToken>(context), IUserRefreshTokenRepository
 {
-    public async Task<UserRefreshToken> GetByTokenAsync(string token, CancellationToken cancellationToken)
+    public async Task<UserRefreshToken?> GetByTokenAsync(string token, CancellationToken cancellationToken)
     {
         return await GetAll().SingleAsync(x => x.Token == token, cancellationToken);
     }

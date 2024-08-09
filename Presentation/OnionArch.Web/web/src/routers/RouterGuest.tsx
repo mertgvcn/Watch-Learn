@@ -10,6 +10,7 @@ import Navbar from '../components/Navbar/Navbar'
 import LoginPage from '../pages/guest/Login/LoginPage'
 import RegisterPage from '../pages/guest/Register/RegisterPage'
 import ErrorPage from '../pages/common/ErrorPage'
+import CoursePage from '../pages/student/Course/CoursePage'
 
 const RouterGuest = () => {
     const Layout = () => {
@@ -30,6 +31,7 @@ const RouterGuest = () => {
                     <Route path='/' element={<LoginPage />} />
                     <Route path='/login' element={<LoginPage />} />
                     <Route path='/register' element={<RegisterPage />} />
+                    <Route path='/courses' element={<CoursePage />} />
                     <Route path='*' element={<ErrorPage />} />
                 </Route>
             </Routes>

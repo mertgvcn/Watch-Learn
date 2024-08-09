@@ -37,6 +37,8 @@ public class AppDbContext : DbContext
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
     {
+        UpdateCourseTotalDuration();
+
         var ChangedObjects = ChangeTracker.Entries().Where(a => a.State == EntityState.Modified || a.State == EntityState.Added || a.State == EntityState.Deleted).ToList();
         foreach (var entity in ChangedObjects)
         {
@@ -54,5 +56,19 @@ public class AppDbContext : DbContext
         }
 
         return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void UpdateCourseTotalDuration()
+    {
+        foreach (var entry in ChangeTracker.Entries<Course>())
+        {
+            if (entry.State == EntityState.Modified || entry.State == EntityState.Added)
+            {
+                var course = entry.Entity;
+                var totalSpan = new TimeSpan(course.Lessons.Sum(l => l.Duration.Ticks));
+
+                course.TotalLessonDuration = totalSpan;
+            }
+        }
     }
 }

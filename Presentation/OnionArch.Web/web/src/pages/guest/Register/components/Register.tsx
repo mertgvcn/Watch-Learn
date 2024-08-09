@@ -41,7 +41,7 @@ const Register = () => {
 
     const handleRegister = async () => {
         setButtonBlocker(true)
-
+        
         const userRegisterRequest: UserRegisterRequest = {
             firstName: form.firstName,
             lastName: form.lastName,

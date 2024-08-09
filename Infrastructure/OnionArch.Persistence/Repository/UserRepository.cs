@@ -10,10 +10,10 @@ public sealed class UserRepository(AppDbContext context) : BaseRepository<User>(
     {
         return await GetAll().AnyAsync(a => a.Email == email, cancellationToken);
     }
-    public async Task<User> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
+    public async Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
     {
         return await GetAll()
             .Where(x => x.Email == email)
-            .SingleAsync(cancellationToken); ;
+            .SingleOrDefaultAsync(cancellationToken); ;
     }
 }

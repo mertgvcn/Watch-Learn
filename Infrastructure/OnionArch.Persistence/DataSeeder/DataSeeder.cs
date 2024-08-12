@@ -23,7 +23,8 @@ public sealed class DataSeeder
     public readonly static Faker<Course> CourseFaker = new Faker<Course>()
         .RuleFor(a => a.DateCreated, faker => faker.Date.Past())
         .RuleFor(a => a.Title, faker => faker.Lorem.Sentence(4))
-        .RuleFor(a => a.Description, faker => faker.Lorem.Sentence(10))
+        .RuleFor(a => a.ShortDescription, faker => faker.Lorem.Sentence(10))
+        .RuleFor(a => a.Description, faker => faker.Lorem.Sentence(50))
         .RuleFor(a => a.Price, faker => faker.Random.Double(0, 1000))
         .RuleFor(a => a.Teacher, faker => new()
         {

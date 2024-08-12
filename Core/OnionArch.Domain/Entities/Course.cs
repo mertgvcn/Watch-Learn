@@ -7,6 +7,7 @@ public class Course : BaseEntity, IEditableEntity, ISoftDeletableEntity, IAudita
     public DateTime? DateModified { get; set; }
     public bool IsDeleted { get; set; } = false;
     public required string Title { get; set; }
+    public required string ShortDescription { get; set; }
     public required string Description { get; set; }
     public required double Price { get; set; }
     public TimeSpan TotalLessonDuration { get; set; }

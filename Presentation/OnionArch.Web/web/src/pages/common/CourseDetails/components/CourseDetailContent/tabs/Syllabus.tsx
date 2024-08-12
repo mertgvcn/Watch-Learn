@@ -15,8 +15,9 @@ type SyllabusType = {
 const Syllabus = ({ lessons }: SyllabusType) => {
     return (
         <Stack direction="column" spacing={2}>
+
             {lessons.map((lesson, index) => (
-                <Accordion elevation={4} key={index}>
+                <Accordion variant='outlined' key={index}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                     >
@@ -34,15 +35,15 @@ const Syllabus = ({ lessons }: SyllabusType) => {
                             </IconTextBox>
                         </Box>
                     </AccordionSummary>
-                    
-                    <Divider sx={{marginBottom: "0.5rem"}}/>
+
+                    <Divider sx={{ marginBottom: "0.5rem" }} />
 
                     <AccordionDetails>
                         {lesson.description}
                     </AccordionDetails>
                 </Accordion>
-            ))
-            }
+            ))}
+
         </Stack>
     )
 }

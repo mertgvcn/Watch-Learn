@@ -7,7 +7,7 @@ public class Student : BaseEntity, IEditableEntity, ISoftDeletableEntity
     public DateTime? DateModified { get; set; }
     public bool IsDeleted { get; set; } = false;
     public long UserId { get; set; }
-    public User User { get; set; }
+    public User User { get; set; } = default!;
     public ICollection<Course> Courses { get; set; } = default!;
     public ICollection<StudentLessonProgress> StudentLessonProgresses { get; set; } = default!;
     public ICollection<CourseComment> CourseComments { get; set; } = default!;

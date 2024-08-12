@@ -12,4 +12,6 @@ public record CourseViewModel
     public TeacherDTO Teacher { get; set; } = default!;
     public ICollection<LessonDTO> Lessons { get; set; } = default!;
     public ICollection<StudentDTO> Students { get; set; } = default!;
+    public ICollection<CourseCommentDTO> CourseComments { get; set; } = default!;
+
 }

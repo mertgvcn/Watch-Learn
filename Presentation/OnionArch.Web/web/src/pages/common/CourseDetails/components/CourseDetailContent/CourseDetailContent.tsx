@@ -41,7 +41,7 @@ const CourseDetailContent = ({ course }: CourseDetailContentType) => {
             }}>
                 {tab === 0 && <Overview description={course.description} />}
                 {tab === 1 && <Syllabus lessons={course.lessons} />}
-                {tab === 2 && <Comments />}
+                {tab === 2 && <Comments comments={course.courseComments} />}
             </Box>
 
         </Paper>

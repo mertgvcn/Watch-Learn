@@ -5,7 +5,7 @@ import { CourseViewModel } from '../../../../models/viewModels/CourseViewModel'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 //mui components
 import styled from '@emotion/styled'
-import { Box, Paper, Stack, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 
 const HeaderBox = styled(Box)({
     display: "flex",

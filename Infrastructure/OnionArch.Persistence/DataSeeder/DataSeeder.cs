@@ -63,5 +63,26 @@ public sealed class DataSeeder
                 Description = faker.Lorem.Sentence(10),
                 Duration = new TimeSpan(2, 0, 0)
             }
+        })
+        .RuleFor(a => a.CourseComments, faker => new List<CourseComment>()
+        {
+            new()
+            {
+                Comment = faker.Lorem.Sentence(10),
+                Rating = faker.Random.Short(1,5),
+                Student = new Student()
+                {
+                    DateCreated = faker.Date.Past(),
+                    User = new()
+                    {
+                        FirstName = faker.Person.FirstName,
+                        LastName = faker.Person.LastName,
+                        Email = faker.Internet.Email(),
+                        PhoneNumber = "05301231212",
+                        Password = "12345",
+                        Role = Roles.Student
+                    }
+                }
+            }
         }).UseSeed(1453);
 }

@@ -15,4 +15,5 @@ public class Course : BaseEntity, IEditableEntity, ISoftDeletableEntity, IAudita
     public Teacher Teacher { get; set; } = default!;
     public ICollection<Lesson> Lessons { get; set; } = default!;
     public ICollection<Student> Students { get; set; } = default!;
+    public ICollection<CourseComment> CourseComments { get; set; } = default!;
 }

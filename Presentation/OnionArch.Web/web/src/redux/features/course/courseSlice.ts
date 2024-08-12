@@ -23,6 +23,7 @@ export const courseSlice = createSlice({
             .addCase(GetAllCourses.rejected, (state) => {
                 state.loading = false
             })
+            
             .addCase(GetCourseById.pending, (state) => {
                 state.loading = true
             })

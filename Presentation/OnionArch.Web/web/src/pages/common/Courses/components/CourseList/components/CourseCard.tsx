@@ -16,7 +16,7 @@ type CourseCardType = {
 }
 
 const CourseCard = (props: CourseCardType) => {
-    const { id, title, description, totalLessonDuration, price, teacher, lessons, students } = props.data
+    const { id, title, shortDescription, totalLessonDuration, price, teacher, lessons, students } = props.data
     const formattedPrice = price.toFixed(2)
     const formattedTotalLessonDuration = formatDuration(totalLessonDuration)
 
@@ -42,7 +42,7 @@ const CourseCard = (props: CourseCardType) => {
                             {title}
                         </Typography>
                         <Typography variant='caption'>
-                            {description}
+                            {shortDescription}
                         </Typography>
                     </Stack>
 
@@ -67,7 +67,7 @@ const CourseCard = (props: CourseCardType) => {
 
                 <CardActions>
                     <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
-                        <Stack direction="row" spacing={0.5}>
+                        <Stack direction="row" spacing={0.5} sx={{alignItems: "center"}}>
                             <AccountCircleIcon sx={{ fontSize: 22 }} />
                             <Typography variant='body2'>
                                 {teacher.user.firstName + " " + teacher.user.lastName}

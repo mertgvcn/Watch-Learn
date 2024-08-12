@@ -1,6 +1,6 @@
 //redux
 import { createEntityAdapter } from "@reduxjs/toolkit"
-import { RootState, store } from "../../app/store"
+import { RootState } from "../../app/store"
 //models
 import { CourseViewModel } from "../../../models/viewModels/CourseViewModel"
 

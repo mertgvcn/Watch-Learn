@@ -10,5 +10,6 @@ public class Student : BaseEntity, IEditableEntity, ISoftDeletableEntity
     public User User { get; set; }
     public ICollection<Course> Courses { get; set; } = default!;
     public ICollection<StudentLessonProgress> StudentLessonProgresses { get; set; } = default!;
+    public ICollection<CourseComment> CourseComments { get; set; } = default!;
 
 }

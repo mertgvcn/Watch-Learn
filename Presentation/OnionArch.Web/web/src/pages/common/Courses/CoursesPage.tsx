@@ -1,10 +1,9 @@
-import React from 'react'
 //mui components
 import { Box } from '@mui/material'
 //components
 import CourseList from './components/CourseList/CourseList'
 
-const CoursePage = () => {
+const CoursesPage = () => {
     return (
         <Box sx={{ display: "flex", width: "100%", minHeight: "100%", py: 2, boxSizing: "border-box" }}>
             <CourseList />
@@ -12,4 +11,4 @@ const CoursePage = () => {
     )
 }
 
-export default CoursePage
+export default CoursesPage

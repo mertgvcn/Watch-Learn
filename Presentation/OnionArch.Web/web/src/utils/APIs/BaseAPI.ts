@@ -16,7 +16,7 @@ export abstract class BaseAPI {
     }
 
     protected async get(endpoint?: string, params?: any): Promise<AxiosResponse> {
-        const response: AxiosResponse = await this.axiosInstance.get(endpoint, params)
+        const response: AxiosResponse = await this.axiosInstance.get(endpoint, { params })
         return response
     }
 

@@ -8,8 +8,9 @@ import Navbar from '../components/Navbar/Navbar'
 //pages
 import HomePage from '../pages/student/Home/HomePage'
 import ProfilePage from '../pages/student/Profile/ProfilePage'
-import ErrorPage from '../pages/common/ErrorPage'
-import CoursePage from '../pages/student/Course/CoursePage'
+import ErrorPage from '../pages/common/Error/ErrorPage'
+import CoursesPageLoader from '../pages/common/Courses/CoursesPageLoader'
+import CourseDetailsPageLoader from '../pages/common/CourseDetails/CourseDetailsPageLoader'
 
 const RouterStudent = () => {
     const Layout = () => {
@@ -29,7 +30,8 @@ const RouterStudent = () => {
                 <Route path='/' element={<Layout />}>
                     <Route path='/' element={<HomePage />} />
                     <Route path='/profile' element={<ProfilePage />} />
-                    <Route path='/courses' element={<CoursePage />} />
+                    <Route path='/courses' element={<CoursesPageLoader />} />
+                    <Route path='/courses/:id' element={<CourseDetailsPageLoader />} />
                     <Route path='*' element={<ErrorPage />} />
                 </Route>
             </Routes>

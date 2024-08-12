@@ -41,6 +41,7 @@ const Navbar = ({ userRole }: NavbarType) => {
             top={0}
             sx={{
                 flexGrow: 1,
+                zIndex: 999,
                 marginBottom: "64px"
             }}
         >

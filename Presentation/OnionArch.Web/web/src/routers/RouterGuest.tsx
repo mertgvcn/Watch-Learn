@@ -3,7 +3,7 @@ import { Outlet, Route, Routes } from 'react-router-dom'
 //models
 import { Roles } from '../models/enumerators/Roles'
 //mui components
-import { Container } from '@mui/material'
+import { Box, Container } from '@mui/material'
 //components
 import Navbar from '../components/Navbar/Navbar'
 //pages
@@ -17,10 +17,10 @@ const RouterGuest = () => {
     const Layout = () => {
         return (
             <>
-                <Navbar userRole={Roles.Guest}/>
-                <Container>
+                <Navbar userRole={Roles.Guest} />
+                <Box minHeight="calc(100vh - 64px)">
                     <Outlet />
-                </Container>
+                </Box>
             </>
         )
     }

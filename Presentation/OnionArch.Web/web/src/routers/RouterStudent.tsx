@@ -18,7 +18,9 @@ const RouterStudent = () => {
         return (
             <>
                 <Navbar userRole={Roles.Student} />
-                <Outlet />
+                <Box minHeight="calc(100vh - 64px)">
+                    <Outlet />
+                </Box>
                 <Footer />
             </>
         )

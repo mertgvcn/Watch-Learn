@@ -9,10 +9,9 @@ export const courseSlice = createSlice({
     name: 'course',
     initialState: courseAdapter.getInitialState({
         loading: false,
-        isCurrentUserAttended: false
     }),
     reducers: {},
-    extraReducers: (builder) => {
+    extraReducers(builder) {
         builder
             .addCase(GetAllCourses.pending, (state) => {
                 state.loading = true
@@ -39,5 +38,4 @@ export const courseSlice = createSlice({
 })
 
 export const { } = courseSlice.actions
-
 export default courseSlice.reducer

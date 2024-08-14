@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/app/store'
 import { selectCourseById } from '../../../redux/features/course/selectors'
+import { selectIsAttendedToCourse } from '../../../redux/features/currentStudent/selectors'
 //mui components
 import { Box, Container, Grid, Stack } from '@mui/material'
 //components
@@ -14,6 +15,7 @@ import CourseDetailContent from './components/CourseDetailContent/CourseDetailCo
 const CourseDetailsPage = () => {
     const { id } = useParams()
     const course = useSelector((state: RootState) => selectCourseById(state, Number(id)))
+    const isCurrentStudentAttended = useSelector(selectIsAttendedToCourse)
 
     if (!course) return (<LoadingComponent />)
 
@@ -34,7 +36,7 @@ const CourseDetailsPage = () => {
             <Container>
                 <Stack direction="row" spacing={4} marginY="2rem">
                     <CourseDetailContent course={course}/>
-                    <CourseDetailSidebar course={course} />
+                    <CourseDetailSidebar course={course} isCurrentStudentAttended={isCurrentStudentAttended}/>
                 </Stack>
             </Container>
         </Box>

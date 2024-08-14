@@ -12,3 +12,4 @@ const courseSelectors = courseAdapter.getSelectors((state: RootState) => state.c
 
 export const selectCourses = (state: RootState) => courseSelectors.selectAll(state)
 export const selectCourseById = (state: RootState, id: number) => courseSelectors.selectById(state, id)
+export const selectCourseLoading = (state: RootState) => state.course.loading

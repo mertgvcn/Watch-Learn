@@ -7,7 +7,7 @@ class CourseAPI extends BaseAPI {
     private controllerExtension: string = "/Course"
 
     constructor() {
-        super();
+        super()
     }
 
     public async GetAllCourses(): Promise<AxiosResponse> {

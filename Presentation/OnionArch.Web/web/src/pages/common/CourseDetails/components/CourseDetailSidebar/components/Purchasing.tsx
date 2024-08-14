@@ -6,13 +6,19 @@ import { EnrollCurrentUserInCourse } from '../../../../../../models/paramaterMod
 //helpers
 import CourseAPI from '../../../../../../utils/APIs/CourseAPI'
 import toast from 'react-hot-toast'
+import { useAppDispatch } from '../../../../../../redux/app/store'
+import { IsCurrentStudentAttendedToCourse } from '../../../../../../redux/features/currentStudent/thunks'
 
 type PurchasingType = {
     courseId: number,
-    price: number
+    price: number,
+    isCurrentStudentAttended: boolean
 }
 
-const Purchasing = ({ courseId, price }: PurchasingType) => {
+const Purchasing = (props: PurchasingType) => {
+    const { courseId, price, isCurrentStudentAttended } = props
+    const dispatch = useAppDispatch()
+
     const [buttonBlocker, setButtonBlocker] = useState(false)
 
     const handleBuy = async () => {
@@ -23,7 +29,8 @@ const Purchasing = ({ courseId, price }: PurchasingType) => {
         }
         const response = await CourseAPI.EnrollCurrentUserInCourse(enrollCurrentUserInCourseRequest)
 
-        if(response.status = 200) {
+        if (response.status = 200) {
+            dispatch(IsCurrentStudentAttendedToCourse(courseId))
             toast.success("Login successful")
         }
         else {
@@ -38,7 +45,13 @@ const Purchasing = ({ courseId, price }: PurchasingType) => {
     return (
         <Stack direction="column" spacing={1} >
             <Typography variant='h6'>{price}TL</Typography>
-            <Button variant='contained' onClick={handleBuy} disabled={buttonBlocker}>Buy</Button>
+            <Button
+                variant='contained'
+                onClick={handleBuy}
+                disabled={buttonBlocker || isCurrentStudentAttended}
+            >
+                {isCurrentStudentAttended ? "Attended" : "Buy"}
+            </Button>
         </Stack>
     )
 }

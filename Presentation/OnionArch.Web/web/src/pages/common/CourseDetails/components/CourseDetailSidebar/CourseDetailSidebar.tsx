@@ -11,10 +11,13 @@ import Purchasing from './components/Purchasing';
 import Stats from './components/Stats';
 
 type CourseDetailSidebarType = {
-    course: CourseViewModel
+    course: CourseViewModel,
+    isCurrentStudentAttended: boolean
 }
 
-const CourseDetailSidebar = ({ course }: CourseDetailSidebarType) => {
+const CourseDetailSidebar = (props: CourseDetailSidebarType) => {
+    const {course, isCurrentStudentAttended} = props
+
     const formattedPrice = course.price.toFixed(2)
     const formattedTotalLessonDuration = formatDuration(course.totalLessonDuration)
 
@@ -52,6 +55,7 @@ const CourseDetailSidebar = ({ course }: CourseDetailSidebarType) => {
                     <Purchasing
                         courseId={course.id}
                         price={Number(formattedPrice)}
+                        isCurrentStudentAttended={isCurrentStudentAttended}
                     />
 
                     <Divider />

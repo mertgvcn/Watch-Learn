@@ -72,6 +72,12 @@ const Navbar = ({ userRole }: NavbarType) => {
                                     Courses
                                 </Button>
                             </Link>
+
+                            <Link to="/my-courses">
+                                <Button variant='text' sx={{ color: "white" }}>
+                                    My Courses
+                                </Button>
+                            </Link>
                         </Stack>
 
                         {userRole == Roles.Guest &&

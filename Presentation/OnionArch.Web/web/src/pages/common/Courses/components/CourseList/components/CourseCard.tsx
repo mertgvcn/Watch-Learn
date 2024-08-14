@@ -21,7 +21,7 @@ const CourseCard = (props: CourseCardType) => {
     const formattedTotalLessonDuration = formatDuration(totalLessonDuration)
 
     return (
-        <Link to={`/courses/${id}`} style={{textDecoration: "none"}}>
+        <Link to={`/courses/${id}`} style={{ textDecoration: "none" }}>
             <Card
                 sx={{
                     height: "fit-content",
@@ -65,9 +65,9 @@ const CourseCard = (props: CourseCardType) => {
 
                 <Divider variant='middle' />
 
-                <CardActions>
+                <CardActions sx={{ paddingX: "16px" }}>
                     <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
-                        <Stack direction="row" spacing={0.5} sx={{alignItems: "center"}}>
+                        <Stack direction="row" spacing={0.5} sx={{ alignItems: "center" }}>
                             <AccountCircleIcon sx={{ fontSize: 22 }} />
                             <Typography variant='body2'>
                                 {teacher.user.firstName + " " + teacher.user.lastName}

@@ -8,7 +8,8 @@ import { CourseViewModel } from "../../../models/viewModels/CourseViewModel";
 export const courseSlice = createSlice({
     name: 'course',
     initialState: courseAdapter.getInitialState({
-        loading: false
+        loading: false,
+        isCurrentUserAttended: false
     }),
     reducers: {},
     extraReducers: (builder) => {

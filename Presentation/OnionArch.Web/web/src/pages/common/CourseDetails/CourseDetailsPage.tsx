@@ -6,9 +6,9 @@ import { selectCourseById } from '../../../redux/features/course/selectors'
 //mui components
 import { Box, Container, Grid, Stack } from '@mui/material'
 //components
-import CourseDetailHeader from './components/CourseDetailHeader'
-import CourseDetailSidebar from './components/CourseDetailSidebar'
 import LoadingComponent from '../../../components/LoadingComponent/LoadingComponent'
+import CourseDetailHeader from './components/CourseDetailHeader/CourseDetailHeader'
+import CourseDetailSidebar from './components/CourseDetailSidebar/CourseDetailSidebar'
 import CourseDetailContent from './components/CourseDetailContent/CourseDetailContent'
 
 const CourseDetailsPage = () => {

@@ -9,7 +9,7 @@ public class StudentProfile : Profile
     public StudentProfile()
     {
         CreateMap<Student, StudentViewModel>();
-        CreateMap<AddStudentRequest, Student>();
+        CreateMap<User, Student>();
         CreateMap<UpdateStudentRequest, Student>();
         CreateMap<Student, StudentDTO>();
     }

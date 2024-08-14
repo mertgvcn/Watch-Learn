@@ -34,10 +34,10 @@ public class StudentController : ControllerBase
         return await _studentService.GetStudentByIdAsync(id, _cancellationToken);
     }
 
-    [HttpPost]
-    public async Task AddStudent([FromBody] AddStudentRequest request)
+    [HttpGet]
+    public async Task<bool> IsCurrentStudentAttendedToCourse([FromQuery] long courseId)
     {
-        await _studentService.AddStudentAsync(request, _cancellationToken);
+        return await _studentService.IsCurrentStudentAttendedToCourseAsync(courseId, _cancellationToken);
     }
 
     [HttpPatch]

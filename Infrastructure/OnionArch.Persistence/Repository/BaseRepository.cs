@@ -28,10 +28,11 @@ public abstract class BaseRepository<T>(AppDbContext context) : IBaseRepository<
 
         return entry.Entity;
     }
+
     public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
         if (entity is IEditableEntity)
-            context.Update(entity);
+            context.Attach(entity);
         else
             throw new Exception("This entity cannot be modified.");
 

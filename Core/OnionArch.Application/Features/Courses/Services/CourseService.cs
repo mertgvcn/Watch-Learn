@@ -11,11 +11,20 @@ namespace OnionArch.Application.Features.Courses.Services;
 public sealed class CourseService : ICourseService
 {
     private readonly ICourseRepository _courseRepository;
+    private readonly IStudentRepository _studentRepository;
+    private readonly IHttpContextService _httpContextService;
     private readonly IMapper _mapper;
 
-    public CourseService(ICourseRepository courseRepository, IMapper mapper)
+    public CourseService(
+        ICourseRepository courseRepository,
+        IStudentRepository studentRepository,
+        IHttpContextService httpContextService,
+        IMapper mapper
+        )
     {
         _courseRepository = courseRepository;
+        _studentRepository = studentRepository;
+        _httpContextService = httpContextService;
         _mapper = mapper;
     }
 
@@ -39,6 +48,19 @@ public sealed class CourseService : ICourseService
             throw new CourseNotFoundException($"Course with Id {id} returned null.");
 
         return course;
+    }
+
+    public async Task EnrollCurrentUserInCourseAsync(EnrollCurrentUserInCourseRequest request, CancellationToken cancellationToken)
+    {
+        var userId = await _httpContextService.GetCurrentUserIdAsync();
+        var student = await _studentRepository.GetByUserIdAsync(userId, cancellationToken);
+
+        var course = await _courseRepository.GetById(request.CourseId).Include(x => x.Students).SingleOrDefaultAsync();
+        if (course == null)
+            throw new CourseNotFoundException($"Course with id {request.CourseId} returned null");
+
+        course.Students.Add(student);
+        await _courseRepository.UpdateAsync(course);
     }
 
     public async Task AddCourseAsync(AddCourseRequest request, CancellationToken cancellationToken)

@@ -10,34 +10,37 @@ using OnionArch.Domain.Enumerators;
 namespace OnionArch.Application.Features.Auth.Services;
 public sealed class AuthenticationService : IAuthenticationService
 {
+    private readonly IUserRefreshTokenRepository _userRefreshTokenRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly IStudentRepository _studentRepository;
     private readonly ITokenService _tokenService;
     private readonly ICryptionService _cryptionService;
-    private readonly IUserRefreshTokenRepository _userRefreshTokenRepository;
     private readonly ITransactionService _transactionService;
     private readonly IHttpContextService _httpContextService;
     private readonly IEmailSenderService _emailSenderService;
     private readonly IMapper _mapper;
-    private readonly IUserRepository _userRepository;
 
     public AuthenticationService(
+        IUserRefreshTokenRepository userRefreshTokenRepository,
+        IUserRepository userRepository,
+        IStudentRepository studentRepository,
         ITokenService tokenService,
         ICryptionService cryptionService,
-        IUserRefreshTokenRepository userRefreshTokenRepository,
         ITransactionService transactionService,
         IHttpContextService httpContextService,
         IEmailSenderService emailSenderService,
-        IMapper mapper,
-        IUserRepository userRepository
+        IMapper mapper
         )
     {
+        _userRefreshTokenRepository = userRefreshTokenRepository;
+        _userRepository = userRepository;
+        _studentRepository = studentRepository;
         _tokenService = tokenService;
         _cryptionService = cryptionService;
-        _userRefreshTokenRepository = userRefreshTokenRepository;
         _transactionService = transactionService;
         _httpContextService = httpContextService;
         _emailSenderService = emailSenderService;
         _mapper = mapper;
-        _userRepository = userRepository;
     }
 
     public async Task<UserLoginResponse> LoginUserAsync(UserLoginRequest request, CancellationToken cancellationToken)
@@ -78,6 +81,12 @@ public sealed class AuthenticationService : IAuthenticationService
         newUser.Password = hashedPassword;
 
         await _userRepository.AddAsync(newUser, cancellationToken);
+
+        var newStudent = new Student()
+        {
+            User = newUser
+        };
+        await _studentRepository.AddAsync(newStudent, cancellationToken);
     }
 
     public async Task<GenerateTokenResponse> CreateAccessTokenByRefreshTokenAsync(CreateAccessTokenByRefreshTokenRequest request, CancellationToken cancellationToken)

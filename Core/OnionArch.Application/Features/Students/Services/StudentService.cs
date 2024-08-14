@@ -5,17 +5,18 @@ using OnionArch.Application.Exceptions.Students;
 using OnionArch.Application.Features.Students.Models;
 using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;
-using OnionArch.Domain.Entities;
 
 namespace OnionArch.Application.Features.Students.Services;
 public sealed class StudentService : IStudentService
 {
     private readonly IStudentRepository _studentRepository;
+    private readonly IHttpContextService _httpContextService;
     private readonly IMapper _mapper;
 
-    public StudentService(IStudentRepository studentRepository, IMapper mapper)
+    public StudentService(IStudentRepository studentRepository, IHttpContextService httpContextService, IMapper mapper)
     {
         _studentRepository = studentRepository;
+        _httpContextService = httpContextService;
         _mapper = mapper;
     }
 
@@ -40,11 +41,12 @@ public sealed class StudentService : IStudentService
         return student;
     }
 
-    public async Task AddStudentAsync(AddStudentRequest request, CancellationToken cancellationToken)
+    public async Task<bool> IsCurrentStudentAttendedToCourseAsync(long courseId, CancellationToken cancellationToken)
     {
-        var newStudent = _mapper.Map<Student>(request);
+        var userId = await _httpContextService.GetCurrentUserIdAsync();
+        var student = await _studentRepository.GetAll().Where(x => x.UserId == userId).Include(a => a.Courses).SingleAsync(cancellationToken);
 
-        await _studentRepository.AddAsync(newStudent, cancellationToken);
+        return student.Courses.Any(x => x.Id == courseId);
     }
 
     public async Task UpdateStudentAsync(UpdateStudentRequest request, CancellationToken cancellationToken)

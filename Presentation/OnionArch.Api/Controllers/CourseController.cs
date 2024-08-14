@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnionArch.Application.Exceptions.Courses;
 using OnionArch.Application.Features.Courses.Models;
 using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;
@@ -33,6 +34,21 @@ public class CourseController : ControllerBase
     public async Task<ActionResult<CourseViewModel>> GetCourseById([FromQuery] long id)
     {
         return await _courseService.GetCourseByIdAsync(id, _cancellationToken);
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<ActionResult> EnrollCurrentUserInCourse([FromBody] EnrollCurrentUserInCourseRequest request)
+    {
+        try
+        {
+            await _courseService.EnrollCurrentUserInCourseAsync(request, _cancellationToken);
+            return Ok();
+        }
+        catch (CourseNotFoundException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpPost]

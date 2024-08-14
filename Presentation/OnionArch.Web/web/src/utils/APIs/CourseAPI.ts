@@ -1,6 +1,7 @@
 import { BaseAPI } from "./BaseAPI";
 //models
 import { AxiosResponse } from "axios";
+import { EnrollCurrentUserInCourse } from "../../models/paramaterModels/Course/EnrollCurrentUserInCourse";
 
 class CourseAPI extends BaseAPI {
     private controllerExtension: string = "/Course"
@@ -15,6 +16,10 @@ class CourseAPI extends BaseAPI {
 
     public async GetCourseById(id: number): Promise<AxiosResponse> {
         return await this.get(this.controllerExtension + '/GetCourseById', { id })
+    }
+
+    public async EnrollCurrentUserInCourse(params: EnrollCurrentUserInCourse): Promise<AxiosResponse> {
+        return await this.post(this.controllerExtension + '/EnrollCurrentUserInCourse', params)
     }
 }
 

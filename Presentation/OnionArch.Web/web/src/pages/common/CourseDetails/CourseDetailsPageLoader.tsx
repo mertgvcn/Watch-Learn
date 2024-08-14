@@ -14,6 +14,7 @@ import CourseDetailsPage from './CourseDetailsPage'
 const CourseDetailsPageLoader = () => {
     const { id } = useParams()
     const dispatch = useAppDispatch()
+    
     const courseLoading = useSelector(selectCourseLoading)
     const currentStudentLoading = useSelector(selectStudentLoading)
 

@@ -33,7 +33,7 @@ const RouterStudent = () => {
                 <Route path='/' element={<Layout />}>
                     <Route path='/' element={<HomePage />} />
                     <Route path='/profile' element={<ProfilePage />} />
-                    <Route path='/my-courses/' element={<MyCoursesPageLoader />} />
+                    <Route path='/my-courses' element={<MyCoursesPageLoader />} />
                     <Route path='/courses' element={<CoursesPageLoader />} />
                     <Route path='/courses/:id' element={<CourseDetailsPageLoader />} />
                     <Route path='*' element={<ErrorPage />} />

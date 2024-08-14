@@ -1,5 +1,5 @@
 //mui components
-import { Grid, Stack, Typography } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 //components
 import CourseCard from './components/CourseCard'
 import { useSelector } from 'react-redux'

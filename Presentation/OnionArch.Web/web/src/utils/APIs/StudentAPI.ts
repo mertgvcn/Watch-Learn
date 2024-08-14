@@ -9,6 +9,10 @@ class StudentAPI extends BaseAPI {
         super()
     }
 
+    public async GetCoursesAttendedByCurrentStudent(): Promise<AxiosResponse> {
+        return await this.get(this.controllerExtension + '/GetCoursesAttendedByCurrentStudent')
+    }
+
     public async IsCurrentStudentAttendedToCourse(courseId: number): Promise<AxiosResponse> {
         return await this.get(this.controllerExtension + '/IsCurrentStudentAttendedToCourse', { courseId })
     }

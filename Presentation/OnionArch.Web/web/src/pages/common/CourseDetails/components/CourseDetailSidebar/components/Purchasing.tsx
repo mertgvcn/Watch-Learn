@@ -12,11 +12,11 @@ import { IsCurrentStudentAttendedToCourse } from '../../../../../../redux/featur
 type PurchasingType = {
     courseId: number,
     price: number,
-    isCurrentStudentAttended: boolean
+    isStudentAttendedToCourse: boolean
 }
 
 const Purchasing = (props: PurchasingType) => {
-    const { courseId, price, isCurrentStudentAttended } = props
+    const { courseId, price, isStudentAttendedToCourse } = props
     const dispatch = useAppDispatch()
 
     const [buttonBlocker, setButtonBlocker] = useState(false)
@@ -48,9 +48,9 @@ const Purchasing = (props: PurchasingType) => {
             <Button
                 variant='contained'
                 onClick={handleBuy}
-                disabled={buttonBlocker || isCurrentStudentAttended}
+                disabled={buttonBlocker || isStudentAttendedToCourse}
             >
-                {isCurrentStudentAttended ? "Attended" : "Buy"}
+                {isStudentAttendedToCourse ? "Attended" : "Buy"}
             </Button>
         </Stack>
     )

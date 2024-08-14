@@ -11,6 +11,7 @@ import ErrorPage from '../pages/common/Error/ErrorPage'
 import HomePage from '../pages/student/Home/HomePage'
 import ProfilePage from '../pages/student/Profile/ProfilePage'
 import MyCoursesPageLoader from '../pages/student/MyCourses/MyCoursesPageLoader'
+import MyCourseDetailsPageLoader from '../pages/student/MyCourseDetails/MyCourseDetailsPageLoader'
 import CoursesPageLoader from '../pages/common/Courses/CoursesPageLoader'
 import CourseDetailsPageLoader from '../pages/common/CourseDetails/CourseDetailsPageLoader'
 
@@ -34,6 +35,7 @@ const RouterStudent = () => {
                     <Route path='/' element={<HomePage />} />
                     <Route path='/profile' element={<ProfilePage />} />
                     <Route path='/my-courses' element={<MyCoursesPageLoader />} />
+                    <Route path='/my-courses/:id' element={<MyCourseDetailsPageLoader />} />
                     <Route path='/courses' element={<CoursesPageLoader />} />
                     <Route path='/courses/:id' element={<CourseDetailsPageLoader />} />
                     <Route path='*' element={<ErrorPage />} />

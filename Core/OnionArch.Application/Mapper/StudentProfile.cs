@@ -6,11 +6,12 @@ using OnionArch.Domain.Entities;
 namespace OnionArch.Application.Mapper;
 public class StudentProfile : Profile
 {
-    public StudentProfile()
-    {
-        CreateMap<Student, StudentViewModel>();
-        CreateMap<User, Student>();
-        CreateMap<UpdateStudentRequest, Student>();
-        CreateMap<Student, StudentDTO>();
-    }
+	public StudentProfile()
+	{
+		CreateMap<Student, StudentViewModel>();
+		CreateMap<Student, CoursesAttendedByCurrentStudentViewModel>();
+		CreateMap<User, Student>();
+		CreateMap<UpdateStudentRequest, Student>();
+		CreateMap<Student, StudentDTO>();
+	}
 }

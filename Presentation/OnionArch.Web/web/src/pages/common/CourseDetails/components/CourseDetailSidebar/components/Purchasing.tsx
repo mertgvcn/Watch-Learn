@@ -31,7 +31,7 @@ const Purchasing = (props: PurchasingType) => {
 
         if (response.status = 200) {
             dispatch(IsCurrentStudentAttendedToCourse(courseId))
-            toast.success("Login successful")
+            toast.success("Course successfully purchased.")
         }
         else {
             toast.error("Something went wrong...")

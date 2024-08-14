@@ -2,16 +2,17 @@ import { Outlet, Route, Routes } from 'react-router-dom'
 //models
 import { Roles } from '../models/enumerators/Roles'
 //mui components
-import { Box, Container } from '@mui/material'
+import { Box } from '@mui/material'
 //components
 import Navbar from '../components/Navbar/Navbar'
+import Footer from '../components/Footer/Footer'
 //pages
+import ErrorPage from '../pages/common/Error/ErrorPage'
 import HomePage from '../pages/student/Home/HomePage'
 import ProfilePage from '../pages/student/Profile/ProfilePage'
-import ErrorPage from '../pages/common/Error/ErrorPage'
+import MyCoursesPageLoader from '../pages/student/MyCourses/MyCoursesPageLoader'
 import CoursesPageLoader from '../pages/common/Courses/CoursesPageLoader'
 import CourseDetailsPageLoader from '../pages/common/CourseDetails/CourseDetailsPageLoader'
-import Footer from '../components/Footer/Footer'
 
 const RouterStudent = () => {
     const Layout = () => {
@@ -32,6 +33,7 @@ const RouterStudent = () => {
                 <Route path='/' element={<Layout />}>
                     <Route path='/' element={<HomePage />} />
                     <Route path='/profile' element={<ProfilePage />} />
+                    <Route path='/my-courses/' element={<MyCoursesPageLoader />} />
                     <Route path='/courses' element={<CoursesPageLoader />} />
                     <Route path='/courses/:id' element={<CourseDetailsPageLoader />} />
                     <Route path='*' element={<ErrorPage />} />

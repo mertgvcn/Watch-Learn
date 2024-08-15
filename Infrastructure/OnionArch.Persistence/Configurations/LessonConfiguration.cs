@@ -5,10 +5,11 @@ using OnionArch.Domain.Entities;
 namespace OnionArch.Persistence.Configurations;
 public class LessonConfiguration : IEntityTypeConfiguration<Lesson>
 {
-    public void Configure(EntityTypeBuilder<Lesson> builder)
-    {
-        builder.Property(x => x.EditedBy).HasMaxLength(64);
-        builder.Property(x => x.Title).HasMaxLength(64);
-        builder.Property(x => x.Description).HasMaxLength(255);
-    }
+	public void Configure(EntityTypeBuilder<Lesson> builder)
+	{
+		builder.Property(x => x.EditedBy).HasMaxLength(64);
+		builder.Property(x => x.Title).HasMaxLength(64);
+		builder.Property(x => x.Description).HasMaxLength(255);
+		builder.Property(x => x.VideoURL).HasMaxLength(255);
+	}
 }

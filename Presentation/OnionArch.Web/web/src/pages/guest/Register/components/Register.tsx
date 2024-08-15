@@ -8,7 +8,7 @@ import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import { UserRegisterRequest } from '../../../../models/paramaterModels/Authentication/UserRegisterRequest';
 //helpers
 import { Encrypt } from '../../../../utils/Cryption';
-import AuthenticationAPI from '../../../../utils/APIs/AuthenticationAPI';
+import AuthenticationAPI from '../../../../APIs/AuthenticationAPI';
 import toast from 'react-hot-toast';
 
 type RegisterType = {

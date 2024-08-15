@@ -1,7 +1,7 @@
 import { BaseAPI } from "./BaseAPI";
 //models
 import { AxiosResponse } from "axios";
-import { EnrollCurrentUserInCourse } from "../../models/paramaterModels/Course/EnrollCurrentUserInCourse";
+import { EnrollCurrentUserInCourse } from "../models/paramaterModels/Course/EnrollCurrentUserInCourse";
 
 class CourseAPI extends BaseAPI {
     private controllerExtension: string = "/Course"

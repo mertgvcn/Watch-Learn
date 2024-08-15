@@ -18,15 +18,20 @@ const HeaderBox = styled(Box)({
 })
 
 type CourseDetailHeaderType = {
-    course: CourseViewModel
+    title: string,
+    shortDescription: string,
+    teacherName: string
 }
 
-const CourseDetailHeader = ({ course }: CourseDetailHeaderType) => {
+const CourseDetailHeader = ({ title, shortDescription, teacherName }: CourseDetailHeaderType) => {
     return (
         <HeaderBox>
-            <Header />
+            <Header
+                title={title}
+                shortDescription={shortDescription}
+            />
             <Teacher
-                teacherName={course.teacherName}
+                teacherName={teacherName}
             />
         </HeaderBox>
     )

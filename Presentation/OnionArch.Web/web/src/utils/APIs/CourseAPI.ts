@@ -14,8 +14,8 @@ class CourseAPI extends BaseAPI {
         return await this.get(this.controllerExtension + '/GetAllCourses')
     }
 
-    public async GetCourseById(id: number): Promise<AxiosResponse> {
-        return await this.get(this.controllerExtension + '/GetCourseById', { id })
+    public async GetCourseDetailById(id: number): Promise<AxiosResponse> {
+        return await this.get(this.controllerExtension + '/GetCourseDetailById', { id })
     }
     
     public async GetCurrentStudentCourses(): Promise<AxiosResponse> {

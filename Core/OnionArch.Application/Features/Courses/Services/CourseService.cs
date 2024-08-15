@@ -45,10 +45,10 @@ public sealed class CourseService : ICourseService
 		return courses;
 	}
 
-	public async Task<CourseViewModel> GetCourseByIdAsync(long id, CancellationToken cancellationToken)
+	public async Task<CourseDetailViewModel> GetCourseDetailByIdAsync(long id, CancellationToken cancellationToken)
 	{
 		var course = await _courseRepository.GetById(id)
-			.ProjectTo<CourseViewModel>(_mapper.ConfigurationProvider)
+			.ProjectTo<CourseDetailViewModel>(_mapper.ConfigurationProvider)
 			.SingleOrDefaultAsync(cancellationToken);
 
 		if (course == null)
@@ -77,7 +77,8 @@ public sealed class CourseService : ICourseService
 		var userId = _httpContextService.GetCurrentUserId();
 		var student = await _studentRepository.GetByUserIdAsync(userId, cancellationToken);
 
-		var course = await _courseRepository.GetById(request.CourseId).Include(x => x.Students).SingleOrDefaultAsync(cancellationToken);
+		var course = await _courseRepository.GetById(request.CourseId)
+			.Include(x => x.Students).Include(x => x.Lessons).SingleOrDefaultAsync(cancellationToken);
 		if (course == null)
 			throw new CourseNotFoundException($"Course with id {request.CourseId} returned null");
 
@@ -111,12 +112,12 @@ public sealed class CourseService : ICourseService
 	private async Task<short> GetStudentProgressPercentageAsync(long userId, long courseId, CancellationToken cancellationToken)
 	{
 		var course = await _courseRepository.GetById(courseId)
-			.Include(c => c.Lessons).ThenInclude(l => l.StudentLessonProgresses)
+			.Include(c => c.Lessons).ThenInclude(l => l.StudentLessonProgresses).ThenInclude(slg => slg.Student)
 			.SingleAsync(cancellationToken);
 
 		var completedLessonCount = course.Lessons
 			.SelectMany(l => l.StudentLessonProgresses)
-			.Count(slp => slp.StudentId == userId && slp.IsCompleted);
+			.Count(slp => slp.Student.UserId == userId && slp.IsCompleted);
 
 		var totalLessonCount = course.Lessons.Count;
 

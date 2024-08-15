@@ -28,7 +28,7 @@ const Syllabus = ({ lessons }: SyllabusType) => {
                             alignItems: "center",
                             marginRight: "1rem"
                         }}>
-                            <Typography>{lesson.title}</Typography>
+                            <Typography>{lesson.lessonNumber}. {lesson.title}</Typography>
                             <IconTextBox>
                                 <AccessTimeIcon sx={{ fontSize: 18 }} />
                                 <Typography>{formatDuration(lesson.durationInSeconds)}</Typography>

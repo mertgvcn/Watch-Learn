@@ -22,7 +22,7 @@ const Comments = ({ comments }: CommentsType) => {
                     <Stack direction="row" spacing={1} sx={{ display: "flex", alignItems: "center" }}>
                         <AccountCircleIcon sx={{ fontSize: 40 }} />
                         <Stack direction="column">
-                            <Typography variant='body1'>{comment.student.user.firstName} {comment.student.user.lastName}</Typography>
+                            <Typography variant='body1'>{comment.studentName}</Typography>
                             <Rating readOnly value={comment.rating} size='small' />
                         </Stack>
                     </Stack>

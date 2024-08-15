@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 //mui components
 import { Box, Divider, Paper, Stack } from '@mui/material'
-//models
-import { CourseViewModel } from '../../../../../models/viewModels/CourseViewModel';
 //helpers
 import { formatDuration } from '../../../../../utils/TimeFormatter';
 //components
@@ -11,14 +9,18 @@ import Purchasing from './components/Purchasing';
 import Stats from './components/Stats';
 
 type CourseDetailSidebarType = {
-    course: CourseViewModel,
+    courseId: number,
+    price: number,
+    studentCount: number,
+    lessonCount: number,
+    totalLessonDurationInSeconds: number,
     isStudentAttendedToCourse: boolean
 }
 
 const CourseDetailSidebar = (props: CourseDetailSidebarType) => {
-    const {course, isStudentAttendedToCourse} = props
+    const {courseId, price, totalLessonDurationInSeconds, lessonCount, studentCount, isStudentAttendedToCourse} = props
 
-    const formattedTotalLessonDuration = formatDuration(course.totalLessonDurationInSeconds)
+    const formattedTotalLessonDuration = formatDuration(totalLessonDurationInSeconds)
 
     const [isFixedSidebar, setIsFixedSidebar] = useState(false);
 
@@ -52,16 +54,16 @@ const CourseDetailSidebar = (props: CourseDetailSidebarType) => {
                     boxSizing: "border-box"
                 }}>
                     <Purchasing
-                        courseId={course.id}
-                        price={course.price}
+                        courseId={courseId}
+                        price={price}
                         isStudentAttendedToCourse={isStudentAttendedToCourse}
                     />
 
                     <Divider />
 
                     <Stats
-                        lessonCount={course.lessonCount}
-                        attendedStudentCount={course.lessonCount}
+                        studentCount={studentCount}
+                        lessonCount={lessonCount}
                         totalLessonDuration={formattedTotalLessonDuration}
                     />
                 </ Stack>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 //models
-import { CourseViewModel } from '../../../../../models/viewModels/CourseViewModel';
+import { LessonDTO } from '../../../../../models/DTOs/LessonDTO';
+import { CourseCommentDTO } from '../../../../../models/DTOs/CourseCommentDTO';
 //mui components
 import { Box, Paper, Tab, Tabs } from '@mui/material'
 //components
@@ -9,10 +10,12 @@ import Syllabus from './tabs/Syllabus';
 import Comments from './tabs/Comments';
 
 type CourseDetailContentType = {
-    course: CourseViewModel
+    description: string,
+    lessons: LessonDTO[],
+    comments: CourseCommentDTO[]
 }
 
-const CourseDetailContent = ({ course }: CourseDetailContentType) => {
+const CourseDetailContent = ({ description, lessons, comments }: CourseDetailContentType) => {
     const [tab, setTab] = useState(0)
 
     return (
@@ -39,9 +42,9 @@ const CourseDetailContent = ({ course }: CourseDetailContentType) => {
                 padding: "1rem",
                 boxSizing: "border-box"
             }}>
-                {tab === 0 && <Overview description={course.shortDescription} />}
-                {tab === 1 && <Syllabus lessons={[]} />}
-                {tab === 2 && <Comments comments={[]} />}
+                {tab === 0 && <Overview description={description} />}
+                {tab === 1 && <Syllabus lessons={lessons} />}
+                {tab === 2 && <Comments comments={comments} />}
             </Box>
 
         </Paper>

@@ -7,6 +7,7 @@ public class StudentLessonProgress : BaseEntity, IEditableEntity, ISoftDeletable
 	public DateTime? DateModified { get; set; }
 	public bool IsDeleted { get; set; } = false;
 	public long StudentId { get; set; }
+	public Student Student { get; set; } = default!;
 	public long LessonId { get; set; }
 	public bool IsCompleted { get; set; } = false;
 }

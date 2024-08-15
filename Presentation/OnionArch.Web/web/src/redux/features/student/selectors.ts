@@ -12,5 +12,5 @@ export const selectCurrentStudentCourses = (state: RootState) => currentStudentC
 export const selectCurrentStudentCoursesLoading = (state: RootState) => state.student.currentStudentCourses.loading
 
 //isAttendedToCourse
-export const selectIsStudentAttendedToCourse = (state: RootState) => state.student.isAttendedToCourse.isAttended
+export const selectIsStudentAttendedToCourse = (state: RootState) => state.student.isAttendedToCourse.currentState
 export const selectIsStudentAttendedToCourseLoading = (state: RootState) => state.student.isAttendedToCourse.loading

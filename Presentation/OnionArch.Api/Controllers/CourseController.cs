@@ -32,9 +32,9 @@ public class CourseController : ControllerBase
 
 	[HttpGet]
 	[AllowAnonymous]
-	public async Task<ActionResult<CourseViewModel>> GetCourseById([FromQuery] long id)
+	public async Task<ActionResult<CourseDetailViewModel>> GetCourseDetailById([FromQuery] long id)
 	{
-		return Ok(await _courseService.GetCourseByIdAsync(id, _cancellationToken));
+		return Ok(await _courseService.GetCourseDetailByIdAsync(id, _cancellationToken));
 	}
 
 	[HttpGet]

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using OnionArch.Application.DTOs;
 using OnionArch.Application.Features.Courses.Models;
-using OnionArch.Application.Features.Students.Models;
 using OnionArch.Domain.Entities;
 
 namespace OnionArch.Application.Mapper;
@@ -9,14 +8,18 @@ public class CourseProfile : Profile
 {
 	public CourseProfile()
 	{
-		CreateMap<Course, CourseViewModel>();
-		/*.ForMember(a => a.FirstName, opt => opt.MapFrom(src => src.Teacher.User.FirstName))
-		.ForMember(a => a.LastName, opt => opt.MapFrom(src => src.Teacher.User.LastName))
-		.ForMember(a => a.Email, opt => opt.MapFrom(src => src.Teacher.User.Email))*/
+		CreateMap<Course, CourseViewModel>()
+			.ForMember(a => a.TeacherName, opt => opt.MapFrom(src => src.Teacher.User.FirstName + " " + src.Teacher.User.LastName))
+			.ForMember(a => a.LessonCount, opt => opt.MapFrom(src => src.Lessons.Count))
+			.ForMember(a => a.TotalLessonDuration, opt => opt.MapFrom(src => src.Lessons.Sum(a => a.Duration.Ticks)));
+
+		CreateMap<Course, MyCourseViewModel>()
+			.ForMember(a => a.TeacherName, opt => opt.MapFrom(src => src.Teacher.User.FirstName + " " + src.Teacher.User.LastName))
+			.ForMember(a => a.StudentProgressPercentage, opt => opt.MapFrom(src => src.Lessons.All(a => a.StudentLessonProgresses.All(a => a.StudentId == ))
+
 		CreateMap<AddCourseRequest, Course>();
 		CreateMap<UpdateCourseRequest, Course>();
 		CreateMap<Course, CourseDTO>();
-		CreateMap<Course, MyCoursesViewModel>()
-			.ForMember(a => a.TeacherName, opt => opt.MapFrom(src => src.Teacher.User.FirstName + " " + src.Teacher.User.LastName));
+
 	}
 }

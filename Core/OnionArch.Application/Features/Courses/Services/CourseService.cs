@@ -3,7 +3,6 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using OnionArch.Application.Exceptions.Courses;
 using OnionArch.Application.Features.Courses.Models;
-using OnionArch.Application.Features.Students.Models;
 using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;
 using OnionArch.Domain.Entities;
@@ -50,11 +49,11 @@ public sealed class CourseService : ICourseService
 
 		return course;
 	}
-	public async Task<List<MyCoursesViewModel>> GetMyCourses(CancellationToken cancellationToken)
+	public async Task<List<MyCourseViewModel>> GetMyCourses(CancellationToken cancellationToken)
 	{
 		var userId = _httpContextService.GetCurrentUserId();
 		var courses = await _courseRepository.GetAll().Where(a => a.Students.Any(a => a.UserId == userId))
-			.ProjectTo<MyCoursesViewModel>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+			.ProjectTo<MyCourseViewModel>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
 
 		return courses;
 	}

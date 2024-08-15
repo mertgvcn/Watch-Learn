@@ -1,5 +1,4 @@
 ﻿using OnionArch.Application.Features.Courses.Models;
-using OnionArch.Application.Features.Students.Models;
 
 namespace OnionArch.Application.Interfaces.Services;
 public interface ICourseService
@@ -9,5 +8,5 @@ public interface ICourseService
     Task EnrollCurrentUserInCourseAsync(EnrollCurrentUserInCourseRequest request, CancellationToken cancellationToken);
     Task AddCourseAsync(AddCourseRequest request, CancellationToken cancellationToken);
     Task UpdateCourseAsync(UpdateCourseRequest request, CancellationToken cancellationToken);
-	Task<List<MyCoursesViewModel>> GetMyCourses(CancellationToken cancellationToken);
+	Task<List<MyCourseViewModel>> GetMyCourses(CancellationToken cancellationToken);
 }

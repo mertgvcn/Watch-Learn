@@ -26,6 +26,7 @@ public sealed class DataSeeder
 		.RuleFor(a => a.ShortDescription, faker => faker.Lorem.Sentence(10))
 		.RuleFor(a => a.Description, faker => faker.Lorem.Sentence(50))
 		.RuleFor(a => a.Price, faker => faker.Random.Double(0, 1000))
+		.RuleFor(a => a.ImgUrl, "https://www.datocms-assets.com/64859/1656365285-ingilizce-a1-a2-egitimi.png?q=70&auto=format&w=650&fit=max&iptc=allow")
 		.RuleFor(a => a.Teacher, faker => new()
 		{
 			DateCreated = faker.Date.Past(),
@@ -59,24 +60,27 @@ public sealed class DataSeeder
 		{
 			new()
 			{
+				LessonNumber = 1,
 				Title = faker.Lorem.Sentence(6),
 				Description = faker.Lorem.Sentence(10),
 				Duration = new TimeSpan(2, 0, 0),
-				VideoURL = "https://www.youtube.com/watch?v=iu-LBY7NXD4"
+				VideoUrl = "https://www.youtube.com/watch?v=iu-LBY7NXD4"
 			},
 			new()
 			{
+				LessonNumber = 2,
 				Title = faker.Lorem.Sentence(6),
 				Description = faker.Lorem.Sentence(10),
 				Duration = new TimeSpan(2, 0, 0),
-				VideoURL = "https://www.youtube.com/watch?v=iu-LBY7NXD4"
+				VideoUrl = "https://www.youtube.com/watch?v=iu-LBY7NXD4"
 			},
 			new()
 			{
+				LessonNumber = 3,
 				Title = faker.Lorem.Sentence(6),
 				Description = faker.Lorem.Sentence(10),
 				Duration = new TimeSpan(2, 0, 0),
-				VideoURL = "https://www.youtube.com/watch?v=iu-LBY7NXD4"
+				VideoUrl = "https://www.youtube.com/watch?v=iu-LBY7NXD4"
 			}
 		})
 		.RuleFor(a => a.CourseComments, faker => new List<CourseComment>()

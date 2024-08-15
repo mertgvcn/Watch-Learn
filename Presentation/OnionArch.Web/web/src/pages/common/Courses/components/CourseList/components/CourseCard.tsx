@@ -34,7 +34,7 @@ const CourseCard = (props: CourseCardType) => {
             >
                 <CardMedia
                     sx={{ height: "160px", objectFit: "cover" }}
-                    image='https://www.datocms-assets.com/64859/1648564414-hafiza-teknikleri.jpg?q=70&auto=format&w=650&fit=max&iptc=allow'
+                    image='https://www.datocms-assets.com/64859/1656365285-ingilizce-a1-a2-egitimi.png?q=70&auto=format&w=650&fit=max&iptc=allow'
                 />
                 <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", paddingBottom: "8px" }}>
                     <Stack direction="column" spacing={1} sx={{ height: "120px" }}>

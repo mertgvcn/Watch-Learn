@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using OnionArch.Application.Exceptions.Courses;
 using OnionArch.Application.Features.Courses.Models;
-using OnionArch.Application.Features.Students.Models;
 using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;
 
@@ -39,7 +38,7 @@ public class CourseController : ControllerBase
 
 	[HttpGet]
 	[Authorize]
-	public async Task<List<MyCoursesViewModel>> GetMyCourses()
+	public async Task<List<MyCourseViewModel>> GetMyCourses()
 	{
 		return await _courseService.GetMyCourses(_cancellationToken);
 	}

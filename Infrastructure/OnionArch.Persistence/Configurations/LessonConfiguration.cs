@@ -9,7 +9,7 @@ public class LessonConfiguration : IEntityTypeConfiguration<Lesson>
 	{
 		builder.Property(x => x.EditedBy).HasMaxLength(64);
 		builder.Property(x => x.Title).HasMaxLength(64);
-		builder.Property(x => x.Description).HasMaxLength(255);
-		builder.Property(x => x.VideoURL).HasMaxLength(255);
+		builder.Property(x => x.Description).HasMaxLength(512);
+		builder.Property(x => x.VideoUrl).HasMaxLength(255);
 	}
 }

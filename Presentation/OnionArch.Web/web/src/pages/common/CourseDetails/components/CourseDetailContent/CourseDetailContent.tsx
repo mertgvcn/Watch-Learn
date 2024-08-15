@@ -39,9 +39,9 @@ const CourseDetailContent = ({ course }: CourseDetailContentType) => {
                 padding: "1rem",
                 boxSizing: "border-box"
             }}>
-                {tab === 0 && <Overview description={course.description} />}
-                {tab === 1 && <Syllabus lessons={course.lessons} />}
-                {tab === 2 && <Comments comments={course.courseComments} />}
+                {tab === 0 && <Overview description={course.shortDescription} />}
+                {tab === 1 && <Syllabus lessons={[]} />}
+                {tab === 2 && <Comments comments={[]} />}
             </Box>
 
         </Paper>

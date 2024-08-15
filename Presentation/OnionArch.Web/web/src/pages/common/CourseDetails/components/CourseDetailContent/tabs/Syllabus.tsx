@@ -6,7 +6,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Divider, Stack, sty
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 //helpers
-import { formatDuration } from '../../../../../../utils/TimeSpan';
+import { formatDuration } from '../../../../../../utils/TimeFormatter';
 
 type SyllabusType = {
     lessons: LessonDTO[]
@@ -31,7 +31,7 @@ const Syllabus = ({ lessons }: SyllabusType) => {
                             <Typography>{lesson.title}</Typography>
                             <IconTextBox>
                                 <AccessTimeIcon sx={{ fontSize: 18 }} />
-                                <Typography>{formatDuration(lesson.duration)}</Typography>
+                                <Typography>{formatDuration(lesson.durationInSeconds)}</Typography>
                             </IconTextBox>
                         </Box>
                     </AccordionSummary>

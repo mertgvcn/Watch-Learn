@@ -11,8 +11,7 @@ type MyCourseCardType = {
 }
 
 const MyCourseCard = (props: MyCourseCardType) => {
-    const { id, title, shortDescription, teacherName, studentProgressPercentage,  } = props.data
-    const studentCourseProgress = Number((Math.random() * 100).toFixed(0))
+    const { id, title, shortDescription, imgUrl, teacherName, studentProgressPercentage } = props.data
 
     return (
         <Link to={`/my-courses/${id}`} style={{ textDecoration: "none" }}>
@@ -28,7 +27,7 @@ const MyCourseCard = (props: MyCourseCardType) => {
             >
                 <CardMedia
                     sx={{ height: "160px", objectFit: "cover" }}
-                    image='https://www.datocms-assets.com/64859/1648564414-hafiza-teknikleri.jpg?q=70&auto=format&w=650&fit=max&iptc=allow'
+                    image={imgUrl}
                 />
                 
                 <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", paddingBottom: "8px" }}>
@@ -46,8 +45,8 @@ const MyCourseCard = (props: MyCourseCardType) => {
 
                 <CardActions sx={{ paddingX: "16px" }}>
                     <Box sx={{ width: "100%", display: "flex", flexDirection: "column", gap: "4px" }}>
-                        <LinearProgress variant='determinate' value={studentCourseProgress} />
-                        <Typography variant='body2'>%{studentCourseProgress} Completed</Typography>
+                        <LinearProgress variant='determinate' value={studentProgressPercentage} />
+                        <Typography variant='body2'>%{studentProgressPercentage} Completed</Typography>
                     </Box>
                 </CardActions>
             </Card>

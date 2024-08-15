@@ -4,15 +4,14 @@ import { Stack, Typography } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 type TeacherType = {
-    firstName: string,
-    lastName: string
+    teacherName: string,
 }
 
-const Teacher = (props: TeacherType) => {
+const Teacher = ({teacherName}: TeacherType) => {
     return (
         <Stack direction="row" spacing={0.5} sx={{ alignItems: "center" }}>
             <AccountCircleIcon sx={{ fontSize: 26 }} />
-            <Typography variant='subtitle1'>{props.firstName} {props.lastName}</Typography>
+            <Typography variant='subtitle1'>{teacherName}</Typography>
         </Stack>
     )
 }

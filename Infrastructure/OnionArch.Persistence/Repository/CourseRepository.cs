@@ -1,4 +1,5 @@
-﻿using OnionArch.Application.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Domain.Entities;
 using OnionArch.Persistence.Context;
 
@@ -8,6 +9,7 @@ public sealed class CourseRepository(AppDbContext context) : BaseRepository<Cour
 {
 	public IQueryable<Course> GetStudentCoursesByUserId(long userId)
 	{
-		return GetAll().Where(a => a.Students.Any(a => a.UserId == userId));
+		return GetAll().Where(a => a.Students.Any(a => a.UserId == userId))
+			.Include(a => a.Lessons).ThenInclude(l => l.StudentLessonProgresses);
 	}
 }

@@ -10,13 +10,13 @@ public class CourseProfile : Profile
 	public CourseProfile()
 	{
 		CreateMap<Course, CourseViewModel>()
+			.ForMember(a => a.Price, opt => opt.MapFrom(src => Math.Round(src.Price, 2)))
 			.ForMember(a => a.TeacherName, opt => opt.MapFrom(src => src.Teacher.User.FirstName + " " + src.Teacher.User.LastName))
 			.ForMember(a => a.LessonCount, opt => opt.MapFrom(src => src.Lessons.Count))
-			.ForMember(a => a.TotalLessonDuration, opt => opt.MapFrom(src => src.Lessons.Sum(a => a.DurationInSeconds)));
+			.ForMember(a => a.TotalLessonDurationInSeconds, opt => opt.MapFrom(src => src.Lessons.Sum(a => a.DurationInSeconds)));
 
 		CreateMap<Course, CurrentStudentCourseViewModel>()
 			.ForMember(a => a.TeacherName, opt => opt.MapFrom(src => src.Teacher.User.FirstName + " " + src.Teacher.User.LastName));
-		//.ForMember(a => a.StudentProgressPercentage, opt => opt.MapFrom<StudentProgressResolver>());
 
 		CreateMap<AddCourseRequest, Course>();
 		CreateMap<UpdateCourseRequest, Course>();

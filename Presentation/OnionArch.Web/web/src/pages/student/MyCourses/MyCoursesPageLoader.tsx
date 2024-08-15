@@ -3,14 +3,14 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../../redux/app/store'
 import { GetCurrentStudentCourses } from '../../../redux/features/student/thunks'
-import { selectcurrentStudentCoursesLoading } from '../../../redux/features/student/selectors'
+import { selectCurrentStudentCoursesLoading } from '../../../redux/features/student/selectors'
 //components
 import MyCoursesPage from './MyCoursesPage'
 import LoadingComponent from '../../../components/LoadingComponent/LoadingComponent'
 
 const MyCoursesPageLoader = () => {
     const dispatch = useAppDispatch()
-    const loading = useSelector(selectcurrentStudentCoursesLoading)
+    const loading = useSelector(selectCurrentStudentCoursesLoading)
 
     useEffect(() => {
         dispatch(GetCurrentStudentCourses())

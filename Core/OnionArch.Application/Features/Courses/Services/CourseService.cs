@@ -61,7 +61,13 @@ public sealed class CourseService : ICourseService
 	{
 		var userId = _httpContextService.GetCurrentUserId();
 		var courses = await _courseRepository.GetStudentCoursesByUserId(userId)
-			.ProjectTo<CurrentStudentCourseViewModel>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+			.ProjectTo<CurrentStudentCourseViewModel>(_mapper.ConfigurationProvider, new { userId })
+			.ToListAsync(cancellationToken);
+
+		foreach (var course in courses)
+		{
+			course.StudentProgressPercentage = await GetStudentProgressPercentageAsync(userId, course.Id, cancellationToken);
+		}
 
 		return courses;
 	}
@@ -101,6 +107,22 @@ public sealed class CourseService : ICourseService
 		_mapper.Map(request, existingCourse);
 		await _courseRepository.UpdateAsync(existingCourse, cancellationToken);
 	}
+
+	private async Task<short> GetStudentProgressPercentageAsync(long userId, long courseId, CancellationToken cancellationToken)
+	{
+		var course = await _courseRepository.GetById(courseId)
+			.Include(c => c.Lessons).ThenInclude(l => l.StudentLessonProgresses)
+			.SingleAsync(cancellationToken);
+
+		var completedLessonCount = course.Lessons
+			.SelectMany(l => l.StudentLessonProgresses)
+			.Count(slp => slp.StudentId == userId && slp.IsCompleted);
+
+		var totalLessonCount = course.Lessons.Count;
+
+		return totalLessonCount == 0 ? (short)0 : (short)((completedLessonCount * 100) / totalLessonCount);
+	}
+
 	private async Task EnrollStudentInLessonsAsync(long studentId, IEnumerable<Lesson> lessons, CancellationToken cancellationToken)
 	{
 		var studentLessonProgresses = lessons.Select(lesson => new StudentLessonProgress

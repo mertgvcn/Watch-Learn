@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom'
 //redux
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../../redux/app/store'
-import { GetCourseById } from '../../../redux/features/course/thunks'
 import { IsCurrentStudentAttendedToCourse } from '../../../redux/features/student/thunks'
 import { selectCoursesLoading } from '../../../redux/features/course/selectors'
 import { selectIsStudentAttendedToCourseLoading } from '../../../redux/features/student/selectors'
@@ -19,7 +18,7 @@ const CourseDetailsPageLoader = () => {
     const IsStudentAttendedToCourseLoading = useSelector(selectIsStudentAttendedToCourseLoading)
 
     useEffect(() => {
-        dispatch(GetCourseById(Number(id)))
+        //dispatch(GetCourseById(Number(id))) burası GetCourseDetailById olacak
         dispatch(IsCurrentStudentAttendedToCourse(Number(id)))
     }, [dispatch])
 

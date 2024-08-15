@@ -2,7 +2,9 @@ export interface CourseViewModel {
     id : number;
     title: string;
     shortDescription: string;
+    imgUrl: string;
     price: number;
     teacherName: string;
-    totalLessonDuration: number;
+    lessonCount: number;
+    totalLessonDurationInSeconds: number;
 }

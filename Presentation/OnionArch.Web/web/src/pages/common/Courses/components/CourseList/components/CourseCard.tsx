@@ -9,16 +9,15 @@ import SubjectIcon from '@mui/icons-material/Subject';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 //helpers
-import { formatDuration } from '../../../../../../utils/TimeSpan';
+import { formatDuration } from '../../../../../../utils/TimeFormatter';
 
 type CourseCardType = {
     data: CourseViewModel
 }
 
 const CourseCard = (props: CourseCardType) => {
-    const { id, title, shortDescription, totalLessonDuration, price, teacher, lessons, students } = props.data
-    const formattedPrice = price.toFixed(2)
-    const formattedTotalLessonDuration = formatDuration(totalLessonDuration)
+    const { id, title, shortDescription, imgUrl, price, teacherName, lessonCount, totalLessonDurationInSeconds } = props.data
+    const formattedTotalLessonDuration = formatDuration(totalLessonDurationInSeconds)
 
     return (
         <Link to={`/courses/${id}`} style={{ textDecoration: "none" }}>
@@ -34,7 +33,7 @@ const CourseCard = (props: CourseCardType) => {
             >
                 <CardMedia
                     sx={{ height: "160px", objectFit: "cover" }}
-                    image='https://www.datocms-assets.com/64859/1656365285-ingilizce-a1-a2-egitimi.png?q=70&auto=format&w=650&fit=max&iptc=allow'
+                    image={imgUrl}
                 />
                 <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", paddingBottom: "8px" }}>
                     <Stack direction="column" spacing={1} sx={{ height: "120px" }}>
@@ -50,7 +49,7 @@ const CourseCard = (props: CourseCardType) => {
                         <Box sx={{ display: "flex", alignItems: "center", gap: "4px" }}>
                             <SubjectIcon sx={{ fontSize: 16 }} />
                             <Typography variant='caption'>
-                                {lessons.length} Lessons
+                                {lessonCount} Lessons
                             </Typography>
                         </Box>
 
@@ -70,12 +69,12 @@ const CourseCard = (props: CourseCardType) => {
                         <Stack direction="row" spacing={0.5} sx={{ alignItems: "center" }}>
                             <AccountCircleIcon sx={{ fontSize: 22 }} />
                             <Typography variant='body2'>
-                                {teacher.user.firstName + " " + teacher.user.lastName}
+                                {teacherName}
                             </Typography>
                         </Stack>
 
                         <Typography variant='subtitle2'>
-                            {formattedPrice}TL
+                            {price}TL
                         </Typography>
                     </Box>
                 </CardActions>

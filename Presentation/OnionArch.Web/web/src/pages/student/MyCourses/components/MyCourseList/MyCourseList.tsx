@@ -8,7 +8,7 @@ import MyCourseCard from '../../../../student/MyCourses/components/MyCourseList/
 
 const MyCourseList = () => {
     const courses = useSelector(selectCurrentStudentCourses)
-    console.log(courses)
+
     return (
         <>
             {courses &&

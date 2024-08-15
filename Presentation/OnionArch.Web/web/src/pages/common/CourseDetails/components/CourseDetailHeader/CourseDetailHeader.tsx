@@ -26,8 +26,7 @@ const CourseDetailHeader = ({ course }: CourseDetailHeaderType) => {
         <HeaderBox>
             <Header />
             <Teacher
-                firstName={course.teacher.user.firstName}
-                lastName={course.teacher.user.lastName}
+                teacherName={course.teacherName}
             />
         </HeaderBox>
     )

@@ -56,7 +56,7 @@ const Navbar = ({ userRole }: NavbarType) => {
                                 component="a"
                                 href="/"
                                 sx={{
-                                    display: {xs: "none", sm: "flex"},
+                                    display: { xs: "none", sm: "flex" },
                                     letterSpacing: '.1rem',
                                     color: 'inherit',
                                     textDecoration: 'none',
@@ -73,11 +73,13 @@ const Navbar = ({ userRole }: NavbarType) => {
                                 </Button>
                             </Link>
 
-                            <Link to="/my-courses">
-                                <Button variant='text' sx={{ color: "white" }}>
-                                    My Courses
-                                </Button>
-                            </Link>
+                            {userRole == Roles.Student &&
+                                <Link to="/my-courses">
+                                    <Button variant='text' sx={{ color: "white" }}>
+                                        My Courses
+                                    </Button>
+                                </Link>
+                            }
                         </Stack>
 
                         {userRole == Roles.Guest &&

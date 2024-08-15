@@ -4,7 +4,7 @@ import { Box, Divider, Paper, Stack } from '@mui/material'
 //models
 import { CourseViewModel } from '../../../../../models/viewModels/CourseViewModel';
 //helpers
-import { formatDuration } from '../../../../../utils/TimeSpan';
+import { formatDuration } from '../../../../../utils/TimeFormatter';
 //components
 import CoursePreview from './components/CoursePreview';
 import Purchasing from './components/Purchasing';
@@ -18,8 +18,7 @@ type CourseDetailSidebarType = {
 const CourseDetailSidebar = (props: CourseDetailSidebarType) => {
     const {course, isStudentAttendedToCourse} = props
 
-    const formattedPrice = course.price.toFixed(2)
-    const formattedTotalLessonDuration = formatDuration(course.totalLessonDuration)
+    const formattedTotalLessonDuration = formatDuration(course.totalLessonDurationInSeconds)
 
     const [isFixedSidebar, setIsFixedSidebar] = useState(false);
 
@@ -54,15 +53,15 @@ const CourseDetailSidebar = (props: CourseDetailSidebarType) => {
                 }}>
                     <Purchasing
                         courseId={course.id}
-                        price={Number(formattedPrice)}
+                        price={course.price}
                         isStudentAttendedToCourse={isStudentAttendedToCourse}
                     />
 
                     <Divider />
 
                     <Stats
-                        lessonCount={course.lessons.length}
-                        attendedStudentCount={course.students.length}
+                        lessonCount={course.lessonCount}
+                        attendedStudentCount={course.lessonCount}
                         totalLessonDuration={formattedTotalLessonDuration}
                     />
                 </ Stack>

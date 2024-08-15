@@ -27,6 +27,7 @@ const Purchasing = (props: PurchasingType) => {
         const enrollCurrentUserInCourseRequest: EnrollCurrentUserInCourse = {
             courseId: courseId
         }
+        
         const response = await CourseAPI.EnrollCurrentUserInCourse(enrollCurrentUserInCourseRequest)
 
         if (response.status = 200) {

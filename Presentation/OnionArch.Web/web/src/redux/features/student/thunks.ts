@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 //apis
-import StudentAPI from "../../../utils/APIs/StudentAPI";
-import CourseAPI from "../../../utils/APIs/CourseAPI";
+import StudentAPI from "../../../APIs/StudentAPI";
+import CourseAPI from "../../../APIs/CourseAPI";
 //models
 import { CurrentStudentCourseViewModel } from "../../../models/viewModels/CurrentStudentCourseViewModel";
 

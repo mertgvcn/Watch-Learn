@@ -4,7 +4,7 @@ import { Button, Stack, Typography } from '@mui/material'
 //models
 import { EnrollCurrentUserInCourse } from '../../../../../../models/paramaterModels/Course/EnrollCurrentUserInCourse'
 //helpers
-import CourseAPI from '../../../../../../utils/APIs/CourseAPI'
+import CourseAPI from '../../../../../../APIs/CourseAPI'
 import toast from 'react-hot-toast'
 import { useAppDispatch } from '../../../../../../redux/app/store'
 import { IsCurrentStudentAttendedToCourse } from '../../../../../../redux/features/student/thunks'

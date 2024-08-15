@@ -11,7 +11,7 @@ public class CourseProfile : Profile
 		CreateMap<Course, CourseViewModel>()
 			.ForMember(a => a.TeacherName, opt => opt.MapFrom(src => src.Teacher.User.FirstName + " " + src.Teacher.User.LastName))
 			.ForMember(a => a.LessonCount, opt => opt.MapFrom(src => src.Lessons.Count))
-			.ForMember(a => a.TotalLessonDuration, opt => opt.MapFrom(src => new TimeSpan(src.Lessons.Sum(a => a.Duration.Ticks))));
+			.ForMember(a => a.TotalLessonDuration, opt => opt.MapFrom(src => src.Lessons.Sum(a => a.DurationInSeconds)));
 
 		CreateMap<Course, MyCourseViewModel>()
 			.ForMember(a => a.TeacherName, opt => opt.MapFrom(src => src.Teacher.User.FirstName + " " + src.Teacher.User.LastName));

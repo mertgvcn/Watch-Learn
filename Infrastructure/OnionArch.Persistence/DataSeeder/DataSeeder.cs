@@ -63,7 +63,7 @@ public sealed class DataSeeder
 				LessonNumber = 1,
 				Title = faker.Lorem.Sentence(6),
 				Description = faker.Lorem.Sentence(10),
-				Duration = new TimeSpan(2, 0, 0),
+				DurationInSeconds = faker.Random.Int(120, 600),
 				VideoUrl = "https://www.youtube.com/watch?v=iu-LBY7NXD4"
 			},
 			new()
@@ -71,7 +71,7 @@ public sealed class DataSeeder
 				LessonNumber = 2,
 				Title = faker.Lorem.Sentence(6),
 				Description = faker.Lorem.Sentence(10),
-				Duration = new TimeSpan(2, 0, 0),
+				DurationInSeconds = faker.Random.Int(120, 600),
 				VideoUrl = "https://www.youtube.com/watch?v=iu-LBY7NXD4"
 			},
 			new()
@@ -79,7 +79,7 @@ public sealed class DataSeeder
 				LessonNumber = 3,
 				Title = faker.Lorem.Sentence(6),
 				Description = faker.Lorem.Sentence(10),
-				Duration = new TimeSpan(2, 0, 0),
+				DurationInSeconds = faker.Random.Int(120, 600),
 				VideoUrl = "https://www.youtube.com/watch?v=iu-LBY7NXD4"
 			}
 		})

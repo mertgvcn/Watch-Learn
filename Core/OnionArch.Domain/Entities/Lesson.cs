@@ -10,7 +10,7 @@ public class Lesson : BaseEntity, IEditableEntity, ISoftDeletableEntity
 	public required string Title { get; set; }
 	public required string Description { get; set; }
 	public required string VideoUrl { get; set; }
-	public required TimeSpan Duration { get; set; }
+	public required int DurationInSeconds { get; set; }
 	public long CourseId { get; set; }
 	public ICollection<StudentLessonProgress> StudentLessonProgresses { get; set; } = default!;
 }

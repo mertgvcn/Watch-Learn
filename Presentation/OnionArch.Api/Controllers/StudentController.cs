@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnionArch.Application.Features.Courses.Models;
 using OnionArch.Application.Features.Students.Models;
 using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;
@@ -35,11 +34,7 @@ public class StudentController : ControllerBase
 		return await _studentService.GetStudentByIdAsync(id, _cancellationToken);
 	}
 
-	[HttpGet]
-	public async Task<List<CourseViewModel>> GetCoursesAttendedByCurrentStudent()
-	{
-		return await _studentService.GetCoursesAttendedByCurrentStudentAsync(_cancellationToken);
-	}
+
 
 	[HttpGet]
 	public async Task<bool> IsCurrentStudentAttendedToCourse([FromQuery] long courseId)

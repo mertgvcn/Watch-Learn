@@ -9,7 +9,6 @@ public class StudentProfile : Profile
 	public StudentProfile()
 	{
 		CreateMap<Student, StudentViewModel>();
-		CreateMap<Student, CoursesAttendedByCurrentStudentViewModel>();
 		CreateMap<User, Student>();
 		CreateMap<UpdateStudentRequest, Student>();
 		CreateMap<Student, StudentDTO>();

@@ -58,29 +58,24 @@ export abstract class BaseAPI {
                 if (error.response.status == 401 && !originalRequest._retry) {
                     originalRequest._retry = true
 
-                    try {
-                        const request: CreateAccessTokenByRefreshTokenRequest = {
-                            refreshToken: getCookie("refresh")
-                        }
-
-                        const response = await AuthenticationAPI.CreateAccessTokenByRefreshToken(request)
-                        let data = response.data
-
-                        if (response.status === 200) {
-                            setCookie("jwt", data.accessToken, data.accessTokenExpireDate)
-
-                            this.axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
-                            originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
-
-                            return this.axiosInstance(originalRequest);
-                        }
+                    const request: CreateAccessTokenByRefreshTokenRequest = {
+                        refreshToken: getCookie("refresh")
                     }
-                    catch (refreshError) {
-                        return Promise.reject(refreshError)
+
+                    const response = await AuthenticationAPI.CreateAccessTokenByRefreshToken(request)
+                    let data = response.data
+
+                    if (response.status === 200) {
+                        setCookie("jwt", data.accessToken, data.accessTokenExpireDate)
+
+                        this.axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
+                        originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
+
+                        return this.axiosInstance(originalRequest);
                     }
                 }
-                return Promise.reject(error);
+                return error.response;
             }
-        );
+        )
     }
 }

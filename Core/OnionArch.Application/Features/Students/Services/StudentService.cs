@@ -2,7 +2,6 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using OnionArch.Application.Exceptions.Students;
-using OnionArch.Application.Features.Courses.Models;
 using OnionArch.Application.Features.Students.Models;
 using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;
@@ -42,18 +41,11 @@ public sealed class StudentService : IStudentService
 		return student;
 	}
 
-	public async Task<List<CourseViewModel>> GetCoursesAttendedByCurrentStudentAsync(CancellationToken cancellationToken)
-	{
-		var userId = await _httpContextService.GetCurrentUserIdAsync();
-		var courses = await _studentRepository.GetByUserId(userId)
-			.ProjectTo<CoursesAttendedByCurrentStudentViewModel>(_mapper.ConfigurationProvider).SingleAsync(cancellationToken);
 
-		return courses.Courses;
-	}
 
 	public async Task<bool> IsCurrentStudentAttendedToCourseAsync(long courseId, CancellationToken cancellationToken)
 	{
-		var userId = await _httpContextService.GetCurrentUserIdAsync();
+		var userId = _httpContextService.GetCurrentUserId();
 
 		return await _studentRepository.IsStudentAttendedToCourse(userId, courseId, cancellationToken);
 	}

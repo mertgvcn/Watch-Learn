@@ -2,18 +2,18 @@ import { useEffect } from 'react'
 //redux
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../../redux/app/store'
-import { selectStudentAttendedCoursesLoading } from '../../../redux/features/currentStudent/selectors'
-import { GetCoursesAttendedByCurrentStudent } from '../../../redux/features/currentStudent/thunks'
+import { GetCurrentStudentCourses } from '../../../redux/features/student/thunks'
+import { selectcurrentStudentCoursesLoading } from '../../../redux/features/student/selectors'
 //components
 import MyCoursesPage from './MyCoursesPage'
 import LoadingComponent from '../../../components/LoadingComponent/LoadingComponent'
 
 const MyCoursesPageLoader = () => {
     const dispatch = useAppDispatch()
-    const loading = useSelector(selectStudentAttendedCoursesLoading)
+    const loading = useSelector(selectcurrentStudentCoursesLoading)
 
     useEffect(() => {
-        dispatch(GetCoursesAttendedByCurrentStudent())
+        dispatch(GetCurrentStudentCourses())
     }, [dispatch])
 
     if(loading) return <LoadingComponent/>

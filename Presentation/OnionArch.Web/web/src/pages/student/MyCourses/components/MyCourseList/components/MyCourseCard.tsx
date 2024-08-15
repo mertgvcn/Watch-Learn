@@ -1,17 +1,17 @@
 import { Link } from 'react-router-dom'
 //models
-import { CourseViewModel } from '../../../../../../models/viewModels/CourseViewModel'
+import { CurrentStudentCourseViewModel } from '../../../../../../models/viewModels/CurrentStudentCourseViewModel';
 //mui components
 import { Card, CardMedia, CardContent, Stack, Typography, Box, Divider, CardActions, LinearProgress } from '@mui/material'
 //icons
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 type MyCourseCardType = {
-    data: CourseViewModel
+    data: CurrentStudentCourseViewModel
 }
 
 const MyCourseCard = (props: MyCourseCardType) => {
-    const { id, title, shortDescription, teacher } = props.data
+    const { id, title, shortDescription, teacherName, studentProgressPercentage,  } = props.data
     const studentCourseProgress = Number((Math.random() * 100).toFixed(0))
 
     return (

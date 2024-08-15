@@ -1,4 +1,4 @@
-﻿namespace OnionArch.Application.Features.Courses.Models;
+﻿namespace OnionArch.Application.Features.Courses.Models.Parameters;
 public record AddCourseRequest
 {
     public required string Title { get; set; }

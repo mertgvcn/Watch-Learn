@@ -1,8 +1,7 @@
-export interface CourseViewModel {
+export interface CurrentStudentCourseViewModel {
     id : number;
     title: string;
     shortDescription: string;
-    price: number;
     teacherName: string;
-    totalLessonDuration: number;
+    studentProgressPercentage: number;
 }

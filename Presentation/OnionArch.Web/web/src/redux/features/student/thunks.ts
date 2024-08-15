@@ -1,12 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+//apis
 import StudentAPI from "../../../utils/APIs/StudentAPI";
-import { CourseViewModel } from "../../../models/viewModels/CourseViewModel";
 import CourseAPI from "../../../utils/APIs/CourseAPI";
+//models
+import { CurrentStudentCourseViewModel } from "../../../models/viewModels/CurrentStudentCourseViewModel";
 
-export const GetCoursesAttendedByCurrentStudent = createAsyncThunk<CourseViewModel[]>(
-    'Student/GetCoursesAttendedByCurrentStudent',
+export const GetCurrentStudentCourses = createAsyncThunk<CurrentStudentCourseViewModel[]>(
+    'Course/GetCurrentStudentCourses',
     async () => {
-        const response = await CourseAPI.GetMyCourses()
+        const response = await CourseAPI.GetCurrentStudentCourses()
         return response.data
     }
 )

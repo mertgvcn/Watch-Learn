@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/app/store'
 import { selectCourseById } from '../../../redux/features/course/selectors'
-import { selectIsStudentAttendedToCourse } from '../../../redux/features/currentStudent/selectors'
+import { selectIsStudentAttendedToCourse } from '../../../redux/features/student/selectors'
 //mui components
 import { Box, Container, Grid, Stack } from '@mui/material'
 //components

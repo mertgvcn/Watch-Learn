@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using OnionArch.Application.Features.Courses.Models;
+using OnionArch.Application.Features.Courses.Models.Views;
 using OnionArch.Application.Interfaces.Services;
 using OnionArch.Domain.Entities;
 
 namespace OnionArch.Application.Mapper.Resolvers;
-public class StudentProgressResolver : IValueResolver<Course, MyCourseViewModel, short>
+public class StudentProgressResolver : IValueResolver<Course, CurrentStudentCourseViewModel, short>
 {
 	private readonly IHttpContextService _httpContextService;
 
@@ -13,7 +13,7 @@ public class StudentProgressResolver : IValueResolver<Course, MyCourseViewModel,
 		_httpContextService = httpContextService;
 	}
 
-	public short Resolve(Course source, MyCourseViewModel destination, short destMember, ResolutionContext context)
+	public short Resolve(Course source, CurrentStudentCourseViewModel destination, short destMember, ResolutionContext context)
 	{
 		var userId = _httpContextService.GetCurrentUserId();
 

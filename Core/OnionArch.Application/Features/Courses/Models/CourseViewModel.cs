@@ -7,5 +7,5 @@ public record CourseViewModel
 	public required double Price { get; set; }
 	public required string TeacherName { get; set; }
 	public required int LessonCount { get; set; }
-	public TimeSpan TotalLessonDuration { get; set; }
+	public required TimeSpan TotalLessonDuration { get; set; }
 }

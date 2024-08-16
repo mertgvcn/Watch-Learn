@@ -7,7 +7,7 @@ import LoginIcon from '@mui/icons-material/Login';
 //models
 import { UserLoginRequest } from '../../../../models/paramaterModels/Authentication/UserLoginRequest';
 //helpers
-import AuthenticationAPI from '../../../../utils/APIs/AuthenticationAPI';
+import AuthenticationAPI from '../../../../APIs/AuthenticationAPI';
 import toast from 'react-hot-toast';
 import { Encrypt } from '../../../../utils/Cryption';
 import { setCookie } from '../../../../utils/Cookie';

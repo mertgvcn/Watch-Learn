@@ -7,23 +7,13 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 type StatsType = {
     lessonCount: number,
-    attendedStudentCount: number,
+    studentCount: number,
     totalLessonDuration: string
 }
 
-const Stats = (props: StatsType) => {
+const Stats = ({lessonCount, studentCount, totalLessonDuration}: StatsType) => {
     return (
         <Stack direction="column" spacing={1}>
-            <StatBox>
-                <IconTextBox>
-                    <SubjectIcon sx={{ fontSize: 18 }} />
-                    <Typography variant='body1'>
-                        Lessons
-                    </Typography>
-                </IconTextBox>
-                <Typography variant='body1'>{props.lessonCount}</Typography>
-            </StatBox>
-
             <StatBox>
                 <IconTextBox>
                     <GroupIcon sx={{ fontSize: 18 }} />
@@ -31,7 +21,17 @@ const Stats = (props: StatsType) => {
                         Attendees
                     </Typography>
                 </IconTextBox>
-                <Typography variant='body1'>{props.attendedStudentCount}</Typography>
+                <Typography variant='body1'>{studentCount}</Typography>
+            </StatBox>
+
+            <StatBox>
+                <IconTextBox>
+                    <SubjectIcon sx={{ fontSize: 18 }} />
+                    <Typography variant='body1'>
+                        Lessons
+                    </Typography>
+                </IconTextBox>
+                <Typography variant='body1'>{lessonCount}</Typography>
             </StatBox>
 
             <StatBox>
@@ -41,7 +41,7 @@ const Stats = (props: StatsType) => {
                         Total Duration
                     </Typography>
                 </IconTextBox>
-                <Typography variant='body1'>{props.totalLessonDuration}</Typography>
+                <Typography variant='body1'>{totalLessonDuration}</Typography>
             </StatBox>
         </Stack>
     )

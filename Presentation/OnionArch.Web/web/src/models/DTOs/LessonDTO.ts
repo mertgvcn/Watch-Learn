@@ -1,6 +1,7 @@
 export interface LessonDTO {
     id: number;
+    lessonNumber: number;
     title: string;
     description: string;
-    duration: string
+    durationInSeconds: number;
 }

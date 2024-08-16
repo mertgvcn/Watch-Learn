@@ -1,25 +1,26 @@
 import { useState, useEffect } from 'react';
 //mui components
 import { Box, Divider, Paper, Stack } from '@mui/material'
-//models
-import { CourseViewModel } from '../../../../../models/viewModels/CourseViewModel';
 //helpers
-import { formatDuration } from '../../../../../utils/TimeSpan';
+import { formatDuration } from '../../../../../utils/TimeFormatter';
 //components
 import CoursePreview from './components/CoursePreview';
 import Purchasing from './components/Purchasing';
 import Stats from './components/Stats';
 
 type CourseDetailSidebarType = {
-    course: CourseViewModel,
+    courseId: number,
+    price: number,
+    studentCount: number,
+    lessonCount: number,
+    totalLessonDurationInSeconds: number,
     isStudentAttendedToCourse: boolean
 }
 
 const CourseDetailSidebar = (props: CourseDetailSidebarType) => {
-    const {course, isStudentAttendedToCourse} = props
+    const {courseId, price, totalLessonDurationInSeconds, lessonCount, studentCount, isStudentAttendedToCourse} = props
 
-    const formattedPrice = course.price.toFixed(2)
-    const formattedTotalLessonDuration = formatDuration(course.totalLessonDuration)
+    const formattedTotalLessonDuration = formatDuration(totalLessonDurationInSeconds)
 
     const [isFixedSidebar, setIsFixedSidebar] = useState(false);
 
@@ -53,16 +54,16 @@ const CourseDetailSidebar = (props: CourseDetailSidebarType) => {
                     boxSizing: "border-box"
                 }}>
                     <Purchasing
-                        courseId={course.id}
-                        price={Number(formattedPrice)}
+                        courseId={courseId}
+                        price={price}
                         isStudentAttendedToCourse={isStudentAttendedToCourse}
                     />
 
                     <Divider />
 
                     <Stats
-                        lessonCount={course.lessons.length}
-                        attendedStudentCount={course.students.length}
+                        studentCount={studentCount}
+                        lessonCount={lessonCount}
                         totalLessonDuration={formattedTotalLessonDuration}
                     />
                 </ Stack>

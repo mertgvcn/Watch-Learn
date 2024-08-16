@@ -6,7 +6,7 @@ import { CreateAccessTokenByRefreshTokenResponse } from "../models/paramaterMode
 import { CheckRefreshTokenRequest } from "../models/paramaterModels/Authentication/CheckRefreshTokenRequest";
 import { TokenViewModel } from "../models/viewModels/JWTTokenViewModel";
 //helpers
-import AuthenticationAPI from "../utils/APIs/AuthenticationAPI";
+import AuthenticationAPI from "../APIs/AuthenticationAPI";
 import { jwtDecode } from "jwt-decode";
 import { deleteCookie, getCookie, setCookie } from "../utils/Cookie";
 import { isAccessTokenExpired } from "../utils/Token";

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnionArch.Application.Exceptions.Courses;
-using OnionArch.Application.Features.Courses.Models;
-using OnionArch.Application.Features.Students.Models;
+using OnionArch.Application.Features.Courses.Models.Parameters;
+using OnionArch.Application.Features.Courses.Models.Views;
 using OnionArch.Application.Interfaces.Repositories;
 using OnionArch.Application.Interfaces.Services;
 
@@ -32,16 +32,16 @@ public class CourseController : ControllerBase
 
 	[HttpGet]
 	[AllowAnonymous]
-	public async Task<ActionResult<CourseViewModel>> GetCourseById([FromQuery] long id)
+	public async Task<ActionResult<CourseDetailViewModel>> GetCourseDetailById([FromQuery] long id)
 	{
-		return await _courseService.GetCourseByIdAsync(id, _cancellationToken);
+		return Ok(await _courseService.GetCourseDetailByIdAsync(id, _cancellationToken));
 	}
 
 	[HttpGet]
 	[Authorize]
-	public async Task<List<MyCoursesViewModel>> GetMyCourses()
+	public async Task<ActionResult<List<CurrentStudentCourseViewModel>>> GetCurrentStudentCourses()
 	{
-		return await _courseService.GetMyCourses(_cancellationToken);
+		return Ok(await _courseService.GetCurrentStudentCoursesAsync(_cancellationToken));
 	}
 
 	[HttpPost]

@@ -1,14 +1,14 @@
 //redux
 import { useSelector } from 'react-redux'
-import { selectStudentAttendedCourses } from '../../../../../redux/features/currentStudent/selectors'
+import { selectCurrentStudentCourses } from '../../../../../redux/features/student/selectors'
 //mui components
 import { Grid, Typography } from '@mui/material'
 //components
 import MyCourseCard from '../../../../student/MyCourses/components/MyCourseList/components/MyCourseCard'
 
 const MyCourseList = () => {
-    const courses = useSelector(selectStudentAttendedCourses)
-    console.log(courses)
+    const courses = useSelector(selectCurrentStudentCourses)
+
     return (
         <>
             {courses &&

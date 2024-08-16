@@ -1,6 +1,6 @@
 ﻿using OnionArch.Domain.Entities;
 
-namespace OnionArch.Application.Features.Courses.Models;
+namespace OnionArch.Application.Features.Courses.Models.Parameters;
 public record AddStudentToCourseRequest
 {
     public required long CourseId { get; set; }

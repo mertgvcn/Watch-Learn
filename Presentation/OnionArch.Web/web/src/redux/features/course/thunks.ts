@@ -1,8 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 //api
-import CourseAPI from "../../../utils/APIs/CourseAPI"
+import CourseAPI from "../../../APIs/CourseAPI"
 //models
 import { CourseViewModel } from "../../../models/viewModels/CourseViewModel"
+import { CourseDetailViewModel } from "../../../models/viewModels/CourseDetailViewModel"
 
 export const GetAllCourses = createAsyncThunk<CourseViewModel[]>(
     'Course/GetAllCourses',
@@ -12,10 +13,10 @@ export const GetAllCourses = createAsyncThunk<CourseViewModel[]>(
     }
 )
 
-export const GetCourseById = createAsyncThunk<CourseViewModel, number>(
-    'Course/GetCourseById',
+export const GetCourseDetailById = createAsyncThunk<CourseDetailViewModel, number>(
+    'Course/GetCourseDetailById',
     async (id: number) => {
-        const response = await CourseAPI.GetCourseById(id)
+        const response = await CourseAPI.GetCourseDetailById(id)
         return response.data
     }
 )

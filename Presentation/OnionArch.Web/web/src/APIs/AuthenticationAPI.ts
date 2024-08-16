@@ -1,10 +1,10 @@
 import { BaseAPI } from "./BaseAPI";
 //models
 import { AxiosResponse } from "axios";
-import { UserLoginRequest } from "../../models/paramaterModels/Authentication/UserLoginRequest";
-import { UserRegisterRequest } from "../../models/paramaterModels/Authentication/UserRegisterRequest";
-import { CreateAccessTokenByRefreshTokenRequest } from "../../models/paramaterModels/Authentication/CreateAccessTokenByRefreshTokenRequest";
-import { CheckRefreshTokenRequest } from "../../models/paramaterModels/Authentication/CheckRefreshTokenRequest";
+import { UserLoginRequest } from "../models/paramaterModels/Authentication/UserLoginRequest";
+import { UserRegisterRequest } from "../models/paramaterModels/Authentication/UserRegisterRequest";
+import { CreateAccessTokenByRefreshTokenRequest } from "../models/paramaterModels/Authentication/CreateAccessTokenByRefreshTokenRequest";
+import { CheckRefreshTokenRequest } from "../models/paramaterModels/Authentication/CheckRefreshTokenRequest";
 
 class AuthenticationAPI extends BaseAPI {
     private controllerExtension: string = "/Authentication"

@@ -2,12 +2,12 @@ import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 //reducers
 import courseReducer from '../features/course/courseSlice'
-import currentStudentReducer  from '../features/currentStudent/currentStudentSlice'
+import studentReducer  from '../features/student/studentSlice'
 
 export const store = configureStore({
     reducer: {
         course: courseReducer,
-        currentStudent: currentStudentReducer
+        student: studentReducer
     },
 })
 

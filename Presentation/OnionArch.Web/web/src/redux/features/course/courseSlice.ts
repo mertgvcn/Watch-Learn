@@ -1,17 +1,32 @@
 //redux
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { GetAllCourses, GetCourseById } from "./thunks";
-import { courseAdapter } from "./selectors";
+import { GetAllCourses, GetCourseDetailById } from "./thunks";
+import { coursesAdapter } from "./selectors";
 //models
 import { CourseViewModel } from "../../../models/viewModels/CourseViewModel";
+import { CourseDetailViewModel } from "../../../models/viewModels/CourseDetailViewModel";
+
+interface InitialStateType {
+    courses: ReturnType<typeof coursesAdapter.getInitialState> & { loading: boolean };
+    courseDetail: {
+        currentState: CourseDetailViewModel | null;
+        loading: boolean;
+    };
+}
+
+const initialState: InitialStateType = {
+    courses: coursesAdapter.getInitialState({
+        loading: false,
+    }),
+    courseDetail: {
+        currentState: null,
+        loading: false,
+    }
+}
 
 export const courseSlice = createSlice({
     name: 'course',
-    initialState: {
-        courses: courseAdapter.getInitialState({
-            loading: false
-        })
-    },
+    initialState,
     reducers: {},
     extraReducers(builder) {
         builder
@@ -19,22 +34,22 @@ export const courseSlice = createSlice({
                 state.courses.loading = true
             })
             .addCase(GetAllCourses.fulfilled, (state, action: PayloadAction<CourseViewModel[]>) => {
-                courseAdapter.setAll(state.courses, action.payload)
+                coursesAdapter.setAll(state.courses, action.payload)
                 state.courses.loading = false
             })
             .addCase(GetAllCourses.rejected, (state) => {
                 state.courses.loading = false
             })
-            
-            .addCase(GetCourseById.pending, (state) => {
-                state.courses.loading = true
+
+            .addCase(GetCourseDetailById.pending, (state) => {
+                state.courseDetail.loading = true
             })
-            .addCase(GetCourseById.fulfilled, (state, action: PayloadAction<CourseViewModel>) => {
-                courseAdapter.setOne(state.courses, action.payload)
-                state.courses.loading = false
+            .addCase(GetCourseDetailById.fulfilled, (state, action: PayloadAction<CourseDetailViewModel>) => {
+                state.courseDetail.currentState = action.payload
+                state.courseDetail.loading = false
             })
-            .addCase(GetCourseById.rejected, (state) => {
-                state.courses.loading = false
+            .addCase(GetCourseDetailById.rejected, (state) => {
+                state.courseDetail.loading = false
             })
     }
 })

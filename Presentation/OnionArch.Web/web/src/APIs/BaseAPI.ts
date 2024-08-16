@@ -1,8 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { getCookie, setCookie } from "../Cookie";
-import { CreateAccessTokenByRefreshTokenRequest } from "../../models/paramaterModels/Authentication/CreateAccessTokenByRefreshTokenRequest";
+import { getCookie, setCookie } from "../utils/Cookie";
+import { CreateAccessTokenByRefreshTokenRequest } from "../models/paramaterModels/Authentication/CreateAccessTokenByRefreshTokenRequest";
 import AuthenticationAPI from "./AuthenticationAPI";
-import { isAccessTokenExpired } from "../Token";
+import { isAccessTokenExpired } from "../utils/Token";
 
 export abstract class BaseAPI {
     protected axiosInstance: AxiosInstance | any = null;

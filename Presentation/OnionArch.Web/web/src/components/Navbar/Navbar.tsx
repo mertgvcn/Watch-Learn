@@ -2,12 +2,12 @@ import { Link, useNavigate } from 'react-router-dom';
 //models
 import { Roles } from '../../models/enumerators/Roles';
 //mui components
-import { Box, AppBar, Toolbar, IconButton, Typography, Button, Container, styled, Stack, Drawer, MenuItem } from '@mui/material'
+import { Box, AppBar, Toolbar, Typography, Button, Container, styled, Stack, Drawer, MenuItem } from '@mui/material'
 //icons
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import MenuIcon from '@mui/icons-material/Menu';
 //helpers
-import AuthenticationAPI from '../../utils/APIs/AuthenticationAPI';
+import AuthenticationAPI from '../../APIs/AuthenticationAPI';
 import { deleteCookie } from '../../utils/Cookie';
 import toast from 'react-hot-toast';
 
@@ -56,7 +56,7 @@ const Navbar = ({ userRole }: NavbarType) => {
                                 component="a"
                                 href="/"
                                 sx={{
-                                    display: {xs: "none", sm: "flex"},
+                                    display: { xs: "none", sm: "flex" },
                                     letterSpacing: '.1rem',
                                     color: 'inherit',
                                     textDecoration: 'none',
@@ -73,11 +73,13 @@ const Navbar = ({ userRole }: NavbarType) => {
                                 </Button>
                             </Link>
 
-                            <Link to="/my-courses">
-                                <Button variant='text' sx={{ color: "white" }}>
-                                    My Courses
-                                </Button>
-                            </Link>
+                            {userRole == Roles.Student &&
+                                <Link to="/my-courses">
+                                    <Button variant='text' sx={{ color: "white" }}>
+                                        My Courses
+                                    </Button>
+                                </Link>
+                            }
                         </Stack>
 
                         {userRole == Roles.Guest &&

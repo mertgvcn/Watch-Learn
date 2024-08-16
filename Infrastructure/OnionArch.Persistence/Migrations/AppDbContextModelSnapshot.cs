@@ -85,12 +85,17 @@ namespace OnionArch.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(1250)
-                        .HasColumnType("character varying(1250)");
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
 
                     b.Property<string>("EditedBy")
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
+
+                    b.Property<string>("ImgUrl")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -100,8 +105,8 @@ namespace OnionArch.Persistence.Migrations
 
                     b.Property<string>("ShortDescription")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<long>("TeacherId")
                         .HasColumnType("bigint");
@@ -110,9 +115,6 @@ namespace OnionArch.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
-
-                    b.Property<TimeSpan>("TotalLessonDuration")
-                        .HasColumnType("interval");
 
                     b.HasKey("Id");
 
@@ -184,11 +186,11 @@ namespace OnionArch.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
 
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("interval");
+                    b.Property<int>("DurationInSeconds")
+                        .HasColumnType("integer");
 
                     b.Property<string>("EditedBy")
                         .HasMaxLength(64)
@@ -197,12 +199,15 @@ namespace OnionArch.Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<short>("LessonNumber")
+                        .HasColumnType("smallint");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
 
-                    b.Property<string>("VideoURL")
+                    b.Property<string>("VideoUrl")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
@@ -252,6 +257,9 @@ namespace OnionArch.Persistence.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CourseId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp without time zone");

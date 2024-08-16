@@ -88,5 +88,4 @@ public sealed class CourseService : ICourseService
 		_mapper.Map(request, existingCourse);
 		await _courseRepository.UpdateAsync(existingCourse, cancellationToken);
 	}
-	//denem
 }

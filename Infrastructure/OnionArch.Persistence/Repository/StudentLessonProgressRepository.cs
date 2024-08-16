@@ -7,8 +7,8 @@ namespace OnionArch.Persistence.Repository;
 public sealed class StudentLessonProgressRepository(AppDbContext context)
 	: BaseRepository<StudentLessonProgress>(context), IStudentLessonProgressRepository
 {
-	public async Task<StudentLessonProgress> GetByStudentAndLessonIds(long studentId, long lessonId, CancellationToken cancellationToken)
+	public async Task<List<StudentLessonProgress>> GetStudentLessonProgressesByStudentAndCourseIds(long studentId, long courseId, CancellationToken cancellationToken)
 	{
-		return await GetAll().Where(a => a.StudentId == studentId && a.LessonId == lessonId).SingleAsync(cancellationToken);
+		return await GetAll().Where(a => a.StudentId == studentId && a.CourseId == courseId).ToListAsync(cancellationToken);
 	}
 }

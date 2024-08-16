@@ -86,7 +86,7 @@ public sealed class CourseService : ICourseService
 
 		course.Students.Add(student);
 		await _courseRepository.UpdateAsync(course);
-		await EnrollStudentInLessonsAsync(student.Id, course.Lessons, cancellationToken);
+		await EnrollStudentInLessonsAsync(student.Id, course.Id, course.Lessons, cancellationToken);
 
 		await transaction.CommitAsync(cancellationToken);
 	}
@@ -111,23 +111,27 @@ public sealed class CourseService : ICourseService
 
 	private async Task<short> GetStudentProgressPercentageAsync(long userId, long courseId, CancellationToken cancellationToken)
 	{
-		var course = await _courseRepository.GetById(courseId)
-			.Include(c => c.Lessons).ThenInclude(l => l.StudentLessonProgresses).ThenInclude(slg => slg.Student)
-			.SingleAsync(cancellationToken);
+		var student = await _studentRepository.GetByUserIdAsync(userId, cancellationToken);
 
-		var completedLessonCount = course.Lessons
-			.SelectMany(l => l.StudentLessonProgresses)
-			.Count(slp => slp.Student.UserId == userId && slp.IsCompleted);
+		var progresses = await _studentLessonProgressRepository.GetStudentLessonProgressesByStudentAndCourseIds(student.Id, courseId, cancellationToken);
 
-		var totalLessonCount = course.Lessons.Count;
+		var totalLessonCount = progresses.Count();
+		var completedLessonCount = 0;
+
+		foreach (var progress in progresses)
+		{
+			if (progress.IsCompleted)
+				completedLessonCount++;
+		}
 
 		return totalLessonCount == 0 ? (short)0 : (short)((completedLessonCount * 100) / totalLessonCount);
 	}
 
-	private async Task EnrollStudentInLessonsAsync(long studentId, IEnumerable<Lesson> lessons, CancellationToken cancellationToken)
+	private async Task EnrollStudentInLessonsAsync(long studentId, long courseId, IEnumerable<Lesson> lessons, CancellationToken cancellationToken)
 	{
 		var studentLessonProgresses = lessons.Select(lesson => new StudentLessonProgress
 		{
+			CourseId = courseId,
 			StudentId = studentId,
 			LessonId = lesson.Id
 		});
